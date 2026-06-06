@@ -220,8 +220,13 @@
   paint(FALLBACK);
 
   // 2) Fetch the real data and repaint; keep last-good on failure.
+  // Live feed served by the Cloudflare Worker from KV (CORS enabled), refreshed
+  // every 15 min by its cron. On pages.dev there is no same-origin worker route
+  // yet, so we read the worker URL directly. When the custom domain + worker
+  // route go live, switch DATA_URL back to same-origin '/data/conditions.json'.
+  var DATA_URL = 'https://govallecito-conditions.dkontje.workers.dev/data/conditions.json';
   function load() {
-    fetch('/data/conditions.json', { cache: 'no-store' })
+    fetch(DATA_URL, { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
