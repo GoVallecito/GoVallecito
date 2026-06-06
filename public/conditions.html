@@ -85,25 +85,29 @@
 <!-- ===== Weather ===== -->
 <section class="band alt anchor-offset" id="weather">
   <div class="wrap">
-    <div class="eyebrow">Weather · at the marina</div>
-    <h2 class="sec-title">Current weather &amp; 5-day forecast</h2>
-    <p class="sec-lead">Primary reading from the marina's Weather Underground station; National Weather Service for the forecast and as a fallback. Source: <span id="wxSource">—</span>.</p>
-    <div class="databand">
-      <div class="panel">
-        <h3>🌡️ Right now</h3>
-        <div class="kv" id="wxFields"></div>
-        <p class="muted" id="wxDesc2">—</p>
-        <p class="muted" id="wxObs" style="font-size:.78rem"></p>
+    <div class="eyebrow">Lake Weather</div>
+    <h2 class="sec-title">Current conditions &amp; 5-day forecast</h2>
+    <p class="sec-lead">Right at the lake when the Vallecito Reservoir station is live; National Weather Service otherwise. <span id="wxSourceBadge" class="src-badge"></span> <span id="wxObs" class="muted" style="font-size:.85rem"></span><span id="wxSource" hidden></span></p>
+
+    <div class="lakewx panel">
+      <div class="lakewx-head">
+        <div class="lwx-temp"><b id="wxTempBig">—°</b><span id="wxFeels" class="muted"></span></div>
+        <div class="lwx-desc muted" id="wxDesc2">—</div>
       </div>
-      <div class="panel">
-        <h3>📅 Today</h3>
-        <div class="kv">
-          <div><b id="wxHigh">—</b><span>High</span></div>
-          <div><b id="wxLow">—</b><span>Low</span></div>
-        </div>
-        <div class="forecast" id="wxForecast"></div>
+      <div class="lakewx-blocks">
+        <div class="wxblock" id="wxWindBlock"></div>
+        <div class="wxblock" id="wxPressBlock"></div>
       </div>
+      <div class="kv" id="wxFields"></div>
+      <p class="muted" id="wxUvNote" style="margin-top:6px"></p>
     </div>
+
+    <h3 class="cat-head" style="margin-top:26px">📅 5-day forecast</h3>
+    <div class="kv">
+      <div><b id="wxHigh">—</b><span>Today high</span></div>
+      <div><b id="wxLow">—</b><span>Tonight low</span></div>
+    </div>
+    <div class="forecast" id="wxForecast"></div>
   </div>
 </section>
 

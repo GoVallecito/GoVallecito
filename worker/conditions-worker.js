@@ -62,6 +62,13 @@ async function refresh(env) {
     getRestrictions(env).catch(() => ({ stage: "none" })),
   ]);
 
+  // Barometric trend (for anglers): compare to the prior cached pressure reading.
+  if (weather && weather.pressureInHg != null && prev.weather && prev.weather.pressureInHg != null) {
+    const dlt = weather.pressureInHg - prev.weather.pressureInHg;
+    weather.pressureTrend = Math.abs(dlt) < 0.02 ? "steady" : (dlt > 0 ? "rising" : "falling");
+    weather.pressureTrendDelta = Math.round(dlt * 100) / 100;
+  }
+
   const alert = mergeRestrictionStage(alertsRaw, restrictions);
 
   const now = new Date();
@@ -218,16 +225,21 @@ async function getAlerts() {
 
 /* ---------- WEATHER: WU PWS primary, NWS fallback + 5-day ---------- */
 async function getWeather(env) {
-  let cur = null, source = "";
+  let cur = null, source = "", sourceType = "";
 
-  // PRIMARY: Weather Underground PWS (true marina reading) — needs free key + station id.
-  // Maps every field the station reports; undefined fields drop out of the JSON.
+  // PRIMARY: Weather Underground PWS (Vallecito Reservoir station) — needs free
+  // key + station id. Maps every field; undefined fields drop out of the JSON.
   if (env.WU_API_KEY && env.WU_STATION_ID) {
     try {
       const u = `https://api.weather.com/v2/pws/observations/current?stationId=${env.WU_STATION_ID}&format=json&units=e&apiKey=${env.WU_API_KEY}`;
       const j = await getJson(u);
       const o = j.observations?.[0];
-      if (o) {
+      // Freshness guard: only trust the PWS if its observation is recent (≤90 min),
+      // so an offline/stale station (KCOBAYFI57 was offline when checked) never
+      // shows old numbers as "now" — fall back to NWS instead.
+      const obsMs = o ? (o.epoch ? o.epoch * 1000 : (o.obsTimeUtc ? Date.parse(o.obsTimeUtc) : null)) : null;
+      const fresh = obsMs != null && (Date.now() - obsMs) <= 90 * 60 * 1000;
+      if (o && fresh) {
         const im = o.imperial || {};
         let feels = im.temp;
         if (im.heatIndex != null && im.temp >= 70) feels = im.heatIndex;       // heat index when warm
@@ -238,10 +250,12 @@ async function getWeather(env) {
           windDir: degToCompass(o.winddir), pressureInHg: r2(im.pressure),
           precipRateIn: im.precipRate, precipTotalIn: im.precipTotal,
           uv: o.uv, solarWm2: o.solarRadiation, stationElevFt: round(im.elev),
-          obsTime: o.obsTimeLocal, desc: ""
+          obsTime: o.obsTimeUtc || o.obsTimeLocal, desc: ""
         };
-        source = "WU PWS " + env.WU_STATION_ID;
+        source = "Vallecito Reservoir station (" + env.WU_STATION_ID + ")";
+        sourceType = "pws";
       }
+      // else: stale/offline → leave cur null so the NWS fallback runs.
     } catch { /* fall through to NWS */ }
   }
 
@@ -269,10 +283,12 @@ async function getWeather(env) {
         pressureInHg: nwsInHg(p.barometricPressure), visibilityMi: nwsMi(p.visibility),
         obsTime: p.timestamp
       };
-      source = "NWS " + (stId || "");
+      source = "National Weather Service";
+      sourceType = "nws";
     } catch {
       cur = { tempF: null, desc: "", windMph: null, windDir: "", humidity: null };
-      source = "NWS";
+      source = "National Weather Service";
+      sourceType = "nws";
     }
   }
   if (!cur.desc) cur.desc = periods[0]?.shortForecast || "";
@@ -284,7 +300,7 @@ async function getWeather(env) {
     precipRateIn: cur.precipRateIn, precipTotalIn: cur.precipTotalIn, uv: cur.uv,
     solarWm2: cur.solarWm2, stationElevFt: cur.stationElevFt, obsTime: cur.obsTime,
     highF: forecast5[0]?.hi ?? null, lowF: forecast5[0]?.lo ?? null,
-    source, forecast5, status: "ok", stale: false
+    source, sourceType, forecast5, status: "ok", stale: false
   };
 }
 
