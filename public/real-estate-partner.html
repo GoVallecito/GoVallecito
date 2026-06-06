@@ -31,7 +31,7 @@
   <div class="wrap">
     <div class="eyebrow">Real estate · featured partner</div>
     <h1>Thinking about a place at the lake?</h1>
-    <p>Vallecito real estate moves on local knowledge — water rights, road access, fire mitigation, which cabins flood and which don't. Julie Coffelt has lived it: 23 years in the Four Corners, 15 of them right here at the lake.</p>
+    <p>Vallecito real estate moves on local knowledge — water rights, road access, fire mitigation, which roads hold snow, and what it takes to live well in the high country. Julie Coffelt has lived it: more than 25 years in the Four Corners.</p>
   </div>
 </section>
 
@@ -39,16 +39,17 @@
 <section class="band">
   <div class="wrap">
     <div class="agent-card">
-      <div class="ph"><img src="/assets/img/Julie_Coffelt.png" alt="Julie Coffelt, REALTOR®, Coldwell Banker Mountain Properties"></div>
+      <div class="ph"><img src="/assets/img/Julie_Coffelt.png" alt="Julie Coffelt, Associate Broker, Coldwell Banker Mountain Properties"></div>
       <div>
-        <div class="eyebrow">Coldwell Banker Mountain Properties · REALTOR®</div>
+        <div class="eyebrow">Coldwell Banker Mountain Properties · Associate Broker</div>
         <h2 class="sec-title" id="agentName">Julie Coffelt</h2>
-        <p class="muted" id="agentTagline">23 years in the Four Corners · 15 at Vallecito Lake</p>
-        <p id="agentContact"><a id="agentProfile" href="https://www.cbmp.com/Real-Estate-Agent/julie-coffelt/83564">View Julie's profile at cbmp.com →</a> · <a href="#realtorForm">Send Julie a message ↓</a></p>
+        <p class="muted" id="agentTagline">Associate Broker · Coldwell Banker Mountain Properties</p>
+        <p id="agentContact"><a id="agentProfile" href="http://www.julie-coffelt.cbmp.com/">Visit Julie's agent site →</a> · <a href="#realtorForm">Send Julie a message ↓</a></p>
+        <p class="muted" style="font-size:.78rem">CO License # FA.100086311</p>
       </div>
     </div>
     <div class="prose" style="margin-top:24px">
-      <p>Julie Coffelt has called the Four Corners home for more than two decades — and Vallecito Lake itself for the last 15 years. She and her husband Jeff raised three kids up here, so when Julie talks about life at elevation, she isn't reciting listing copy — she's describing her own backyard. She knows which roads hold snow, how cabin water systems winterize, which coves fish best, and what it really takes to own property in the high country. As a REALTOR® with Coldwell Banker Mountain Properties, she pairs that hard-won local knowledge with the full-service marketing and negotiating strength of one of the most trusted names in real estate. Whether you're buying your first mountain getaway, selling a lakeside cabin, or just starting to dream about it, Julie offers honest, year-round guidance from a neighbor who's here to stay.</p>
+      <p>Julie has called the Four Corners home for more than 25 years — raising a family here, building lasting relationships, and developing a deep appreciation for the communities and lifestyle that make this region special. Her earlier careers in aviation and as a closed-captioning transcriptionist, plus her work as an amateur radio operator, sharpened the things that matter most in a real estate deal: clear communication, quick problem-solving, patience under pressure, and staying calm when the stakes are high. Whether you're buying your first home, upgrading, downsizing, investing, or getting ready to sell, Julie treats it as the major life milestone it is — guiding clients with honesty, responsiveness, and an advocate's eye, and negotiating fiercely to protect your interests from start to finish. As an Associate Broker with Coldwell Banker Mountain Properties, she pairs genuine local knowledge with the reach of one of the most trusted names in real estate.</p>
     </div>
   </div>
 </section>
@@ -58,7 +59,7 @@
   <div class="wrap">
     <div class="eyebrow">Current listings</div>
     <h2 class="sec-title">Homes &amp; land around Vallecito</h2>
-    <p class="sec-lead">Listings shown two ways. Once Julie's brokerage IDX/RESO feed is connected it renders live below; until then we show a hand-maintained set.</p>
+    <p class="sec-lead">Julie's current active listings, straight from Coldwell Banker. The IDX/RESO container below is ready for a live feed when her brokerage provides one.</p>
 
     <!-- (1) IDX / RESO embed container — drop the authorized widget/feed here. -->
     <div class="idx-container" id="idxContainer" hidden>
@@ -68,6 +69,7 @@
     <!-- (2) Manual fallback rendered from /data/listings.json -->
     <div class="prop-grid" id="propGrid" aria-live="polite"></div>
     <p class="muted" id="listingsNote" style="margin-top:14px"></p>
+    <p class="muted" style="font-size:.82rem;margin-top:6px">Listings deemed reliable but not guaranteed · via Coldwell Banker. <a href="http://www.julie-coffelt.cbmp.com/" rel="noopener">See all of Julie's listings →</a></p>
   </div>
 </section>
 
@@ -138,6 +140,8 @@
   }
 
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  // Photo fallback when a hotlinked Coldwell Banker image 404s (e.g. listing sold).
+  window.imgFallback = function (img) { var p = img.parentNode; if (p) p.textContent = 'Photo on Coldwell Banker'; };
 
   fetch('/data/listings.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -160,14 +164,15 @@
       grid.innerHTML = listings.map(function (l) {
         var url = l.url || l.link;
         var img = l.photo
-          ? '<div class="img"><img src="' + esc(l.photo) + '" alt="' + esc(l.address) + '" loading="lazy"></div>'
+          ? '<div class="img"><img src="' + esc(l.photo) + '" alt="' + esc(l.address) + '" loading="lazy" onerror="imgFallback(this)"></div>'
           : '<div class="img">Photo on Coldwell Banker</div>';
         var meta = [];
         if (l.beds) meta.push(esc(l.beds) + ' bd');
         if (l.baths) meta.push(esc(l.baths) + ' ba');
-        if (l.sqft) meta.push(esc(l.sqft) + ' sqft');
+        if (l.size) meta.push(esc(l.size));
+        if (l.type) meta.push(esc(l.type));
         var link = url
-          ? '<a href="' + esc(url) + '" rel="noopener">View listing on Coldwell Banker →</a>'
+          ? '<a href="' + esc(url) + '" rel="noopener">View listing →</a>'
           : '<a href="#realtorForm">Ask Julie →</a>';
         return '<div class="prop">' + img + '<div class="body">' +
           (l.price ? '<div class="price">' + esc(l.price) + '</div>' : '') +
@@ -176,7 +181,7 @@
           (l.blurb ? '<p class="muted" style="font-size:.85rem">' + esc(l.blurb) + '</p>' : '') +
           link + '</div></div>';
       }).join('');
-      note.textContent = 'These link to Julie’s live listings on Coldwell Banker (cbmp.com), where prices and photos stay current — we don’t hard-code prices. A RESO/IDX feed can replace them here later.';
+      note.textContent = 'Showing Julie’s current active listings. Tap any card to view it on Coldwell Banker.';
     })
     .catch(function () { note.textContent = 'Listings are temporarily unavailable.'; });
 

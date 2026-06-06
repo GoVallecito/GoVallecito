@@ -16,15 +16,15 @@
   var ANNOUNCEMENT = {
     enabled: true,
     // Lead text shown before the link (plain text; emoji ok).
-    text: '🏡 Thinking about a place at the lake? Julie Coffelt — Vallecito local, 15 years at the lake, Coldwell Banker Mountain Properties.',
+    text: 'Dreaming of a place in the mountains? Julie Coffelt — local broker with Coldwell Banker Mountain Properties — knows every road and ridge up here.',
     // Optional small avatar shown at the start of the bar (empty string = none).
     image: '',
     // Call-to-action link.
-    linkText: 'See current Vallecito listings →',
+    linkText: 'See what’s for sale →',
     linkHref: '/real-estate-partner.html',
     // Bump this id whenever you want a *new* message to re-show for everyone
     // who previously dismissed the old one.
-    id: 'realtor-julie-2026'
+    id: 'realtor-julie-2026-2'
   };
 
   var DISMISS_DAYS = 7;
