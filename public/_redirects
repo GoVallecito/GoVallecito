@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects.
+# Events were removed (too much upkeep) — send any old links home.
+/events       /   301
+/events/      /   301
+/events.html  /   301

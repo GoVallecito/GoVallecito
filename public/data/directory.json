@@ -1,0 +1,89 @@
+{
+  "_comment": "GoVallecito business directory. Three tiers: 'featured' (paid partner — rich card, pinned top of category + featured strip, own profile page), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). EDITORS: add/maintain businesses here; partners email changes. Only include contact fields that are actually verified — omit unknowns (do not guess emails/socials/hours). Web-research was blocked this session, so most non-partner email/social/hours fields are intentionally omitted pending verification.",
+  "categoryOrder": ["Lodging", "Outfitters & Guides", "Dining", "Real Estate", "Marina & Water", "Retail"],
+  "businesses": [
+    {
+      "slug": "pine-river-lodge", "name": "Pine River Lodge", "category": "Lodging", "tier": "featured",
+      "blurb": "Cabins and lodge rooms right on the Pine River — a Vallecito mainstay for families and anglers.",
+      "phone": "(970) 884-2563", "website": "https://pineriverlodge.com", "address": "Vallecito Lake, Bayfield, CO",
+      "image": "", "badge": "GoVallecito Partner", "profile": "business/pine-river-lodge.html",
+      "cta": { "label": "View lodge & contact", "href": "business/pine-river-lodge.html" },
+      "offer": ""
+    },
+    {
+      "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured",
+      "blurb": "Vallecito local realtor — 23 years in the Four Corners, 15 of them living at the lake. Honest, year-round guidance from a neighbor who's here to stay.",
+      "website": "https://www.cbmp.com/Real-Estate-Agent/julie-coffelt/83564",
+      "image": "/assets/img/Julie_Coffelt.png", "badge": "GoVallecito Partner", "profile": "real-estate-partner.html",
+      "cta": { "label": "Meet Julie & see listings", "href": "real-estate-partner.html" },
+      "offer": ""
+    },
+
+    {
+      "slug": "vallecito-marina", "name": "Vallecito Marina & Yacht Club", "category": "Marina & Water", "tier": "verified",
+      "blurb": "Boat rentals, slips, on-the-water fuel, and the social hub of the lake.",
+      "phone": "(970) 884-7000", "website": "https://vallecitolakemarina.net", "address": "14772 CR 501, Bayfield, CO"
+    },
+    {
+      "slug": "fisher-guide", "name": "Fisher Guide Service", "category": "Outfitters & Guides", "tier": "verified",
+      "blurb": "Guided fishing and ice fishing on Vallecito.",
+      "phone": "(970) 769-0669", "website": "https://fisherguideservicevallecito.com",
+      "facebook": "https://facebook.com/fisherguideservicevallecito"
+    },
+    {
+      "slug": "vallecito-outfitters", "name": "Vallecito Lake Outfitters", "category": "Outfitters & Guides", "tier": "verified",
+      "blurb": "Horseback rides, backcountry pack trips, and guided fishing.",
+      "phone": "(970) 759-9135", "website": "https://vallecitolakeoutfitters.com",
+      "email": "packtrips@vallecitolakeoutfitters.com", "facebook": "https://facebook.com/Vallecitolakeoutfitter"
+    },
+    {
+      "slug": "charter-vallecito", "name": "Charter Vallecito", "category": "Outfitters & Guides", "tier": "verified",
+      "blurb": "Charter fishing trips on the lake.",
+      "phone": "(970) 769-3300", "website": "https://chartervallecito.com"
+    },
+    {
+      "slug": "go-fish-durango", "name": "Go Fish Durango", "category": "Outfitters & Guides", "tier": "verified",
+      "blurb": "Guided fishing trips around Durango and Vallecito.",
+      "website": "https://gofishdurango.com"
+    },
+    {
+      "slug": "altitude-atv", "name": "Altitude ATV & Side-by-Side Rentals", "category": "Outfitters & Guides", "tier": "verified",
+      "blurb": "ATV and side-by-side rentals for the forest roads.",
+      "phone": "(970) 403-2260", "website": "https://durangoatv.com", "address": "32 Middle Mountain Rd, Bayfield, CO"
+    },
+    {
+      "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "category": "Dining", "tier": "verified",
+      "blurb": "Market, deli, and La Comida Ranchera kitchen — plus gas, including non-ethanol fuel, ideal for boats, ATVs, and small engines.",
+      "phone": "(970) 884-0844", "address": "18071 CR 501, Bayfield, CO",
+      "highlight": "Non-ethanol fuel"
+    },
+    {
+      "slug": "weminuche-grill", "name": "Weminuche Woodfire Grill", "category": "Dining", "tier": "verified",
+      "blurb": "Woodfire grill on CR 501.",
+      "phone": "(970) 884-7153", "website": "https://weminuchegrill.com", "address": "18044 CR 501, Bayfield, CO"
+    },
+    {
+      "slug": "prid", "name": "Pine River Irrigation District (PRID)", "category": "Marina & Water", "tier": "verified",
+      "blurb": "Reservoir recreation permits and published lake levels.",
+      "phone": "(970) 884-2558", "website": "https://pineriverirrigationdistrict.com"
+    },
+    {
+      "slug": "bayfield-realty", "name": "Bayfield Realty", "category": "Real Estate", "tier": "verified",
+      "blurb": "Local real estate brokerage on CR 501.",
+      "phone": "(970) 884-9517", "website": "https://bayfieldrealty.com", "address": "823 CR 501, Bayfield, CO"
+    },
+
+    { "slug": "5-branches", "name": "5 Branches Camper Park & Cabins", "category": "Lodging", "tier": "basic", "blurb": "Camper park and cabins.", "website": "https://5branches.com" },
+    { "slug": "bear-paw", "name": "Bear Paw Lodge", "category": "Lodging", "tier": "basic", "phone": "(970) 884-2508" },
+    { "slug": "blue-spruce", "name": "Blue Spruce RV Park", "category": "Lodging", "tier": "basic", "phone": "(970) 884-2641" },
+    { "slug": "cabins-on-vallecito", "name": "Cabins on Vallecito Lake", "category": "Lodging", "tier": "basic", "blurb": "Lakeside cabins." },
+    { "slug": "croll-cabins", "name": "Croll Cabins", "category": "Lodging", "tier": "basic", "blurb": "Cabins near the lake." },
+    { "slug": "elk-point-lodge", "name": "Elk Point Lodge", "category": "Lodging", "tier": "basic", "phone": "(970) 884-2482" },
+    { "slug": "jw-vallecito", "name": "JW Vallecito Resort", "category": "Lodging", "tier": "basic", "phone": "(888) 258-9458" },
+    { "slug": "lone-wolf", "name": "Lone Wolf Cabins", "category": "Lodging", "tier": "basic", "phone": "(970) 884-0414" },
+    { "slug": "elk-point-stables", "name": "Elk Point Lodge Stables", "category": "Outfitters & Guides", "tier": "basic", "blurb": "Horseback rides, Thu–Mon (seasonal)." },
+    { "slug": "rocky-mountain-store", "name": "Rocky Mountain General Store & Custom Meats", "category": "Retail", "tier": "basic", "phone": "(970) 884-0999", "address": "17454 CR 501, Bayfield, CO" },
+    { "slug": "coldwell-banker", "name": "Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "basic", "website": "https://cbmp.com" },
+    { "slug": "wells-group", "name": "Wells Group / RE/MAX / NextHome", "category": "Real Estate", "tier": "basic", "website": "https://durangohomesforsale.com" }
+  ]
+}

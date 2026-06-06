@@ -16,10 +16,12 @@
   var ANNOUNCEMENT = {
     enabled: true,
     // Lead text shown before the link (plain text; emoji ok).
-    text: '🏡 Thinking about a place at the lake? Julie Coffelt — Vallecito local, 15+ years, Coldwell Banker Mountain Properties.',
+    text: '🏡 Thinking about a place at the lake? Julie Coffelt — Vallecito local, 15 years at the lake, Coldwell Banker Mountain Properties.',
+    // Optional small avatar shown at the start of the bar (empty string = none).
+    image: '/assets/img/Julie_Coffelt.png',
     // Call-to-action link.
     linkText: 'See current Vallecito listings →',
-    linkHref: 'real-estate-partner.html',
+    linkHref: '/real-estate-partner.html',
     // Bump this id whenever you want a *new* message to re-show for everyone
     // who previously dismissed the old one.
     id: 'realtor-julie-2026'
@@ -50,6 +52,16 @@
   // Build the bar contents from config (no markup to maintain in HTML).
   var wrap = document.createElement('div');
   wrap.className = 'wrap';
+
+  if (ANNOUNCEMENT.image) {
+    var avatar = document.createElement('img');
+    avatar.className = 'avatar';
+    avatar.src = ANNOUNCEMENT.image;
+    avatar.alt = '';
+    avatar.setAttribute('aria-hidden', 'true');
+    avatar.setAttribute('loading', 'lazy');
+    wrap.appendChild(avatar);
+  }
 
   var marq = document.createElement('div');
   marq.className = 'marq';

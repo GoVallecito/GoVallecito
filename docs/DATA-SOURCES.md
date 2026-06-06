@@ -60,11 +60,18 @@ This is the one piece without a machine feed. Restrictions are issued by **San J
 - **USBR RISE API (free).** Vallecito Reservoir water-operations data (storage, elevation, inflow, release).
   - Catalog: `https://data.usbr.gov/catalog/2469` · example item (release): `https://data.usbr.gov/catalog/2469/item/4323`
   - RISE result API returns JSON time series; pull latest **storage (acre-feet)** and **pool elevation**, compute `% of full = storage / capacity`.
-- **USGS reservoir gauge (free):** site **`09353000` — Vallecito Reservoir near Bayfield, CO**.
-  `https://waterservices.usgs.gov/nwis/iv/?sites=09353000&format=json&parameterCd=00062,62614` (00062 = reservoir storage, 62614 = elevation NGVD29).
+- **⚠️ USGS reservoir gauge `09353000` is STALE — do not use.** Verified June 2026: its latest
+  instantaneous value is dated **2012-12-31**. The station no longer reports real-time storage/elevation,
+  so it returns a 13-year-old reading. (This produced a false "31% full" in testing; the reservoir was
+  actually ~7,658 of 7,665 ft / near capacity.)
 - **PRID** also publishes levels (good for a human cross-check / link).
 
-**Recommendation:** USGS `09353000` IV service is the simplest reliable JSON. Cross-check capacity against USBR for the `% full` denominator.
+**Recommendation (corrected):** Use a source that is actually current:
+1. **USACE CWMS Data API** for the Vallecito location, district **spk** — start at
+   `https://water.usace.army.mil/overview/spk/locations/vallecito` and its underlying `cwms-data` API.
+2. **USBR RISE** (`data.usbr.gov`), catalog record **2469** (Vallecito Reservoir) — storage (acre-feet) + elevation items.
+Prefer whichever returns **storage in acre-feet** so `% full = storage / 129,700`. Always verify the
+returned reading's timestamp is recent (within ~48 h), never 2012.
 
 ---
 
