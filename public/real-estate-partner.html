@@ -158,24 +158,25 @@
       var listings = data.listings || [];
       if (!listings.length) { note.textContent = 'No listings posted right now — check back soon.'; return; }
       grid.innerHTML = listings.map(function (l) {
+        var url = l.url || l.link;
         var img = l.photo
           ? '<div class="img"><img src="' + esc(l.photo) + '" alt="' + esc(l.address) + '" loading="lazy"></div>'
-          : '<div class="img">Photo coming soon</div>';
+          : '<div class="img">Photo on Coldwell Banker</div>';
         var meta = [];
-        if (l.beds) meta.push(l.beds + ' bd');
-        if (l.baths) meta.push(l.baths + ' ba');
-        if (l.sqft) meta.push(l.sqft.toLocaleString() + ' sqft');
-        var link = l.link
-          ? '<a href="' + esc(l.link) + '">View listing →</a>'
+        if (l.beds) meta.push(esc(l.beds) + ' bd');
+        if (l.baths) meta.push(esc(l.baths) + ' ba');
+        if (l.sqft) meta.push(esc(l.sqft) + ' sqft');
+        var link = url
+          ? '<a href="' + esc(url) + '" rel="noopener">View listing on Coldwell Banker →</a>'
           : '<a href="#realtorForm">Ask Julie →</a>';
         return '<div class="prop">' + img + '<div class="body">' +
-          '<div class="price">' + esc(l.price) + '</div>' +
+          (l.price ? '<div class="price">' + esc(l.price) + '</div>' : '') +
           '<div><b>' + esc(l.address) + '</b></div>' +
           (meta.length ? '<div class="meta">' + meta.join(' · ') + '</div>' : '') +
           (l.blurb ? '<p class="muted" style="font-size:.85rem">' + esc(l.blurb) + '</p>' : '') +
           link + '</div></div>';
       }).join('');
-      note.textContent = 'Showing manually-maintained listings. Live MLS/IDX feed connects here once authorized.';
+      note.textContent = 'These link to Julie’s live listings on Coldwell Banker (cbmp.com), where prices and photos stay current — we don’t hard-code prices. A RESO/IDX feed can replace them here later.';
     })
     .catch(function () { note.textContent = 'Listings are temporarily unavailable.'; });
 

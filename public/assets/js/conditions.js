@@ -83,7 +83,7 @@
       var fill = $('lakeFill');
       if (fill) fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
       var store = (lk.storageAf != null ? lk.storageAf.toLocaleString() + ' af · ' : '') +
-        pct + '% of full · Vallecito Reservoir';
+        pct + '% of full · Vallecito Reservoir' + (lk.asOf ? ' · updated ' + rel(lk.asOf) : '');
       setText('lakeStore', store);
       markStale('tile-lake', lk.stale);
     }
@@ -105,7 +105,7 @@
     if (d.stream) {
       var cfs = d.stream.combinedCfs;
       setText('streamVal', (cfs != null ? cfs : '—') + ' cfs');
-      setText('streamMsg', 'Vallecito Creek + Pine River, combined');
+      setText('streamMsg', 'Vallecito Creek + Pine River' + (d.stream.asOf ? ' · updated ' + rel(d.stream.asOf) : ', combined'));
       markStale('tile-stream', d.stream.stale);
     }
 
@@ -132,16 +132,32 @@
   function paintDetail(d) {
     if (d.weather) {
       var w = d.weather;
-      // secondary copies of dashboard values used in conditions.html panels
-      setText('wxTemp2', (w.tempF != null ? w.tempF : '—') + '°');
-      var desc2 = w.desc || '';
-      if (w.windMph != null) desc2 += (desc2 ? ' · ' : '') + 'wind ' + w.windMph + ' mph' + (w.windDir ? ' ' + w.windDir : '');
-      setText('wxDesc2', desc2 || '—');
-      setText('wxHumidity', w.humidity != null ? w.humidity + '%' : '—');
-      setText('wxWind', w.windMph != null ? w.windMph + ' mph' + (w.windDir ? ' ' + w.windDir : '') : '—');
+      setText('wxDesc2', w.desc || '—');
       setText('wxHigh', w.highF != null ? w.highF + '°' : '—');
       setText('wxLow', w.lowF != null ? w.lowF + '°' : '—');
       setText('wxSource', w.source || '');
+      // "Right now" field grid — render only the fields the station reports.
+      var t = function (v) { return v != null ? v + '°' : null; };
+      var rows = [
+        ['Temp', t(w.tempF)],
+        ['Feels like', t(w.feelsLikeF)],
+        ['Dew point', t(w.dewpointF)],
+        ['Humidity', w.humidity != null ? w.humidity + '%' : null],
+        ['Wind', w.windMph != null ? w.windMph + ' mph' + (w.windDir ? ' ' + w.windDir : '') : null],
+        ['Gust', w.windGustMph != null ? w.windGustMph + ' mph' : null],
+        ['Pressure', w.pressureInHg != null ? w.pressureInHg + ' inHg' : null],
+        ['Visibility', w.visibilityMi != null ? w.visibilityMi + ' mi' : null],
+        ['UV index', w.uv != null ? String(w.uv) : null],
+        ['Solar', w.solarWm2 != null ? w.solarWm2 + ' W/m²' : null],
+        ['Precip rate', w.precipRateIn != null ? w.precipRateIn + ' in/hr' : null],
+        ['Precip today', w.precipTotalIn != null ? w.precipTotalIn + ' in' : null],
+        ['Station elev', w.stationElevFt != null ? w.stationElevFt.toLocaleString() + ' ft' : null]
+      ].filter(function (r) { return r[1] != null; });
+      var fEl = $('wxFields');
+      if (fEl) fEl.innerHTML = rows.map(function (r) {
+        return '<div><b>' + escapeHtml(r[1]) + '</b><span>' + escapeHtml(r[0]) + '</span></div>';
+      }).join('');
+      if ($('wxObs') && w.obsTime) setText('wxObs', 'Observed ' + (rel(w.obsTime) || w.obsTime));
       var fcEl = $('wxForecast');
       if (fcEl && Array.isArray(w.forecast5)) {
         fcEl.innerHTML = w.forecast5.map(function (f) {
@@ -170,7 +186,8 @@
       if (gEl) {
         gEl.innerHTML = d.stream.gauges.map(function (g) {
           return '<li><span>' + escapeHtml(g.name) + ' <span class="muted">(USGS ' + escapeHtml(g.id) +
-            ')</span></span><b>' + (g.cfs != null ? g.cfs + ' cfs' : '—') + '</b></li>';
+            (g.asOf ? ' · ' + escapeHtml(rel(g.asOf)) : '') + ')</span></span><b>' +
+            (g.cfs != null ? g.cfs + ' cfs' : '—') + '</b></li>';
         }).join('');
       }
     }
@@ -210,10 +227,66 @@
         }
       }
     }
+
+    // ----- fire-restriction detail section (conditions.html #fire-restrictions) -----
+    // Driven entirely by restrictions.json (passed through as d.restriction).
+    var rEl = $('fire-restrictions');
+    if (rEl && d.restriction) {
+      var r = d.restriction;
+      if (r.stage && r.stage !== 'none') {
+        var cls = r.stage === '3' ? 'is-danger' : r.stage === '2' ? 'is-orange' : 'is-warn';
+        var meta = [];
+        if (r.issuedBy) meta.push(escapeHtml(r.issuedBy));
+        if (r.effective) meta.push('effective ' + escapeHtml(r.effective));
+        if (r.scope) meta.push(escapeHtml(r.scope));
+        var cols = '';
+        if (Array.isArray(r.prohibited) && r.prohibited.length) {
+          cols += '<div><h4>🚫 Prohibited</h4><ul>' + r.prohibited.map(function (x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
+        }
+        if (Array.isArray(r.allowed) && r.allowed.length) {
+          cols += '<div><h4>✅ Allowed</h4><ul>' + r.allowed.map(function (x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
+        }
+        rEl.innerHTML = '<div class="restriction-card ' + cls + '">' +
+          '<div class="rc-head">🔥 Stage ' + escapeHtml(r.stage) + ' Fire Restrictions — in effect</div>' +
+          (meta.length ? '<p class="rc-meta">' + meta.join(' · ') + '</p>' : '') +
+          (cols ? '<div class="rc-cols">' + cols + '</div>' : '') +
+          (r.penalty ? '<p class="rc-penalty">⚖️ ' + escapeHtml(r.penalty) + '</p>' : '') +
+          resourceLinks(r.resources) + '</div>';
+      } else {
+        rEl.innerHTML = '<div class="restriction-card is-ok">' +
+          '<div class="rc-head">✅ No fire restrictions currently in effect</div>' +
+          '<p class="rc-meta">Always check before you burn.</p>' +
+          resourceLinks(r.resources) + '</div>';
+      }
+    }
   }
 
   function iconEmoji(icon) {
     return ({ sunny: '☀️', partly: '⛅', cloudy: '☁️', showers: '🌧️', storm: '⛈️', snow: '❄️' })[icon] || '☀️';
+  }
+
+  // Relative time from an ISO string, e.g. "20 min ago", "3 hr ago", "2 days ago".
+  function rel(iso) {
+    if (!iso) return '';
+    var t = Date.parse(iso);
+    if (isNaN(t)) return '';
+    var mins = Math.round((Date.now() - t) / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return mins + ' min ago';
+    var hrs = Math.round(mins / 60);
+    if (hrs < 24) return hrs + ' hr ago';
+    var days = Math.round(hrs / 24);
+    return days + ' day' + (days > 1 ? 's' : '') + ' ago';
+  }
+
+  function resourceLinks(res) {
+    if (!Array.isArray(res) || !res.length) return '';
+    var items = res.map(function (x) {
+      if (x.url) return '<a href="' + escapeHtml(x.url) + '" rel="noopener">' + escapeHtml(x.label) + ' →</a>';
+      if (x.phone) return '<span>' + escapeHtml(x.label) + ': <a href="tel:' + x.phone.replace(/[^0-9+]/g, '') + '">' + escapeHtml(x.phone) + '</a></span>';
+      return '<span>' + escapeHtml(x.label) + '</span>';
+    }).join('');
+    return '<div class="rc-links"><h4>Official sources</h4>' + items + '</div>';
   }
 
   // 1) Instant paint from the bundle so there's never a "--" wait.

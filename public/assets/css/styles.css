@@ -187,6 +187,24 @@ section.band.alt{background:var(--sand-2);border-top:1px solid var(--line);borde
 .restriction-banner.is-warn{background:#fcefda;border-color:#e7cf86;color:#7a5a12}
 .restriction-banner.is-danger{background:#fae6e3;border-color:#e3b3ab;color:#7a241b}
 
+/* fire-restriction detail card (data-driven from restrictions.json) */
+.restriction-detail{margin:6px 0 4px}
+.restriction-card{border:1px solid;border-radius:var(--radius);padding:16px 18px}
+.restriction-card.is-warn{background:#fcefda;border-color:#e7cf86}
+.restriction-card.is-orange{background:#fde7d3;border-color:#e0a86a}
+.restriction-card.is-danger{background:#fae6e3;border-color:#e3b3ab}
+.restriction-card.is-ok{background:#e6f3ec;border-color:#bcdcc8}
+.rc-head{font-weight:800;font-size:1.15rem;color:var(--ink)}
+.rc-meta{color:var(--ink-soft);font-size:.9rem;margin:4px 0 10px}
+.rc-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:8px 0}
+.rc-cols h4{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;color:var(--ink)}
+.rc-cols ul{margin:0;padding-left:18px}
+.rc-cols li{margin:3px 0}
+.rc-penalty{font-weight:700;margin:8px 0}
+.rc-links{margin-top:10px;border-top:1px solid rgba(20,30,24,.1);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.rc-links h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:2px}
+@media(max-width:560px){.rc-cols{grid-template-columns:1fr}}
+
 /* ---------- conditions sub-grid blocks ---------- */
 .databand{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .databand .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}

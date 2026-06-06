@@ -91,12 +91,9 @@
     <div class="databand">
       <div class="panel">
         <h3>🌡️ Right now</h3>
-        <div class="kv">
-          <div><b id="wxTemp2">—°</b><span>Temp</span></div>
-          <div><b id="wxWind">—</b><span>Wind</span></div>
-          <div><b id="wxHumidity">—</b><span>Humidity</span></div>
-        </div>
+        <div class="kv" id="wxFields"></div>
         <p class="muted" id="wxDesc2">—</p>
+        <p class="muted" id="wxObs" style="font-size:.78rem"></p>
       </div>
       <div class="panel">
         <h3>📅 Today</h3>
@@ -115,7 +112,9 @@
   <div class="wrap">
     <div class="eyebrow">Weather alerts &amp; fire restrictions</div>
     <h2 class="sec-title">Active alerts</h2>
-    <p class="sec-lead">National Weather Service active alerts for the lake area, plus the current fire-restriction stage issued by San Juan National Forest / La Plata County. Red Flag Warnings and Stage 1/2 bans raise the alert level above.</p>
+    <p class="sec-lead">The fire-restriction stage and the NWS alerts below come from the same feed as the dashboard tile, so they always match.</p>
+    <div id="fire-restrictions" class="restriction-detail"></div>
+    <h3 class="cat-head" style="margin-top:24px">National Weather Service alerts</h3>
     <ul class="datalist" id="alertItems"><li class="muted">Loading…</li></ul>
   </div>
 </section>

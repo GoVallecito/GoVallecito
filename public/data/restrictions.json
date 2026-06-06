@@ -1,10 +1,29 @@
 {
-  "_comment": "EDITOR-CONTROLLED fire restrictions. The conditions worker reads it every 15 min and folds it into the Alert tile + the /conditions banner. To change: set stage to none|1|2 and update the fields. See docs/FIRE-RESTRICTIONS.md and worker/README.md.",
+  "_comment": "EDITOR-CONTROLLED fire restrictions — the SINGLE SOURCE for both the Alert tile and the /conditions fire-restriction detail section. The worker reads it every 15 min and includes it in conditions.json. To change: set stage to none|1|2 and update the fields below. When stage is 'none' the prohibited/allowed/penalty/scope/effective are ignored. See docs/FIRE-RESTRICTIONS.md and worker/README.md.",
   "stage": "1",
   "issuedBy": "San Juan National Forest",
-  "scope": "NF lands below 8,000 ft (incl. Vallecito Lake); designated Wilderness excluded",
-  "effective": "2026-05-22",
+  "effective": "May 22, 2026",
+  "scope": "NF lands below 8,000 ft, including Vallecito Lake; designated Wilderness excluded",
   "summary": "No campfires, charcoal, or wood/coal stove fires; no outdoor smoking. Propane/gas stoves OK. $530 min fine.",
+  "prohibited": [
+    "Campfires",
+    "Charcoal grills",
+    "Wood or coal stove fires",
+    "Outdoor smoking (except in a vehicle or building)",
+    "Fireworks & explosives"
+  ],
+  "allowed": [
+    "Propane/gas stoves & lanterns with shut-off valves",
+    "Fires in permanent Forest Service campfire rings in developed sites"
+  ],
+  "penalty": "Minimum $530 fine",
+  "resources": [
+    { "label": "San Juan NF — Forest Orders", "url": "https://www.fs.usda.gov/r02/sanjuan/newsroom/forest-orders" },
+    { "label": "San Juan NF — Current Conditions", "url": "https://www.fs.usda.gov/r02/sanjuan/conditions" },
+    { "label": "La Plata County — Fire Restrictions", "url": "https://www.lpcgov.org/departments/emergency_management/fire_restrictions.php" },
+    { "label": "Colorado DFPC restrictions map", "url": "https://dfpc.colorado.gov/firerestriction" },
+    { "label": "Non-emergency dispatch (confirm current stage)", "phone": "(970) 385-2900" }
+  ],
   "url": "https://www.fs.usda.gov/r02/sanjuan/newsroom/forest-orders",
   "updated": "2026-06-05"
 }

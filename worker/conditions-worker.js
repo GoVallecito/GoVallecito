@@ -68,7 +68,8 @@ async function refresh(env) {
   const out = {
     updated: now.toISOString(),
     updatedFriendly: friendly(now),
-    weather, lake, stream, alert, fires, road
+    weather, lake, stream, alert, fires, road,
+    restriction: restrictions
   };
   await env.CONDITIONS.put(KV_KEY, JSON.stringify(out));
   return out;
@@ -180,11 +181,15 @@ async function getStreams() {
   const gauges = (j.value?.timeSeries || []).map(t => {
     const id = t.sourceInfo.siteCode[0].value;
     const vals = t.values?.[0]?.value || [];
-    const cfs = parseFloat(vals[vals.length - 1]?.value);
-    return { id, name: names[id] || id, cfs: isNaN(cfs) ? null : Math.round(cfs) };
+    const last = vals[vals.length - 1] || {};
+    const cfs = parseFloat(last.value);
+    return { id, name: names[id] || id, cfs: isNaN(cfs) ? null : Math.round(cfs),
+             asOf: last.dateTime ? new Date(last.dateTime).toISOString() : null };
   });
   const combinedCfs = gauges.reduce((a, g) => a + (g.cfs || 0), 0);
-  return { combinedCfs, gauges, status: "ok", stale: false };
+  const times = gauges.map(g => g.asOf).filter(Boolean).map(s => Date.parse(s)).filter(n => !isNaN(n));
+  const asOf = times.length ? new Date(Math.max.apply(null, times)).toISOString() : null;
+  return { combinedCfs, gauges, asOf, status: "ok", stale: false };
 }
 
 /* ---------- ALERTS + RED FLAG: NWS (keyless) ---------- */
@@ -216,6 +221,7 @@ async function getWeather(env) {
   let cur = null, source = "";
 
   // PRIMARY: Weather Underground PWS (true marina reading) — needs free key + station id.
+  // Maps every field the station reports; undefined fields drop out of the JSON.
   if (env.WU_API_KEY && env.WU_STATION_ID) {
     try {
       const u = `https://api.weather.com/v2/pws/observations/current?stationId=${env.WU_STATION_ID}&format=json&units=e&apiKey=${env.WU_API_KEY}`;
@@ -223,8 +229,17 @@ async function getWeather(env) {
       const o = j.observations?.[0];
       if (o) {
         const im = o.imperial || {};
-        cur = { tempF: round(im.temp), desc: "", windMph: round(im.windSpeed),
-                windDir: degToCompass(o.winddir), humidity: round(o.humidity) };
+        let feels = im.temp;
+        if (im.heatIndex != null && im.temp >= 70) feels = im.heatIndex;       // heat index when warm
+        else if (im.windChill != null && im.temp <= 50) feels = im.windChill;  // wind chill when cold
+        cur = {
+          tempF: round(im.temp), feelsLikeF: round(feels), dewpointF: round(im.dewpt),
+          humidity: round(o.humidity), windMph: round(im.windSpeed), windGustMph: round(im.windGust),
+          windDir: degToCompass(o.winddir), pressureInHg: r2(im.pressure),
+          precipRateIn: im.precipRate, precipTotalIn: im.precipTotal,
+          uv: o.uv, solarWm2: o.solarRadiation, stationElevFt: round(im.elev),
+          obsTime: o.obsTimeLocal, desc: ""
+        };
         source = "WU PWS " + env.WU_STATION_ID;
       }
     } catch { /* fall through to NWS */ }
@@ -236,16 +251,24 @@ async function getWeather(env) {
   const periods = fc.properties?.periods || [];
   const forecast5 = build5Day(periods);
 
-  // FALLBACK current obs from the nearest NWS station, if WU was unavailable.
+  // FALLBACK current obs from the nearest NWS station, if WU is unavailable.
+  // NWS reports SI with a per-field unitCode — convert with unit-aware helpers
+  // (wind is km/h, temps °C, pressure Pa, visibility m). Omit fields it nulls.
   if (!cur) {
     try {
       const stations = await getJson(point.properties.observationStations, { "User-Agent": UA });
       const stId = stations.features?.[0]?.properties?.stationIdentifier;
       const obs = await getJson(`https://api.weather.gov/stations/${stId}/observations/latest`, { "User-Agent": UA });
       const p = obs.properties || {};
-      cur = { tempF: cToF(p.temperature?.value), desc: p.textDescription || "",
-              windMph: msToMph(p.windSpeed?.value), windDir: degToCompass(p.windDirection?.value),
-              humidity: round(p.relativeHumidity?.value) };
+      const feels = (p.heatIndex && p.heatIndex.value != null) ? p.heatIndex
+                  : (p.windChill && p.windChill.value != null) ? p.windChill : p.temperature;
+      cur = {
+        tempF: nwsF(p.temperature), feelsLikeF: nwsF(feels), dewpointF: nwsF(p.dewpoint),
+        desc: p.textDescription || "", windMph: nwsWind(p.windSpeed), windGustMph: nwsWind(p.windGust),
+        windDir: degToCompass(p.windDirection?.value), humidity: round(p.relativeHumidity?.value),
+        pressureInHg: nwsInHg(p.barometricPressure), visibilityMi: nwsMi(p.visibility),
+        obsTime: p.timestamp
+      };
       source = "NWS " + (stId || "");
     } catch {
       cur = { tempF: null, desc: "", windMph: null, windDir: "", humidity: null };
@@ -254,10 +277,15 @@ async function getWeather(env) {
   }
   if (!cur.desc) cur.desc = periods[0]?.shortForecast || "";
 
-  return { tempF: cur.tempF, desc: cur.desc, windMph: cur.windMph, windDir: cur.windDir,
-           humidity: cur.humidity,
-           highF: forecast5[0]?.hi ?? null, lowF: forecast5[0]?.lo ?? null,
-           source, forecast5, status: "ok", stale: false };
+  return {
+    tempF: cur.tempF, feelsLikeF: cur.feelsLikeF, dewpointF: cur.dewpointF,
+    desc: cur.desc, windMph: cur.windMph, windGustMph: cur.windGustMph, windDir: cur.windDir,
+    humidity: cur.humidity, pressureInHg: cur.pressureInHg, visibilityMi: cur.visibilityMi,
+    precipRateIn: cur.precipRateIn, precipTotalIn: cur.precipTotalIn, uv: cur.uv,
+    solarWm2: cur.solarWm2, stationElevFt: cur.stationElevFt, obsTime: cur.obsTime,
+    highF: forecast5[0]?.hi ?? null, lowF: forecast5[0]?.lo ?? null,
+    source, forecast5, status: "ok", stale: false
+  };
 }
 
 function build5Day(periods) {
@@ -322,7 +350,11 @@ async function getRoads(env) {
 async function getRestrictions(env) {
   if (!env.RESTRICTIONS_URL) return { stage: "none" };
   const j = await getJson(env.RESTRICTIONS_URL);
-  return { stage: j.stage || "none", issuedBy: j.issuedBy, url: j.url, note: j.note || j.summary };
+  return {
+    stage: j.stage || "none", issuedBy: j.issuedBy, scope: j.scope, effective: j.effective,
+    summary: j.summary, prohibited: j.prohibited, allowed: j.allowed, penalty: j.penalty,
+    resources: j.resources, url: j.url, updated: j.updated, note: j.note || j.summary
+  };
 }
 
 // Fold the editor restriction stage into the NWS-derived alert tile, applying
@@ -352,12 +384,26 @@ function mergeRestrictionStage(alert, restrictions) {
 async function getJson(url, headers) {
   const r = await fetch(url, { headers: { "User-Agent": UA, ...(headers || {}) }, cf: { cacheTtl: 60 } });
   if (!r.ok) throw new Error("HTTP " + r.status + " " + url);
-  return r.json();
+  // Force UTF-8 decode: some upstreams (e.g. Pages serving JSON without a
+  // charset) caused fetch().json() to mis-decode multibyte chars like em dashes.
+  const buf = await r.arrayBuffer();
+  return JSON.parse(new TextDecoder("utf-8").decode(buf));
 }
 function headlineFor(items, re) { return (items.find(i => re.test(i.event || "")) || {}).headline; }
 function round(n) { return n == null || isNaN(n) ? null : Math.round(n); }
+function r2(n) { return n == null || isNaN(n) ? null : Math.round(n * 100) / 100; }
 function cToF(c) { return c == null ? null : Math.round(c * 9 / 5 + 32); }
 function msToMph(ms) { return ms == null ? null : Math.round(ms * 2.236936); }
+// NWS unit-aware converters (each takes the {value, unitCode} object)
+function nwsF(o) { return o && o.value != null ? Math.round(o.value * 9 / 5 + 32) : null; }
+function nwsWind(o) {
+  if (!o || o.value == null) return null;
+  return (o.unitCode || "").indexOf("m_s") >= 0
+    ? Math.round(o.value * 2.236936)   // m/s → mph
+    : Math.round(o.value * 0.621371);  // km/h → mph (NWS default)
+}
+function nwsInHg(o) { return o && o.value != null ? Math.round((o.value / 3386.389) * 100) / 100 : null; }
+function nwsMi(o) { return o && o.value != null ? Math.round((o.value / 1609.344) * 10) / 10 : null; }
 function degToCompass(d) {
   if (d == null) return "";
   return ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"][Math.round(d / 22.5) % 16];
