@@ -10,7 +10,7 @@
 <!-- Open Graph / social -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Vallecito Lake, Colorado — Live Conditions &amp; Local Guide">
-<meta property="og:description" content="Live lake levels, marina weather, wildfire &amp; fire-restriction status, road conditions, and emergency contacts — updated every 15 minutes by people who live at Vallecito.">
+<meta property="og:description" content="Live lake levels, marina weather, wildfire &amp; fire-restriction status, road conditions, and emergency contacts — pulled automatically from public agencies every 15 minutes; locals keep the guide current.">
 <meta property="og:image" content="/assets/img/og-default.jpg">
 <meta property="og:url" content="https://govallecito.com/">
 <meta name="twitter:card" content="summary_large_image">
@@ -40,21 +40,22 @@
 </header>
 
 <!-- ===== Hero + conditions dashboard ===== -->
-<section class="hero" id="conditions">
+<section class="hero" id="conditions" style="--bg:url('/assets/img/hero.jpg')">
   <div class="wrap">
     <div class="eyebrow">Vallecito Lake · Colorado · the high country</div>
     <span class="slogan">Elevation Changes Everything</span>
-    <h1>Everything you need before you head to the lake.</h1>
-    <p class="sub">Live lake levels, marina weather, wildfire &amp; fire-restriction status, road conditions, and who to call — all in one place, updated every 15 minutes by people who live here.</p>
+    <h1>Key information most visitors need before heading to the lake.</h1>
+    <p class="sub">Live lake levels, marina weather, wildfire &amp; fire-restriction status, road conditions, and who to call. Conditions are pulled automatically from public agencies every 15 minutes; local contributors keep the guide and resources current.</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="conditions.html">See full conditions →</a>
       <a class="btn btn-ghost" href="plan-your-visit.html">Plan your visit</a>
+      <a class="starthere" href="plan-your-visit.html">🧭 New to Vallecito? Start here →</a>
     </div>
 
     <div class="dash">
       <div class="dash-head">
         <div class="eyebrow" style="color:#9fe6d6">Right now at the lake</div>
-        <div class="upd">Updated <span id="updTime">—</span> · auto-refresh 15 min</div>
+        <div class="upd">Updated <span id="updTime">Updating…</span> · auto-refresh 15 min<span class="data-note" id="dataNote"></span></div>
       </div>
       <div class="grid" aria-live="polite" aria-label="Live conditions at Vallecito Lake">
 
@@ -77,8 +78,8 @@
 
         <a class="tile c-alert" id="tile-alert" href="conditions.html#alerts">
           <h3>⚠️ Alert status</h3>
-          <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> All clear</span></div>
-          <div class="small" id="alertMsg" style="margin-top:8px">No red-flag warnings or fire restrictions in effect.</div>
+          <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
+          <div class="small" id="alertMsg" style="margin-top:8px">Loading current conditions…</div>
           <div class="src">NWS · San Juan NF</div>
         </a>
 
@@ -100,8 +101,8 @@
 
         <a class="tile c-road" id="tile-road" href="conditions.html#roads">
           <h3>🛣️ Roads · US 160 / CR 501</h3>
-          <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> Clear</span></div>
-          <div class="small" id="roadMsg" style="margin-top:8px">No active CDOT alerts on the Durango access route.</div>
+          <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
+          <div class="small" id="roadMsg" style="margin-top:8px">Loading road status…</div>
           <div class="src">CDOT · COtrip</div>
         </a>
 
@@ -114,22 +115,26 @@
 <section class="band">
   <div class="wrap">
     <div class="eyebrow">Save these before you lose signal</div>
-    <h2 class="sec-title">Emergency &amp; lake contacts</h2>
-    <p class="sec-lead">Cell coverage is spotty up here. Screenshot this. In any life-threatening emergency — fire, injury, water rescue — call <b>911</b> first.</p>
+    <h2 class="sec-title">Important local contacts</h2>
+    <p class="sec-lead">Cell coverage is spotty up here — screenshot this. In any life-threatening emergency — fire, injury, water rescue — call <b>911</b> first.</p>
     <div class="emerg">
       <div class="top">🚨 In an emergency, call 911</div>
       <div class="rows">
         <div class="r"><span class="lab">Fire / Medical / Rescue</span><span class="num e"><a href="tel:911">911</a></span></div>
+        <div class="r"><span class="lab">Poison Control</span><span class="num"><a href="tel:18002221222">1-800-222-1222</a></span></div>
         <div class="r"><span class="lab">Sheriff — non-emergency dispatch</span><span class="num"><a href="tel:+19703852900">(970) 385-2900</a></span></div>
+        <div class="r"><span class="lab">Search &amp; Rescue (via 911 / Sheriff)</span><span class="num"><a href="tel:+19703852900">(970) 385-2900</a></span></div>
         <div class="r"><span class="lab">Upper Pine River Fire District</span><span class="num"><a href="tel:+19708849508">(970) 884-9508</a></span></div>
         <div class="r"><span class="lab">La Plata County Sheriff (admin)</span><span class="num"><a href="tel:+19702471157">(970) 247-1157</a></span></div>
+        <div class="r"><span class="lab">Colorado State Patrol (roads)</span><span class="num"><a href="tel:*277">*277</a> / 911</span></div>
+        <div class="r"><span class="lab">Colorado Parks &amp; Wildlife (Durango)</span><span class="num"><a href="tel:+19702470855">(970) 247-0855</a></span></div>
         <div class="r"><span class="lab">Vallecito Marina</span><span class="num"><a href="tel:+19708847000">(970) 884-7000</a></span></div>
         <div class="r"><span class="lab">Pine River Irrigation District</span><span class="num"><a href="tel:+19708842558">(970) 884-2558</a></span></div>
         <div class="r"><span class="lab">USFS Columbine Ranger District</span><span class="num"><a href="tel:+19708842512">(970) 884-2512</a></span></div>
         <div class="r"><span class="lab">Road conditions (CDOT)</span><span class="num"><a href="tel:511">511</a></span></div>
       </div>
     </div>
-    <p class="muted" style="font-size:.8rem;margin-top:10px">Sign up for emergency alerts: <a href="https://www.lpcgov.org/departments/emergency_management/lpc_alerts.php">La Plata County LPC Alerts</a>. Wildfire alerts: <a href="https://app.watchduty.org">Watch Duty</a>.</p>
+    <p class="muted" style="font-size:.8rem;margin-top:10px"><b>Contacts provided for convenience and may change — verify with the agency. In any emergency, call 911 first.</b> Sign up for emergency alerts: <a href="https://www.lpcgov.org/departments/emergency_management/lpc_alerts.php">La Plata County LPC Alerts</a>. Wildfire alerts: <a href="https://app.watchduty.org">Watch Duty</a>.</p>
 
     <h3 class="cat-head" style="margin-top:30px">🚒 Fire stations around the lake <span class="note-emerg">For emergencies, always call 911</span></h3>
     <p class="sec-lead">Reference / non-emergency. Upper Pine River FPD runs 8 stations; these three are nearest the lake and the CR 501 route. <b>Several lake stations are non-staffed</b> — don't call a station line in a fire, call <a href="tel:911">911</a>.</p>
@@ -148,17 +153,39 @@
   </div>
 </section>
 
+<!-- ===== Vallecito at a glance + actions ===== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">First time here?</div>
+    <h2 class="sec-title">Vallecito at a glance</h2>
+    <p class="sec-lead">The quick answers — then dig into <a href="plan-your-visit.html">Plan your visit</a> for the details.</p>
+    <div class="glance">
+      <div class="q"><h3>Can I swim?</h3><p>Yes — the north end is the spot. No lifeguards, and the water stays snowmelt-cold into June.</p></div>
+      <div class="q"><h3>Can I bring a boat?</h3><p>Yes — rentals at the marina, and a PRID recreation permit is required.</p></div>
+      <div class="q"><h3>Family-friendly?</h3><p>Very — easy lakeside walks, swimming, and the self-guided Tour of Carvings.</p></div>
+      <div class="q"><h3>Best season?</h3><p>Summer for the water; September–October for fishing, fewer crowds, and golden aspens.</p></div>
+      <div class="q"><h3>Why Vallecito over Durango or Purgatory?</h3><p>Quieter and uncrowded, wilderness on three sides, and a real lake-town feel at altitude.</p></div>
+    </div>
+    <div class="cta-row" style="margin-top:18px">
+      <a class="btn btn-primary" style="background:var(--pine);color:#fff" href="directory.html#cat-lodging">🛏️ Book lodging</a>
+      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="fishing.html#guides">🎣 Reserve a guide</a>
+      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="directory.html#cat-marina-water">🚤 Rent a boat</a>
+      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="real-estate-partner.html">🏡 Talk to Julie</a>
+    </div>
+  </div>
+</section>
+
 <!-- ===== Drive times (audience: NM / TX / AZ / CO) ===== -->
 <section class="band alt">
   <div class="wrap">
     <div class="eyebrow">Getting here</div>
     <h2 class="sec-title">How far is the lake?</h2>
-    <p class="sec-lead">Vallecito sits about 35 minutes northeast of Durango, in the San Juan Mountains of southwest Colorado.</p>
+    <p class="sec-lead">Vallecito sits in the San Juan Mountains of southwest Colorado, about a half-hour northeast of Durango. Times vary with weather, season, and traffic.</p>
     <div class="drives">
-      <div class="drive"><span>Durango, CO</span><b>~35 min</b><span class="muted">23 mi</span></div>
-      <div class="drive"><span>Farmington, NM</span><b>~2 hr</b><span class="muted">90 mi</span></div>
-      <div class="drive"><span>Albuquerque, NM</span><b>~3.5 hr</b><span class="muted">215 mi</span></div>
-      <div class="drive"><span>Phoenix, AZ</span><b>~6.5 hr</b><span class="muted">385 mi</span></div>
+      <div class="drive"><span>Durango, CO</span><b>30–45 min</b><span class="muted">~23 mi</span></div>
+      <div class="drive"><span>Farmington, NM</span><b>1.75–2.25 hr</b><span class="muted">~90 mi</span></div>
+      <div class="drive"><span>Albuquerque, NM</span><b>3.25–4 hr</b><span class="muted">~215 mi</span></div>
+      <div class="drive"><span>Phoenix, AZ</span><b>6–7 hr</b><span class="muted">~385 mi</span></div>
     </div>
   </div>
 </section>
@@ -168,13 +195,13 @@
   <div class="wrap">
     <div class="eyebrow">By the numbers</div>
     <h2 class="sec-title">A small lake, big country</h2>
-    <p class="sec-lead">Vallecito sits at the edge of the Weminuche Wilderness — the largest wilderness area in Colorado.</p>
+    <p class="sec-lead">Vallecito sits at the edge of the Weminuche Wilderness — <a href="https://www.fs.usda.gov/recarea/sanjuan/recreation/recarea/?recid=43337">the largest wilderness area in Colorado</a>.</p>
     <div class="stats">
-      <div class="stat"><b>7,665 ft</b><span>Elevation</span></div>
-      <div class="stat"><b>12 mi</b><span>Shoreline</span></div>
-      <div class="stat"><b>2,720 ac</b><span>Surface area</span></div>
-      <div class="stat"><b>120 ft</b><span>Max depth</span></div>
-      <div class="stat"><b>~35 min</b><span>From Durango</span></div>
+      <div class="stat"><b>~7,665 ft</b><span>Reservoir surface<span class="src">USBR / USGS</span></span></div>
+      <div class="stat"><b>12 mi</b><span>Shoreline<span class="src">CPW</span></span></div>
+      <div class="stat"><b>2,720 ac</b><span>Surface area<span class="src">CPW</span></span></div>
+      <div class="stat"><b>120 ft</b><span>Max depth<span class="src">CPW</span></span></div>
+      <div class="stat"><b>30–45 min</b><span>From Durango</span></div>
     </div>
   </div>
 </section>
@@ -188,10 +215,20 @@
     <div class="cards">
       <div class="ecard"><h3>🎣 Fishing</h3><p class="muted">Six species, four seasons, permits, regs, and the local guides who put you on fish.</p><a href="fishing.html">Fishing guide →</a></div>
       <div class="ecard"><h3>🥾 Things to do</h3><p class="muted">Trails into the Weminuche, the lake, horseback, ATV, the Tour of Carvings, and dark-sky stargazing.</p><a href="things-to-do.html">See it all →</a></div>
-      <div class="ecard"><h3>🛏️ Where to stay</h3><p class="muted">Lodges, cabins, RV parks, marinas, restaurants, and outfitters — 24 local businesses.</p><a href="directory.html">Local guide →</a></div>
+      <div class="ecard"><h3>🛏️ Where to stay</h3><p class="muted">Lodges, cabins, RV parks, marinas, restaurants, and outfitters — <span id="bizCount">two dozen</span> local businesses.</p><a href="directory.html">Local guide →</a></div>
       <div class="ecard"><h3>🗺️ Plan your visit</h3><p class="muted">Getting here, what's open, where to fuel up (non-ethanol gas at the Country Market), and what to pack for the high country.</p><a href="plan-your-visit.html">Trip planning →</a></div>
       <div class="ecard"><h3>📡 Full conditions</h3><p class="muted">5-day forecast, weather alerts, every fire within 50 miles, streamflow gauges, and road status.</p><a href="conditions.html">Live data →</a></div>
     </div>
+  </div>
+</section>
+
+<!-- ===== Gallery (revealed only when photos exist) ===== -->
+<section class="band" id="galleryBand" hidden>
+  <div class="wrap">
+    <div class="eyebrow">From around the lake</div>
+    <h2 class="sec-title">Vallecito, in photos</h2>
+    <p class="sec-lead">Real shots from the lake and the high country.</p>
+    <div class="gallery" id="gallery"></div>
   </div>
 </section>
 
@@ -207,7 +244,9 @@
       <p class="linklist">
         <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
         <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="plan-your-visit.html">Plan Your Visit</a><a href="living-in-vallecito.html">Living Here</a>
         <a href="about.html">About</a><a href="contact.html">Contact</a>
+        <a href="sources.html">How we verify</a>
       </p>
     </div>
     <div>
@@ -228,5 +267,28 @@
 
 <script src="/assets/js/announcement-bar.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
+<script>
+/* Dynamic business count + home gallery (graceful when photos are missing). */
+(function () {
+  fetch('/data/directory.json', { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var n = (d.businesses || []).length, el = document.getElementById('bizCount');
+      if (el && n) el.textContent = n;
+    }).catch(function () {});
+  var band = document.getElementById('galleryBand'), grid = document.getElementById('gallery');
+  if (grid) {
+    for (var i = 1; i <= 6; i++) (function (n) {
+      var img = new Image();
+      img.onload = function () {
+        img.alt = 'Vallecito Lake photo ' + n; img.loading = 'lazy';
+        var fig = document.createElement('figure'); fig.appendChild(img); grid.appendChild(fig);
+        if (band) band.hidden = false;
+      };
+      img.src = '/assets/img/gallery-' + n + '.jpg';
+    })(i);
+  }
+})();
+</script>
 </body>
 </html>

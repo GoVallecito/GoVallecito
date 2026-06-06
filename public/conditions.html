@@ -29,9 +29,10 @@
 
 <section class="pagehero">
   <div class="wrap">
-    <div class="eyebrow">Right now at the lake · updated <span id="updTime">—</span></div>
+    <div class="eyebrow">Right now at the lake · updated <span id="updTime">Updating…</span></div>
     <h1>Live conditions at Vallecito</h1>
-    <p>Everything that matters before you head up — pulled from the marina station, USGS, the National Weather Service, NIFC, and CDOT, refreshed every 15 minutes. Updates in the background so it loads instantly.</p>
+    <p>Pulled automatically from public agencies — USGS, the National Weather Service, USBR/USACE, NIFC, and CDOT (plus the lake weather station when it's live) — and refreshed every 15 minutes. <a href="sources.html" style="color:#9fe6d6">How we verify →</a></p>
+    <p class="data-note" id="dataNote"></p>
   </div>
 </section>
 
@@ -56,8 +57,8 @@
       </a>
       <a class="tile c-alert" id="tile-alert" href="#alerts">
         <h3>⚠️ Alert status</h3>
-        <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> All clear</span></div>
-        <div class="small" id="alertMsg" style="margin-top:8px">No red-flag warnings or fire restrictions in effect.</div>
+        <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
+        <div class="small" id="alertMsg" style="margin-top:8px">Loading current conditions…</div>
         <div class="src">NWS · San Juan NF</div>
       </a>
       <a class="tile c-fire" id="tile-fire" href="#wildfires">
@@ -74,8 +75,8 @@
       </a>
       <a class="tile c-road" id="tile-road" href="#roads">
         <h3>🛣️ Roads · US 160 / CR 501</h3>
-        <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> Clear</span></div>
-        <div class="small" id="roadMsg" style="margin-top:8px">No active CDOT alerts on the Durango access route.</div>
+        <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
+        <div class="small" id="roadMsg" style="margin-top:8px">Loading road status…</div>
         <div class="src">CDOT · COtrip</div>
       </a>
     </div>
@@ -170,7 +171,7 @@
     <h2 class="sec-title">Getting up the hill</h2>
     <p class="sec-lead">CDOT/COtrip alerts on the Durango access route (US-160) and CR 501. Statewide info: dial <a href="tel:511">511</a> or see <a href="https://www.cotrip.org">COtrip</a>.</p>
     <div class="databand">
-      <div class="panel"><h3>🛣️ Status</h3><div id="roadBig2" style="font-size:1.2rem"><span class="pill pill-ok"><span class="dot dot-ok"></span> Clear</span></div><p class="muted" id="roadMsg2" style="margin-top:8px">—</p></div>
+      <div class="panel"><h3>🛣️ Status</h3><div id="roadBig2" style="font-size:1.2rem"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div><p class="muted" id="roadMsg2" style="margin-top:8px">—</p></div>
       <div class="panel"><h3>Winter note</h3><p class="muted">CR 501 climbs and can ice over before US-160 does. In storms, carry chains or run good snow tires — and check before an early-morning fishing run.</p></div>
     </div>
   </div>
@@ -223,7 +224,9 @@
       <p class="linklist">
         <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
         <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="plan-your-visit.html">Plan Your Visit</a><a href="living-in-vallecito.html">Living Here</a>
         <a href="about.html">About</a><a href="contact.html">Contact</a>
+        <a href="sources.html">How we verify</a>
       </p>
     </div>
     <div>

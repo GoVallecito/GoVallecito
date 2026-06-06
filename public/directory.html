@@ -27,7 +27,7 @@
   </div>
 </header>
 
-<section class="pagehero">
+<section class="pagehero" style="--bg:url('/assets/img/town.jpg')">
   <div class="wrap">
     <div class="eyebrow">Local guide</div>
     <h1>Who's who around the lake</h1>
@@ -57,7 +57,9 @@
       <p class="linklist">
         <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
         <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="plan-your-visit.html">Plan Your Visit</a><a href="living-in-vallecito.html">Living Here</a>
         <a href="about.html">About</a><a href="contact.html">Contact</a>
+        <a href="sources.html">How we verify</a>
       </p>
     </div>
     <div>
@@ -138,7 +140,7 @@
       var list = DATA.businesses.filter(function(b){return b.category===cat;});
       if(!list.length) return;
       list.sort(function(a,b){ return (TIER[a.tier]-TIER[b.tier]) || a.name.localeCompare(b.name); });
-      html += '<h3 class="cat-head">'+esc(cat)+' <span class="count">'+list.length+'</span></h3>';
+      html += '<h3 class="cat-head" id="cat-'+cat.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+'">'+esc(cat)+' <span class="count">'+list.length+'</span></h3>';
       list.filter(function(b){return b.tier==='featured';}).forEach(function(b){ html+=featuredCard(b); });
       var rest = list.filter(function(b){return b.tier!=='featured';});
       if(rest.length){

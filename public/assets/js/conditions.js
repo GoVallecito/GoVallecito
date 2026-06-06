@@ -11,17 +11,13 @@
 (function () {
   'use strict';
 
-  // Bundled last-resort values so the page never shows placeholders, even
-  // offline / before the first fetch. Mirrors data/conditions.sample.json.
-  var FALLBACK = {
-    updatedFriendly: 'sample data',
-    weather: { tempF: 74, desc: 'Sunny', windMph: 8, windDir: 'WSW', stale: false },
-    lake:    { pct: 78, storageAf: 101200, capacityAf: 129700, stale: false },
-    stream:  { combinedCfs: 142, stale: false },
-    alert:   { level: 'ok', title: 'All clear', msg: 'No red-flag warnings or fire restrictions in effect.' },
-    fires:   { count: 1, msg: '1 active incident within 50 mi', stale: false },
-    road:    { level: 'ok', title: 'Clear', msg: 'No active CDOT alerts on the Durango access route.' }
-  };
+  // We NEVER hard-code an optimistic status (e.g. "All clear"). The page paints
+  // only real data: the last-good reading cached in localStorage (instant, for
+  // repeat visitors), then the live feed. On total failure with no cache we show
+  // "Data temporarily unavailable" — never a fake safe state.
+  var LG_KEY = 'gv_conditions_lastgood';
+  function readLastGood() { try { return JSON.parse(localStorage.getItem(LG_KEY)); } catch (e) { return null; } }
+  function writeLastGood(d) { try { localStorage.setItem(LG_KEY, JSON.stringify(d)); } catch (e) {} }
 
   var PILL = {
     ok:     ['pill-ok', 'dot-ok'],
@@ -289,23 +285,37 @@
     return '<div class="rc-links"><h4>Official sources</h4>' + items + '</div>';
   }
 
-  // 1) Instant paint from the bundle so there's never a "--" wait.
-  paint(FALLBACK);
+  function setDataNote(msg) { setText('dataNote', msg || ''); }
+  function markUnavailable() {
+    // No live data and no cache: a neutral unavailable state, never a fake "ok".
+    setText('updTime', 'unavailable');
+    setDataNote('⚠ Data temporarily unavailable — check back shortly.');
+  }
 
-  // 2) Fetch the real data and repaint; keep last-good on failure.
   // Live feed served by the Cloudflare Worker from KV (CORS enabled), refreshed
   // every 15 min by its cron. On pages.dev there is no same-origin worker route
   // yet, so we read the worker URL directly. When the custom domain + worker
   // route go live, switch DATA_URL back to same-origin '/data/conditions.json'.
   var DATA_URL = 'https://govallecito-conditions.dkontje.workers.dev/data/conditions.json';
+
+  // 1) Instant paint from the cached last-good reading (real data) if present;
+  //    otherwise the static HTML stays neutral ("Checking current conditions…").
+  var lastGood = readLastGood();
+  if (lastGood) paint(lastGood);
+
+  // 2) Fetch the live feed; repaint + cache on success; explain on failure.
   function load() {
     fetch(DATA_URL, { cache: 'no-store' })
-      .then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(paint)
-      .catch(function () { /* keep last-painted values */ });
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) { lastGood = d; writeLastGood(d); paint(d); setDataNote(''); })
+      .catch(function () {
+        if (lastGood) {
+          setDataNote('⚠ Data temporarily unavailable — last reading ' +
+            (lastGood.updatedFriendly || lastGood.updated || 'earlier') + '.');
+        } else {
+          markUnavailable();
+        }
+      });
   }
   load();
 

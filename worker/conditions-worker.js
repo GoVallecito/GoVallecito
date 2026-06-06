@@ -441,8 +441,9 @@ function haversineMiles(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 function friendly(d) {
-  return "today " + d.toLocaleString("en-US", { timeZone: "America/Denver",
-    hour: "numeric", minute: "2-digit", hour12: true }) + " MT";
+  // e.g. "9:17 PM MDT" (MST in winter) — timeZoneName gives the abbreviation.
+  return d.toLocaleString("en-US", { timeZone: "America/Denver",
+    hour: "numeric", minute: "2-digit", hour12: true, timeZoneName: "short" });
 }
 function fallback() {
   return { updated: new Date().toISOString(), updatedFriendly: "—",

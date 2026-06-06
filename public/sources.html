@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How We Verify / Our Sources — GoVallecito.com</title>
+<meta name="description" content="Where GoVallecito's live conditions come from: NWS, USGS, USBR/USACE, NIFC/InciWeb, CDOT, and the lake weather station — refreshed every 15 minutes. What's automated vs. locally curated, and how to send a correction.">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<div class="annbar" id="annbar" hidden></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
+    <nav class="main">
+      <a href="conditions.html">Conditions</a>
+      <a href="things-to-do.html">Things To Do</a>
+      <a href="fishing.html">Fishing</a>
+      <a href="directory.html">Local Guide</a>
+      <a href="plan-your-visit.html">Plan Your Visit</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <div class="condstrip"><a href="conditions.html"><b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake</a></div>
+    </nav>
+  </div>
+</header>
+
+<section class="pagehero">
+  <div class="wrap">
+    <div class="eyebrow">How we verify</div>
+    <h1>Where our conditions come from</h1>
+    <p>Every live number on this site is pulled automatically from a public agency feed every 15 minutes — we don't hand-type conditions, and we don't editorialize the data. Here's exactly what feeds what, and what we keep current by hand.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">The pipeline</div>
+    <h2 class="sec-title">Automatic, every 15 minutes</h2>
+    <p class="sec-lead">A scheduled job fetches each source, normalizes it, and serves a single conditions file the site reads. If a source is down, we keep the last good reading and label it — we never invent a value or show a stale number as "now."</p>
+    <table class="tbl">
+      <thead><tr><th>What you see</th><th>Source</th><th>Cadence</th></tr></thead>
+      <tbody>
+        <tr><td><b>Marina / lake weather + 5-day forecast</b></td><td>Weather Underground PWS (Vallecito Reservoir station, when live) → National Weather Service (api.weather.gov) fallback</td><td>Auto · 15 min</td></tr>
+        <tr><td><b>Weather alerts &amp; Red Flag warnings</b></td><td>National Weather Service active alerts</td><td>Auto · 15 min</td></tr>
+        <tr><td><b>Lake level (storage, % full, elevation)</b></td><td>USACE CWMS (USBR water-operations data) → USBR RISE fallback. <span class="muted">Note: the older USGS reservoir gauge 09353000 is stale and not used.</span></td><td>Auto · 15 min (source updates daily)</td></tr>
+        <tr><td><b>Streamflow in (Vallecito Creek + Pine River)</b></td><td>USGS instantaneous-values (gauges 09352900 &amp; 09352800)</td><td>Auto · 15 min</td></tr>
+        <tr><td><b>Wildfires within 50 mi</b></td><td>NIFC WFIGS incident locations; write-ups via InciWeb</td><td>Auto · 15 min</td></tr>
+        <tr><td><b>Road status (US-160 / CR 501)</b></td><td>CDOT / COtrip travel alerts</td><td>Auto · 15 min</td></tr>
+        <tr><td><b>Fire-restriction stage (Stage 1/2)</b></td><td>Editor-curated from San Juan NF / La Plata County orders — there is no clean machine feed</td><td>Locally curated</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Automated vs. curated</div>
+    <h2 class="sec-title">What's a feed, and what's a person</h2>
+    <div class="databand">
+      <div class="panel">
+        <h3>🤖 Automated feeds</h3>
+        <p class="muted">Weather, alerts, lake level, streamflow, wildfires, and roads are machine feeds from the agencies above. No human edits the numbers; the job just fetches and normalizes them every 15 minutes.</p>
+      </div>
+      <div class="panel">
+        <h3>✍️ Locally curated</h3>
+        <p class="muted">Fire-restriction stage, the business directory, emergency contacts, and the trip-planning guides are maintained by local contributors and updated as things change. We re-verify contacts before launch and fix mistakes fast.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">Trusted sources</div>
+    <h2 class="sec-title">Go straight to the agencies</h2>
+    <div class="sources">
+      <div class="grp">
+        <h4>Weather &amp; Fire</h4>
+        <a href="https://www.weather.gov/gjt">NWS Grand Junction (SW Colorado)</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb (wildfire)</a>
+        <a href="https://www.fs.usda.gov/r02/sanjuan/newsroom/forest-orders">San Juan NF — Forest Orders</a>
+        <a href="https://app.watchduty.org">Watch Duty</a>
+      </div>
+      <div class="grp">
+        <h4>Lake &amp; Water</h4>
+        <a href="https://water.usace.army.mil/overview/spk/locations/vallecito">USACE — Vallecito</a>
+        <a href="https://data.usbr.gov/catalog/2469">USBR RISE — Vallecito (record 2469)</a>
+        <a href="https://waterdata.usgs.gov">USGS Water Data</a>
+        <a href="https://pineriverirrigationdistrict.com">PRID</a>
+      </div>
+      <div class="grp">
+        <h4>Roads &amp; Community</h4>
+        <a href="https://www.cotrip.org">CDOT / COtrip</a>
+        <a href="https://www.lpcgov.org">La Plata County</a>
+        <a href="https://cpw.state.co.us">Colorado Parks &amp; Wildlife</a>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:22px">See something wrong or out of date? <a href="contact.html">Send us a correction</a> — we read everything and fix fast. Conditions on this page link back to the <a href="conditions.html">live conditions</a> view.</p>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap cols">
+    <div>
+      <div class="brand" style="color:#fff;font-size:1.2rem">GoVallecito<span style="color:#9fe6d6">.com</span></div>
+      <div class="footer-slogan">Elevation Changes Everything</div>
+      <p style="max-width:38ch">A community hub for Vallecito Lake, Colorado — conditions, local businesses, and what to do up here. Independently owned and locally operated.</p>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <p class="linklist">
+        <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
+        <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="plan-your-visit.html">Plan Your Visit</a><a href="living-in-vallecito.html">Living Here</a>
+        <a href="about.html">About</a><a href="contact.html">Contact</a>
+        <a href="sources.html">How we verify</a>
+      </p>
+    </div>
+    <div>
+      <h3>Trusted sources</h3>
+      <p class="linklist">
+        <a href="https://forecast.weather.gov/MapClick.php?lat=37.3361&lon=-107.5617">National Weather Service</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb (wildfire)</a>
+        <a href="https://waterdata.usgs.gov">USGS Water Data</a>
+        <a href="https://www.cotrip.org">CDOT Travel</a>
+        <a href="https://pineriverirrigationdistrict.com">PRID</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrap copy">© 2026 GoVallecito.com · Made with care in the San Juans</div>
+</footer>
+
+<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/conditions.js" defer></script>
+</body>
+</html>
