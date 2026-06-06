@@ -83,22 +83,93 @@ async function safe(fn, prevVal) {
   }
 }
 
-/* ---------- LAKE: USGS reservoir gauge 09353000 (keyless) ---------- */
+/* ---------- LAKE: USACE CWMS (primary) -> USBR RISE (fallback) ----------
+ * NOTE: USGS gauge 09353000 is DEAD — its "latest" instantaneous value is dated
+ * 2012-12-31, so it reports a 13-year-old number (the false "31% full"). We use
+ * sources that are actually current, and guard with a freshness + sanity check
+ * so a stale-but-not-erroring feed can never sneak through again.
+ * See docs/DATA-SOURCES.md §5. */
+const LAKE_MAX_AGE_MS = 45 * 864e5;   // reject any reading older than ~45 days (kills the 2012 trap)
+const LAKE_STALE_MS   = 7 * 864e5;    // flag stale if older than ~7 days (USBR daily revision lags a few days)
+const ELEV_MIN = 7500, ELEV_MAX = 7700; // sane Vallecito pool-elevation band (full pool 7665 ft)
+
 async function getLake() {
-  const u = "https://waterservices.usgs.gov/nwis/iv/?sites=09353000&format=json&parameterCd=00054,62614,00062";
-  const j = await getJson(u);
-  const series = j.value?.timeSeries || [];
-  const pick = code => {
-    const s = series.find(t => t.variable.variableCode[0].value === code);
-    const vals = s?.values?.[0]?.value || [];
-    const v = vals[vals.length - 1]?.value;     // latest reading
-    return v != null ? parseFloat(v) : null;
-  };
-  const storageAf = pick("00054") ?? pick("00062"); // reservoir storage, acre-feet
-  const elevationFt = pick("62614");
+  let r = null, source = null;
+  try { const c = await lakeFromCwms(); if (lakeOk(c)) { r = c; source = "USACE CWMS (USBR SPK)"; } } catch (e) { console.error("CWMS lake:", e.message); }
+  if (!r) { try { const u = await lakeFromRise(); if (lakeOk(u)) { r = u; source = "USBR RISE"; } } catch (e) { console.error("RISE lake:", e.message); } }
+  if (!r) throw new Error("no current lake source (USGS 09353000 is stale 2012; CWMS+RISE unavailable)");
+
+  const storageAf  = r.storageAf  != null ? Math.round(r.storageAf)  : null;
+  const elevationFt = r.elevationFt != null ? Math.round(r.elevationFt) : null;
   const pct = storageAf != null ? Math.round((storageAf / CAPACITY_AF) * 100) : null;
-  return { pct, storageAf: round(storageAf), capacityAf: CAPACITY_AF, elevationFt: round(elevationFt),
-           status: "ok", stale: false };
+  const out = {
+    pct, storageAf, capacityAf: CAPACITY_AF, elevationFt,
+    asOf: new Date(r.t).toISOString(),
+    source,
+    status: "ok",
+    stale: (Date.now() - r.t) > LAKE_STALE_MS
+  };
+  // Elevation-only case (no storage): report elevation + "near full" note; an
+  // elevation->storage curve can convert to % later.
+  if (pct == null && elevationFt != null) out.note = "near full (elevation only; % pending storage curve)";
+  return out;
+}
+
+// Accept a reading only if it's recent AND physically plausible for Vallecito.
+function lakeOk(r) {
+  if (!r || r.t == null) return false;
+  if (Date.now() - r.t > LAKE_MAX_AGE_MS) return false;            // not 2012
+  if (r.elevationFt != null && (r.elevationFt < ELEV_MIN || r.elevationFt > ELEV_MAX)) return false; // not another reservoir
+  if (r.storageAf != null && (r.storageAf < 0 || r.storageAf > CAPACITY_AF * 1.1)) return false;
+  return r.storageAf != null || r.elevationFt != null;
+}
+
+// USACE CWMS Data API, district SPK — daily pool storage (ac-ft) + elevation (ft).
+async function lakeFromCwms() {
+  const begin = new Date(Date.now() - 40 * 864e5).toISOString();
+  const end   = new Date(Date.now() + 864e5).toISOString();
+  async function ts(name) {
+    const u = `https://cwms-data.usace.army.mil/cwms-data/timeseries?name=${encodeURIComponent(name)}&office=SPK&begin=${begin}&end=${end}`;
+    const j = await getJson(u, { "Accept": "application/json;version=2" });
+    const vals = (j.values || []).filter(v => v[1] != null);   // [epochMs, value, quality]
+    if (!vals.length) return null;
+    const last = vals[vals.length - 1];
+    return { value: last[1], t: last[0] };
+  }
+  const [s, e] = await Promise.all([
+    ts("Vallecito.Stor.Inst.~1Day.0.Rev-USBRSLC"),
+    ts("Vallecito.Elev.Inst.~1Day.0.Raw-USBRSLC")
+  ]);
+  const t = Math.max(s ? s.t : 0, e ? e.t : 0) || null;
+  return { storageAf: s ? s.value : null, elevationFt: e ? e.value : null, t };
+}
+
+// USBR RISE fallback — resolve Vallecito's storage/elevation items FROM record
+// 2469's relationships (so we can't grab the wrong reservoir), then read latest.
+async function lakeFromRise() {
+  const acc = { "Accept": "application/vnd.api+json" };
+  const rec = await getJson("https://data.usbr.gov/rise/api/catalog-record/2469", acc);
+  const rel = rec.data?.relationships?.catalogItems?.data || [];
+  const ids = rel.map(x => String(x.id).replace(/\/+$/, "").split("/").pop());
+  let storId = null, elevId = null;
+  for (const id of ids) {
+    if (storId && elevId) break;
+    const it = await getJson(`https://data.usbr.gov/rise/api/catalog-item/${id}`, acc);
+    const p = (it.data?.attributes?.parameterName || "").toLowerCase();
+    const unit = (it.data?.attributes?.parameterUnit || "").toLowerCase();
+    if (!storId && p.includes("storage") && unit === "af") storId = id;
+    if (!elevId && p.includes("elevation") && unit === "ft") elevId = id;
+  }
+  async function latest(id) {
+    if (!id) return null;
+    const r = await getJson(`https://data.usbr.gov/rise/api/result?itemId=${id}&itemsPerPage=1&order%5BdateTime%5D=desc`, acc);
+    const row = r.data?.[0]?.attributes;
+    if (!row) return null;
+    return { value: parseFloat(row.result), t: Date.parse(row.dateTime) };
+  }
+  const [s, e] = await Promise.all([latest(storId), latest(elevId)]);
+  const t = Math.max(s ? s.t : 0, e ? e.t : 0) || null;
+  return { storageAf: s ? s.value : null, elevationFt: e ? e.value : null, t };
 }
 
 /* ---------- STREAMS: USGS 09352900 + 09352800 (keyless) ---------- */

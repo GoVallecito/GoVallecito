@@ -23,7 +23,7 @@ crons = ["*/15 * * * *"]
 # then paste the id below.
 [[kv_namespaces]]
 binding = "CONDITIONS"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "e98b1300cb02405cb6da4f417c51b80c"
 
 # Non-secret config (safe to commit). Uncomment + fill when known:
 [vars]
