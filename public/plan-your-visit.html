@@ -50,6 +50,17 @@
   </div>
 </section>
 
+<!-- ===== Live road cameras (COtrip deep-links; config-driven below) ===== -->
+<section class="band alt" id="cameras">
+  <div class="wrap">
+    <div class="eyebrow">Before you drive up</div>
+    <h2 class="sec-title">Live road cameras</h2>
+    <p class="sec-lead">Eyeball the highway before you head out — each opens the live CDOT camera on the COtrip map.</p>
+    <div id="camGroups"></div>
+    <p class="muted" style="font-size:.85rem;margin-top:14px">Live CDOT cameras on COtrip — opens the official map. Statewide info: dial <a href="tel:511">511</a>.</p>
+  </div>
+</section>
+
 <section class="band alt">
   <div class="wrap prose">
     <h2 class="sec-title anchor-offset" id="seasons">🗓️ What's open, by season</h2>
@@ -127,5 +138,36 @@
 
 <script src="/assets/js/announcement-bar.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
+<script>
+/* Live road cameras — edit this array to add/rename/reorder cameras.
+   Each opens its COtrip deep-link in a new tab. (Path B can swap these tiles for
+   live auto-refreshing stills once a free COtrip API key is added — see docs.) */
+(function () {
+  var cameras = [
+    { location: 'US 160 @ CR 501 — the Vallecito turnoff', label: 'Camera 1', url: 'https://maps.cotrip.org/@-107.75906,37.29312,12?show=normalCameras#camera/1062/2087932998' },
+    { location: 'US 160 @ CR 501 — the Vallecito turnoff', label: 'Camera 2', url: 'https://maps.cotrip.org/@-107.75906,37.29312,12?show=normalCameras#camera/1062/178590730' },
+    { location: 'US 160 @ CR 501 — the Vallecito turnoff', label: 'Camera 3', url: 'https://maps.cotrip.org/@-107.75906,37.29312,12?show=normalCameras#camera/1062/178589776' },
+    { location: 'US 160 @ CR 501 — the Vallecito turnoff', label: 'Camera 4', url: 'https://maps.cotrip.org/@-107.75906,37.29312,12?show=normalCameras#camera/1062/2087933136' },
+    { location: 'US 550 @ Wilson Gulch — Durango approach', label: 'Camera 1', url: 'https://maps.cotrip.org/@-107.83986,37.23396,15?show=normalCameras#camera/1052/178590730' },
+    { location: 'US 550 @ Wilson Gulch — Durango approach', label: 'Camera 2', url: 'https://maps.cotrip.org/@-107.83986,37.23396,15?show=normalCameras#camera/1052/3698486184' },
+    { location: 'US 550 @ Wilson Gulch — Durango approach', label: 'Camera 3', url: 'https://maps.cotrip.org/@-107.83986,37.23396,15?show=normalCameras#camera/1052/178589776' },
+    { location: 'US 550 @ Wilson Gulch — Durango approach', label: 'Camera 4', url: 'https://maps.cotrip.org/@-107.83986,37.23396,15?show=normalCameras#camera/1052/2087933136' }
+  ];
+  var host = document.getElementById('camGroups');
+  if (!host) return;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var order = [], groups = {};
+  cameras.forEach(function (c) { if (!groups[c.location]) { groups[c.location] = []; order.push(c.location); } groups[c.location].push(c); });
+  host.innerHTML = order.map(function (loc) {
+    return '<h3 class="cat-head">📹 ' + esc(loc) + '</h3><div class="cam-grid">' +
+      groups[loc].map(function (c) {
+        return '<a class="cam-tile" href="' + esc(c.url) + '" target="_blank" rel="noopener">' +
+          '<span class="cam-ico" aria-hidden="true">📷</span>' +
+          '<span class="cam-label">' + esc(c.label) + '</span>' +
+          '<span class="cam-sub">Open on COtrip ↗</span></a>';
+      }).join('') + '</div>';
+  }).join('');
+})();
+</script>
 </body>
 </html>

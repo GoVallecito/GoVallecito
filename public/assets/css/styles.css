@@ -375,3 +375,14 @@ footer.site .copy{border-top:1px solid #2c5142;margin-top:24px;padding-top:16px;
 .contacts-strip .cs-all{margin-left:auto;font-weight:700;white-space:nowrap}
 @media(max-width:560px){.contacts-strip{font-size:.9rem}.contacts-strip .cs-all{margin-left:0}}
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* live road-camera link tiles (plan-your-visit) */
+.cam-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:8px 0 6px}
+.cam-tile{display:flex;flex-direction:column;gap:4px;justify-content:center;align-items:flex-start;
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:18px 18px;min-height:88px;text-decoration:none;color:var(--ink)}
+.cam-tile:hover{border-color:var(--lake);text-decoration:none;transform:translateY(-1px)}
+.cam-tile .cam-ico{font-size:1.4rem;line-height:1}
+.cam-tile .cam-label{font-weight:800}
+.cam-tile .cam-sub{font-size:.82rem;color:var(--lake);font-weight:700}
+@media(max-width:560px){.cam-grid{grid-template-columns:1fr}}
