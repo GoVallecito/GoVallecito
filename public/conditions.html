@@ -29,7 +29,7 @@
 
 <section class="pagehero">
   <div class="wrap">
-    <div class="eyebrow">Right now at the lake · updated <span id="updTime">Updating…</span></div>
+    <div class="eyebrow">Right now at the lake · <span id="updTime">Updating…</span></div>
     <h1>Live conditions at Vallecito</h1>
     <p>Pulled automatically from public agencies — USGS, the National Weather Service, USBR/USACE, NIFC, and CDOT (plus the lake weather station when it's live) — and refreshed every 15 minutes. <a href="sources.html" style="color:#9fe6d6">How we verify →</a></p>
     <p class="data-note" id="dataNote"></p>
@@ -43,16 +43,16 @@
     <!-- summary dashboard (same six tiles as home) -->
     <div class="grid" aria-live="polite" aria-label="Live conditions summary">
       <a class="tile c-weather" id="tile-weather" href="#weather">
-        <h3>🌡️ Weather · at the marina</h3><span class="stale-flag">⚠ delayed</span>
+        <h3>🌡️ Weather · <span id="wxLabel">near the lake</span></h3><span class="stale-flag">⚠ delayed</span>
         <div class="big" id="wxTemp">—°</div>
-        <div class="small" id="wxDesc">—</div>
-        <div class="src" id="wxSrc">Wunderground PWS</div>
+        <div class="small" id="wxDesc">Checking…</div>
+        <div class="src" id="wxSrc">weather feed</div>
       </a>
       <a class="tile c-lake" id="tile-lake" href="#lake">
         <h3>💧 Lake level</h3><span class="stale-flag">⚠ delayed</span>
         <div class="big" id="lakePct">—%</div>
         <div class="gauge"><i id="lakeFill" style="width:0%"></i></div>
-        <div class="small" id="lakeStore">— of full · Vallecito Reservoir</div>
+        <div class="small" id="lakeStore">Checking…</div>
         <div class="src">USBR / USGS</div>
       </a>
       <a class="tile c-alert" id="tile-alert" href="#alerts">
@@ -64,13 +64,13 @@
       <a class="tile c-fire" id="tile-fire" href="#wildfires">
         <h3>🔥 Wildfires · within 50 mi</h3><span class="stale-flag">⚠ delayed</span>
         <div class="big" id="fireCount">—</div>
-        <div class="small" id="fireMsg">active incidents</div>
+        <div class="small" id="fireMsg">Checking…</div>
         <div class="src">NIFC · InciWeb</div>
       </a>
       <a class="tile c-stream" id="tile-stream" href="#streamflow">
         <h3>🏞️ Streamflow in</h3><span class="stale-flag">⚠ delayed</span>
         <div class="big" id="streamVal">—</div>
-        <div class="small" id="streamMsg">Vallecito Creek + Pine River</div>
+        <div class="small" id="streamMsg">Checking…</div>
         <div class="src">USGS</div>
       </a>
       <a class="tile c-road" id="tile-road" href="#roads">
@@ -117,6 +117,50 @@
     <div id="fire-restrictions" class="restriction-detail"></div>
     <h3 class="cat-head" style="margin-top:24px">National Weather Service alerts</h3>
     <ul class="datalist" id="alertItems"><li class="muted">Loading…</li></ul>
+  </div>
+</section>
+
+<!-- ===== Emergency & local contacts (full block — home links here) ===== -->
+<section class="band alt anchor-offset" id="contacts">
+  <div class="wrap">
+    <div class="eyebrow">Save these before you lose signal</div>
+    <h2 class="sec-title">Important local contacts</h2>
+    <p class="sec-lead">Cell coverage is spotty up here — screenshot this. In any life-threatening emergency — fire, injury, water rescue — call <b>911</b> first.</p>
+    <div class="emerg">
+      <div class="top">🚨 In an emergency, call 911</div>
+      <div class="rows">
+        <div class="r"><span class="lab">Fire / Medical / Rescue</span><span class="num e"><a href="tel:911">911</a></span></div>
+        <div class="r"><span class="lab">Poison Control</span><span class="num"><a href="tel:18002221222">1-800-222-1222</a></span></div>
+        <div class="r"><span class="lab">Sheriff — non-emergency dispatch</span><span class="num"><a href="tel:+19703852900">(970) 385-2900</a></span></div>
+        <div class="r"><span class="lab">Search &amp; Rescue (via 911 / Sheriff)</span><span class="num"><a href="tel:+19703852900">(970) 385-2900</a></span></div>
+        <div class="r"><span class="lab">Upper Pine River Fire District</span><span class="num"><a href="tel:+19708849508">(970) 884-9508</a></span></div>
+        <div class="r"><span class="lab">La Plata County Sheriff (admin)</span><span class="num"><a href="tel:+19702471157">(970) 247-1157</a></span></div>
+        <div class="r"><span class="lab">Colorado State Patrol (roads)</span><span class="num"><a href="tel:*277">*277</a> / 911</span></div>
+        <div class="r"><span class="lab">Colorado Parks &amp; Wildlife (Durango)</span><span class="num"><a href="tel:+19702470855">(970) 247-0855</a></span></div>
+        <div class="r"><span class="lab">Vallecito Marina</span><span class="num"><a href="tel:+19708847000">(970) 884-7000</a></span></div>
+        <div class="r"><span class="lab">Pine River Irrigation District</span><span class="num"><a href="tel:+19708842558">(970) 884-2558</a></span></div>
+        <div class="r"><span class="lab">USFS Columbine Ranger District</span><span class="num"><a href="tel:+19708842512">(970) 884-2512</a></span></div>
+        <div class="r"><span class="lab">Road conditions (CDOT)</span><span class="num"><a href="tel:511">511</a></span></div>
+      </div>
+    </div>
+    <p class="muted" style="font-size:.8rem;margin-top:10px"><b>Contacts provided for convenience and may change — verify with the agency. In any emergency, call 911 first.</b> Sign up for emergency alerts: <a href="https://www.lpcgov.org/departments/emergency_management/lpc_alerts.php">La Plata County LPC Alerts</a>. Wildfire alerts: <a href="https://app.watchduty.org">Watch Duty</a>.</p>
+
+    <h3 class="cat-head" style="margin-top:30px">🚒 Fire stations around the lake <span class="note-emerg">For emergencies, always call 911</span></h3>
+    <p class="sec-lead">Reference / non-emergency. Upper Pine River FPD runs 8 stations; these three are nearest the lake and the CR 501 route. <b>Several lake stations are non-staffed</b> — don't call a station line in a fire, call <a href="tel:911">911</a>.</p>
+    <div class="table-scroll">
+    <table class="tbl">
+      <thead><tr><th>Station</th><th>Location</th><th>Phone</th><th>Staffing</th></tr></thead>
+      <tbody>
+        <tr><td><b>Station 4 — North Vallecito</b></td><td>80 W. Vallecito Creek, Bayfield</td><td><a href="tel:+19704440030">(970) 444-0030</a></td><td>Staffed 24/7</td></tr>
+        <tr><td><b>Station 2 — Vallecito Dam</b></td><td>13100 CR 501, Bayfield</td><td><a href="tel:+19708848882">(970) 884-8882</a></td><td>Non-staffed response location</td></tr>
+        <tr><td><b>Station 5 — Forest Lakes</b></td><td>6891 CR 501, Bayfield</td><td><a href="tel:+19708849707">(970) 884-9707</a></td><td>Staffed</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div id="fire-station-map" class="map-embed">
+      <iframe src="https://www.google.com/maps/d/embed?mid=1B6DkfS-iduUbPhSGyByGFUINev0vosZw&amp;ll=37.34488833220459%2C-107.60136750000001&amp;z=11" title="Upper Pine River Fire District station map" loading="lazy" style="border:0" allowfullscreen></iframe>
+    </div>
+    <p class="muted" style="font-size:.8rem;margin-top:8px"><a href="https://upperpinefpd.org/map/">View the district's official map →</a></p>
   </div>
 </section>
 

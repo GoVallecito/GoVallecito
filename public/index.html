@@ -39,122 +39,22 @@
   </div>
 </header>
 
-<!-- ===== Hero + conditions dashboard ===== -->
-<section class="hero" id="conditions" style="--bg:url('/assets/img/hero.jpg')">
+<!-- ===== Hero ===== -->
+<section class="hero" style="--bg:url('/assets/img/hero.jpg')">
   <div class="wrap">
     <div class="eyebrow">Vallecito Lake · Colorado · the high country</div>
     <span class="slogan">Elevation Changes Everything</span>
     <h1>Key information most visitors need before heading to the lake.</h1>
     <p class="sub">Live lake levels, marina weather, wildfire &amp; fire-restriction status, road conditions, and who to call. Conditions are pulled automatically from public agencies every 15 minutes; local contributors keep the guide and resources current.</p>
     <div class="hero-cta">
-      <a class="btn btn-primary" href="conditions.html">See full conditions →</a>
-      <a class="btn btn-ghost" href="plan-your-visit.html">Plan your visit</a>
       <a class="starthere" href="plan-your-visit.html">🧭 New to Vallecito? Start here →</a>
+      <a class="btn btn-ghost" href="#conditions">See live conditions ↓</a>
     </div>
-
-    <div class="dash">
-      <div class="dash-head">
-        <div class="eyebrow" style="color:#9fe6d6">Right now at the lake</div>
-        <div class="upd">Updated <span id="updTime">Updating…</span> · auto-refresh 15 min<span class="data-note" id="dataNote"></span></div>
-      </div>
-      <div class="grid" aria-live="polite" aria-label="Live conditions at Vallecito Lake">
-
-        <a class="tile c-weather" id="tile-weather" href="conditions.html#weather">
-          <h3>🌡️ Weather · at the marina</h3>
-          <span class="stale-flag">⚠ delayed</span>
-          <div class="big" id="wxTemp">—°</div>
-          <div class="small" id="wxDesc">—</div>
-          <div class="src" id="wxSrc">Wunderground PWS</div>
-        </a>
-
-        <a class="tile c-lake" id="tile-lake" href="conditions.html#lake">
-          <h3>💧 Lake level</h3>
-          <span class="stale-flag">⚠ delayed</span>
-          <div class="big" id="lakePct">—%</div>
-          <div class="gauge"><i id="lakeFill" style="width:0%"></i></div>
-          <div class="small" id="lakeStore">— of full · Vallecito Reservoir</div>
-          <div class="src">USBR / USGS</div>
-        </a>
-
-        <a class="tile c-alert" id="tile-alert" href="conditions.html#alerts">
-          <h3>⚠️ Alert status</h3>
-          <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
-          <div class="small" id="alertMsg" style="margin-top:8px">Loading current conditions…</div>
-          <div class="src">NWS · San Juan NF</div>
-        </a>
-
-        <a class="tile c-fire" id="tile-fire" href="conditions.html#wildfires">
-          <h3>🔥 Wildfires · within 50 mi</h3>
-          <span class="stale-flag">⚠ delayed</span>
-          <div class="big" id="fireCount">—</div>
-          <div class="small" id="fireMsg">active incidents</div>
-          <div class="src">NIFC · InciWeb</div>
-        </a>
-
-        <a class="tile c-stream" id="tile-stream" href="conditions.html#streamflow">
-          <h3>🏞️ Streamflow in</h3>
-          <span class="stale-flag">⚠ delayed</span>
-          <div class="big" id="streamVal">—</div>
-          <div class="small" id="streamMsg">Vallecito Creek + Pine River</div>
-          <div class="src">USGS</div>
-        </a>
-
-        <a class="tile c-road" id="tile-road" href="conditions.html#roads">
-          <h3>🛣️ Roads · US 160 / CR 501</h3>
-          <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
-          <div class="small" id="roadMsg" style="margin-top:8px">Loading road status…</div>
-          <div class="src">CDOT · COtrip</div>
-        </a>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== Emergency contacts ===== -->
-<section class="band">
-  <div class="wrap">
-    <div class="eyebrow">Save these before you lose signal</div>
-    <h2 class="sec-title">Important local contacts</h2>
-    <p class="sec-lead">Cell coverage is spotty up here — screenshot this. In any life-threatening emergency — fire, injury, water rescue — call <b>911</b> first.</p>
-    <div class="emerg">
-      <div class="top">🚨 In an emergency, call 911</div>
-      <div class="rows">
-        <div class="r"><span class="lab">Fire / Medical / Rescue</span><span class="num e"><a href="tel:911">911</a></span></div>
-        <div class="r"><span class="lab">Poison Control</span><span class="num"><a href="tel:18002221222">1-800-222-1222</a></span></div>
-        <div class="r"><span class="lab">Sheriff — non-emergency dispatch</span><span class="num"><a href="tel:+19703852900">(970) 385-2900</a></span></div>
-        <div class="r"><span class="lab">Search &amp; Rescue (via 911 / Sheriff)</span><span class="num"><a href="tel:+19703852900">(970) 385-2900</a></span></div>
-        <div class="r"><span class="lab">Upper Pine River Fire District</span><span class="num"><a href="tel:+19708849508">(970) 884-9508</a></span></div>
-        <div class="r"><span class="lab">La Plata County Sheriff (admin)</span><span class="num"><a href="tel:+19702471157">(970) 247-1157</a></span></div>
-        <div class="r"><span class="lab">Colorado State Patrol (roads)</span><span class="num"><a href="tel:*277">*277</a> / 911</span></div>
-        <div class="r"><span class="lab">Colorado Parks &amp; Wildlife (Durango)</span><span class="num"><a href="tel:+19702470855">(970) 247-0855</a></span></div>
-        <div class="r"><span class="lab">Vallecito Marina</span><span class="num"><a href="tel:+19708847000">(970) 884-7000</a></span></div>
-        <div class="r"><span class="lab">Pine River Irrigation District</span><span class="num"><a href="tel:+19708842558">(970) 884-2558</a></span></div>
-        <div class="r"><span class="lab">USFS Columbine Ranger District</span><span class="num"><a href="tel:+19708842512">(970) 884-2512</a></span></div>
-        <div class="r"><span class="lab">Road conditions (CDOT)</span><span class="num"><a href="tel:511">511</a></span></div>
-      </div>
-    </div>
-    <p class="muted" style="font-size:.8rem;margin-top:10px"><b>Contacts provided for convenience and may change — verify with the agency. In any emergency, call 911 first.</b> Sign up for emergency alerts: <a href="https://www.lpcgov.org/departments/emergency_management/lpc_alerts.php">La Plata County LPC Alerts</a>. Wildfire alerts: <a href="https://app.watchduty.org">Watch Duty</a>.</p>
-
-    <h3 class="cat-head" style="margin-top:30px">🚒 Fire stations around the lake <span class="note-emerg">For emergencies, always call 911</span></h3>
-    <p class="sec-lead">Reference / non-emergency. Upper Pine River FPD runs 8 stations; these three are nearest the lake and the CR 501 route. <b>Several lake stations are non-staffed</b> — don't call a station line in a fire, call <a href="tel:911">911</a>.</p>
-    <table class="tbl">
-      <thead><tr><th>Station</th><th>Location</th><th>Phone</th><th>Staffing</th></tr></thead>
-      <tbody>
-        <tr><td><b>Station 4 — North Vallecito</b></td><td>80 W. Vallecito Creek, Bayfield</td><td><a href="tel:+19704440030">(970) 444-0030</a></td><td>Staffed 24/7</td></tr>
-        <tr><td><b>Station 2 — Vallecito Dam</b></td><td>13100 CR 501, Bayfield</td><td><a href="tel:+19708848882">(970) 884-8882</a></td><td>Non-staffed response location</td></tr>
-        <tr><td><b>Station 5 — Forest Lakes</b></td><td>6891 CR 501, Bayfield</td><td><a href="tel:+19708849707">(970) 884-9707</a></td><td>Staffed</td></tr>
-      </tbody>
-    </table>
-    <div id="fire-station-map" class="map-embed">
-      <iframe src="https://www.google.com/maps/d/embed?mid=1B6DkfS-iduUbPhSGyByGFUINev0vosZw&amp;ll=37.34488833220459%2C-107.60136750000001&amp;z=11" title="Upper Pine River Fire District station map" loading="lazy" style="border:0" allowfullscreen></iframe>
-    </div>
-    <p class="muted" style="font-size:.8rem;margin-top:8px"><a href="https://upperpinefpd.org/map/">View the district's official map →</a></p>
   </div>
 </section>
 
 <!-- ===== Vallecito at a glance + actions ===== -->
-<section class="band alt">
+<section class="band">
   <div class="wrap">
     <div class="eyebrow">First time here?</div>
     <h2 class="sec-title">Vallecito at a glance</h2>
@@ -171,6 +71,82 @@
       <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="fishing.html#guides">🎣 Reserve a guide</a>
       <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="directory.html#cat-marina-water">🚤 Rent a boat</a>
       <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="real-estate-partner.html">🏡 Talk to Julie</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Right now (live conditions dashboard) ===== -->
+<section class="band alt" id="conditions">
+  <div class="wrap">
+    <div class="eyebrow">Right now at the lake</div>
+    <h2 class="sec-title">Live conditions</h2>
+    <p class="sec-lead"><span id="updTime">Updating…</span> · auto-refresh every 15 min · <a href="conditions.html">full conditions page →</a><span class="data-note" id="dataNote"></span></p>
+    <div class="grid" aria-live="polite" aria-label="Live conditions at Vallecito Lake">
+
+      <a class="tile c-weather" id="tile-weather" href="conditions.html#weather">
+        <h3>🌡️ Weather · <span id="wxLabel">near the lake</span></h3>
+        <span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="wxTemp">—°</div>
+        <div class="small" id="wxDesc">Checking…</div>
+        <div class="src" id="wxSrc">weather feed</div>
+      </a>
+
+      <a class="tile c-lake" id="tile-lake" href="conditions.html#lake">
+        <h3>💧 Lake level</h3>
+        <span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="lakePct">—%</div>
+        <div class="gauge"><i id="lakeFill" style="width:0%"></i></div>
+        <div class="small" id="lakeStore">Checking…</div>
+        <div class="src">USBR / USGS</div>
+      </a>
+
+      <a class="tile c-alert" id="tile-alert" href="conditions.html#alerts">
+        <h3>⚠️ Alert status</h3>
+        <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
+        <div class="small" id="alertMsg" style="margin-top:8px">Loading current conditions…</div>
+        <div class="src">NWS · San Juan NF</div>
+      </a>
+
+      <a class="tile c-fire" id="tile-fire" href="conditions.html#wildfires">
+        <h3>🔥 Wildfires · within 50 mi</h3>
+        <span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="fireCount">—</div>
+        <div class="small" id="fireMsg">Checking…</div>
+        <div class="src">NIFC · InciWeb</div>
+      </a>
+
+      <a class="tile c-stream" id="tile-stream" href="conditions.html#streamflow">
+        <h3>🏞️ Streamflow in</h3>
+        <span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="streamVal">—</div>
+        <div class="small" id="streamMsg">Checking…</div>
+        <div class="src">USGS</div>
+      </a>
+
+      <a class="tile c-road" id="tile-road" href="conditions.html#roads">
+        <h3>🛣️ Roads · US 160 / CR 501</h3>
+        <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div>
+        <div class="small" id="roadMsg" style="margin-top:8px">Loading road status…</div>
+        <div class="src">CDOT · COtrip</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== Explore deeper ===== -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">Dive deeper</div>
+    <h2 class="sec-title">Plan the rest of your trip</h2>
+    <p class="sec-lead">Everything we know about the lake, from people who live here.</p>
+    <div class="cards">
+      <div class="ecard"><h3>🎣 Fishing</h3><p class="muted">Six species, four seasons, permits, regs, and the local guides who put you on fish.</p><a href="fishing.html">Fishing guide →</a></div>
+      <div class="ecard"><h3>🥾 Things to do</h3><p class="muted">Trails into the Weminuche, the lake, horseback, ATV, the Tour of Carvings, and dark-sky stargazing.</p><a href="things-to-do.html">See it all →</a></div>
+      <div class="ecard"><h3>🛏️ Where to stay</h3><p class="muted">Lodges, cabins, RV parks, marinas, restaurants, and outfitters — <span id="bizCount">two dozen</span> local businesses.</p><a href="directory.html">Local guide →</a></div>
+      <div class="ecard"><h3>🗺️ Plan your visit</h3><p class="muted">Getting here, what's open, where to fuel up (non-ethanol gas at the Country Market), and what to pack for the high country.</p><a href="plan-your-visit.html">Trip planning →</a></div>
+      <div class="ecard"><h3>🏔️ Living here</h3><p class="muted">Year-round at the lake — winter access, internet & cell, Firewise living, buying property.</p><a href="living-in-vallecito.html">Living in Vallecito →</a></div>
+      <div class="ecard"><h3>📡 Full conditions</h3><p class="muted">5-day forecast, weather alerts, every fire within 50 miles, streamflow gauges, and road status.</p><a href="conditions.html">Live data →</a></div>
     </div>
   </div>
 </section>
@@ -206,29 +182,24 @@
   </div>
 </section>
 
-<!-- ===== Explore deeper ===== -->
-<section class="band alt">
-  <div class="wrap">
-    <div class="eyebrow">Dive deeper</div>
-    <h2 class="sec-title">Plan the rest of your trip</h2>
-    <p class="sec-lead">Everything we know about the lake, from people who live here.</p>
-    <div class="cards">
-      <div class="ecard"><h3>🎣 Fishing</h3><p class="muted">Six species, four seasons, permits, regs, and the local guides who put you on fish.</p><a href="fishing.html">Fishing guide →</a></div>
-      <div class="ecard"><h3>🥾 Things to do</h3><p class="muted">Trails into the Weminuche, the lake, horseback, ATV, the Tour of Carvings, and dark-sky stargazing.</p><a href="things-to-do.html">See it all →</a></div>
-      <div class="ecard"><h3>🛏️ Where to stay</h3><p class="muted">Lodges, cabins, RV parks, marinas, restaurants, and outfitters — <span id="bizCount">two dozen</span> local businesses.</p><a href="directory.html">Local guide →</a></div>
-      <div class="ecard"><h3>🗺️ Plan your visit</h3><p class="muted">Getting here, what's open, where to fuel up (non-ethanol gas at the Country Market), and what to pack for the high country.</p><a href="plan-your-visit.html">Trip planning →</a></div>
-      <div class="ecard"><h3>📡 Full conditions</h3><p class="muted">5-day forecast, weather alerts, every fire within 50 miles, streamflow gauges, and road status.</p><a href="conditions.html">Live data →</a></div>
-    </div>
-  </div>
-</section>
-
 <!-- ===== Gallery (revealed only when photos exist) ===== -->
-<section class="band" id="galleryBand" hidden>
+<section class="band alt" id="galleryBand" hidden>
   <div class="wrap">
     <div class="eyebrow">From around the lake</div>
     <h2 class="sec-title">Vallecito, in photos</h2>
     <p class="sec-lead">Real shots from the lake and the high country.</p>
     <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ===== Compact emergency contacts strip (full block lives on /conditions) ===== -->
+<section class="band">
+  <div class="wrap">
+    <div class="contacts-strip">
+      <span class="cs-emerg">🚨 Emergency <a href="tel:911">911</a></span>
+      <span class="cs-item">Sheriff (non-emergency) <a href="tel:+19703852900">(970) 385-2900</a></span>
+      <a class="cs-all" href="conditions.html#contacts">All emergency &amp; lake contacts →</a>
+    </div>
   </div>
 </section>
 
@@ -273,7 +244,7 @@
   fetch('/data/directory.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
     .then(function (d) {
-      var n = (d.businesses || []).length, el = document.getElementById('bizCount');
+      var n = (d.businesses || []).filter(function (b) { return !b.unpublished; }).length, el = document.getElementById('bizCount');
       if (el && n) el.textContent = n;
     }).catch(function () {});
   var band = document.getElementById('galleryBand'), grid = document.getElementById('gallery');

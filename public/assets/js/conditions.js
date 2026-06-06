@@ -56,11 +56,13 @@
     if (!d) return;
 
     // ----- updated timestamp -----
-    setText('updTime', d.updatedFriendly || d.updated || '—');
+    setText('updTime', 'Updated ' + (d.updatedFriendly || d.updated || ''));
 
     // ----- weather -----
     if (d.weather) {
       var w = d.weather;
+      // Label the source plainly: marina PWS only when the live PWS feed is used.
+      setText('wxLabel', w.sourceType === 'pws' ? 'at the marina (Vallecito Reservoir station)' : 'near the lake — NWS');
       setText('wxTemp', (w.tempF != null ? w.tempF : '—') + '°');
       var desc = w.desc || '';
       if (w.windMph != null) {
@@ -288,8 +290,8 @@
   function setDataNote(msg) { setText('dataNote', msg || ''); }
   function markUnavailable() {
     // No live data and no cache: a neutral unavailable state, never a fake "ok".
-    setText('updTime', 'unavailable');
-    setDataNote('⚠ Data temporarily unavailable — check back shortly.');
+    setText('updTime', 'Data temporarily unavailable');
+    setDataNote('⚠ Check back shortly — the live feed didn\'t respond.');
   }
 
   // Live feed served by the Cloudflare Worker from KV (CORS enabled), refreshed
