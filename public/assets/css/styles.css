@@ -26,15 +26,18 @@ h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:0}
 /* ---------- Realtor announcement bar ---------- */
 .annbar{background:linear-gradient(90deg,var(--pine),var(--lake));color:#fff;font-size:.92rem}
 .annbar .wrap{display:flex;align-items:center;gap:14px;padding:10px 20px}
-.annbar .marq{flex:1;overflow:hidden;white-space:nowrap}
-.annbar .marq span{display:inline-block;padding-left:100%;animation:scrollmsg 26s linear infinite}
+.annbar .annlink{flex:1;min-width:0;display:block;overflow:hidden;color:#fff;text-decoration:none;font-weight:600}
+.annbar .annlink:hover{text-decoration:underline}
+.annbar .marq{overflow:hidden;white-space:nowrap}
+.annbar .marq span{display:inline-block;white-space:nowrap}
+.annbar .marq.scrolling span{padding-left:100%;animation:scrollmsg 20s linear infinite}
 .annbar a{color:#fff;text-decoration:underline;font-weight:700}
 .annbar .x{background:rgba(255,255,255,.18);border:0;color:#fff;width:26px;height:26px;border-radius:50%;
   cursor:pointer;font-size:15px;line-height:1;flex:0 0 auto}
 .annbar .x:hover{background:rgba(255,255,255,.32)}
 .annbar .avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;object-position:top center;flex:0 0 auto;border:2px solid rgba(255,255,255,.6)}
 @keyframes scrollmsg{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-@media(prefers-reduced-motion:reduce){.annbar .marq span{animation:none;padding-left:0}}
+@media(prefers-reduced-motion:reduce){.annbar .marq span,.annbar .marq.scrolling span{animation:none;padding-left:0}}
 
 /* ---------- Header ---------- */
 header.site{position:sticky;top:0;z-index:40;background:rgba(247,245,240,.92);backdrop-filter:blur(8px);
@@ -152,7 +155,13 @@ section.band.alt{background:var(--sand-2);border-top:1px solid var(--line);borde
 .nl-form input[type=email]{padding:11px 14px;border:1px solid var(--line);border-radius:999px;min-width:240px}
 
 /* ---------- Page intro (sub-page hero) ---------- */
-.pagehero{background:
+.pagehero{
+  /* Solid pine base FIRST (separate property so the background-image list can't
+     reset it). Guarantees readable white text even on pages with no --bg image —
+     note --bg is also a color token, so var(--bg,none) is an invalid image layer
+     on those pages and the image list is dropped, leaving this opaque base. */
+  background-color:var(--pine);
+  background-image:
     linear-gradient(180deg,rgba(18,36,28,.6),rgba(18,36,28,.45)),
     var(--bg,none),
     linear-gradient(180deg,var(--pine),var(--pine-2));

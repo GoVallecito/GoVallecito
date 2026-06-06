@@ -15,16 +15,12 @@
   // ----- editor-configurable content -------------------------------------
   var ANNOUNCEMENT = {
     enabled: true,
-    // Lead text shown before the link (plain text; emoji ok).
-    text: 'Dreaming of a place in the mountains? Julie Coffelt — local broker with Coldwell Banker Mountain Properties — knows every road and ridge up here.',
-    // Optional small avatar shown at the start of the bar (empty string = none).
-    image: '',
-    // Call-to-action link.
-    linkText: 'See what’s for sale →',
+    // Whole-bar message — the ENTIRE bar links to linkHref. Keep it short.
+    text: '🏡 Dreaming of a place at the lake? Meet Julie Coffelt — your local Vallecito real-estate broker →',
     linkHref: '/real-estate-partner.html',
     // Bump this id whenever you want a *new* message to re-show for everyone
     // who previously dismissed the old one.
-    id: 'realtor-julie-2026-2'
+    id: 'realtor-julie-2026-3'
   };
 
   var DISMISS_DAYS = 7;
@@ -49,29 +45,20 @@
     }
   } catch (e) { /* localStorage unavailable — just show the bar */ }
 
-  // Build the bar contents from config (no markup to maintain in HTML).
+  // Build the bar: the WHOLE message is one link; the ✕ is a separate button.
   var wrap = document.createElement('div');
   wrap.className = 'wrap';
 
-  if (ANNOUNCEMENT.image) {
-    var avatar = document.createElement('img');
-    avatar.className = 'avatar';
-    avatar.src = ANNOUNCEMENT.image;
-    avatar.alt = '';
-    avatar.setAttribute('aria-hidden', 'true');
-    avatar.setAttribute('loading', 'lazy');
-    wrap.appendChild(avatar);
-  }
+  var link = document.createElement('a');
+  link.className = 'annlink';
+  link.href = ANNOUNCEMENT.linkHref;
 
   var marq = document.createElement('div');
   marq.className = 'marq';
   var span = document.createElement('span');
-  span.appendChild(document.createTextNode(ANNOUNCEMENT.text + ' '));
-  var link = document.createElement('a');
-  link.href = ANNOUNCEMENT.linkHref;
-  link.textContent = ANNOUNCEMENT.linkText;
-  span.appendChild(link);
+  span.textContent = ANNOUNCEMENT.text;
   marq.appendChild(span);
+  link.appendChild(marq);
 
   var close = document.createElement('button');
   close.className = 'x';
@@ -79,10 +66,13 @@
   close.setAttribute('aria-label', 'Dismiss announcement');
   close.textContent = '✕';
 
-  wrap.appendChild(marq);
+  wrap.appendChild(link);
   wrap.appendChild(close);
   bar.appendChild(wrap);
   bar.hidden = false;
+
+  // Ease the scroll: only animate if the text actually overflows its container.
+  if (span.scrollWidth > marq.clientWidth + 4) marq.classList.add('scrolling');
 
   close.addEventListener('click', function () {
     bar.hidden = true;
