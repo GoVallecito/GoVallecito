@@ -132,70 +132,32 @@
   function paintDetail(d) {
     if (d.weather) {
       var w = d.weather;
-      // headline
-      setText('wxTempBig', (w.tempF != null ? w.tempF : '—') + '°');
-      setText('wxFeels', w.feelsLikeF != null ? 'Feels like ' + w.feelsLikeF + '°' : '');
       setText('wxDesc2', w.desc || '—');
       setText('wxHigh', w.highF != null ? w.highF + '°' : '—');
       setText('wxLow', w.lowF != null ? w.lowF + '°' : '—');
       setText('wxSource', w.source || '');
-      var badge = $('wxSourceBadge');
-      if (badge && w.source) {
-        badge.className = 'src-badge ' + (w.sourceType === 'pws' ? 'is-pws' : 'is-nws');
-        badge.textContent = (w.sourceType === 'pws' ? '📡 ' : '🛰️ ') + w.source;
-      }
-      if ($('wxObs') && w.obsTime) setText('wxObs', '· as of ' + (rel(w.obsTime) || w.obsTime));
-
-      // wind block (boaters)
-      var wb = $('wxWindBlock');
-      if (wb) {
-        if (w.windMph != null) {
-          var ls = lakeState(w.windMph);
-          wb.innerHTML = '<h4>💨 Wind</h4>' +
-            '<div class="wx-big">' + (w.windDir ? escapeHtml(w.windDir) + ' ' : '') + w.windMph +
-            (w.windGustMph != null ? ' <span class="muted">gusting ' + w.windGustMph + '</span>' : '') + ' mph</div>' +
-            (ls ? '<div class="wx-state sev-' + ls.sev + '">' + escapeHtml(ls.t) + '</div>' : '') +
-            '<p class="muted" style="font-size:.8rem;margin-top:6px">Wind usually builds after ~2 PM — plan glassy mornings.</p>';
-        } else {
-          wb.innerHTML = '<h4>💨 Wind</h4><p class="muted">Not reported right now.</p>';
-        }
-      }
-
-      // pressure-trend block (anglers)
-      var pb = $('wxPressBlock');
-      if (pb) {
-        if (w.pressureInHg != null) {
-          pb.innerHTML = '<h4>📊 Pressure</h4>' +
-            '<div class="wx-big">' + w.pressureInHg + ' inHg <span class="trend">' + trendArrow(w.pressureTrend) + '</span></div>' +
-            (w.pressureTrend ? '<div class="wx-state">' + escapeHtml(cap(w.pressureTrend)) + '</div>' : '') +
-            (w.pressureTrend ? '<p class="muted" style="font-size:.8rem;margin-top:6px">' + escapeHtml(pressureTip(w.pressureTrend)) + '</p>' : '');
-        } else {
-          pb.innerHTML = '<h4>📊 Pressure</h4><p class="muted">Not reported by this station — shows when the lake PWS is live.</p>';
-        }
-      }
-
-      // secondary fields (omit nulls and anything already shown in a block)
+      // "Right now" field grid — render only the fields the station reports.
+      var t = function (v) { return v != null ? v + '°' : null; };
       var rows = [
-        ['Dew point', w.dewpointF != null ? w.dewpointF + '°' : null],
+        ['Temp', t(w.tempF)],
+        ['Feels like', t(w.feelsLikeF)],
+        ['Dew point', t(w.dewpointF)],
         ['Humidity', w.humidity != null ? w.humidity + '%' : null],
-        ['Precip rate', w.precipRateIn != null ? w.precipRateIn + ' in/hr' : null],
-        ['Precip today', w.precipTotalIn != null ? w.precipTotalIn + ' in' : null],
+        ['Wind', w.windMph != null ? w.windMph + ' mph' + (w.windDir ? ' ' + w.windDir : '') : null],
+        ['Gust', w.windGustMph != null ? w.windGustMph + ' mph' : null],
+        ['Pressure', w.pressureInHg != null ? w.pressureInHg + ' inHg' : null],
         ['Visibility', w.visibilityMi != null ? w.visibilityMi + ' mi' : null],
         ['UV index', w.uv != null ? String(w.uv) : null],
         ['Solar', w.solarWm2 != null ? w.solarWm2 + ' W/m²' : null],
+        ['Precip rate', w.precipRateIn != null ? w.precipRateIn + ' in/hr' : null],
+        ['Precip today', w.precipTotalIn != null ? w.precipTotalIn + ' in' : null],
         ['Station elev', w.stationElevFt != null ? w.stationElevFt.toLocaleString() + ' ft' : null]
       ].filter(function (r) { return r[1] != null; });
       var fEl = $('wxFields');
       if (fEl) fEl.innerHTML = rows.map(function (r) {
         return '<div><b>' + escapeHtml(r[1]) + '</b><span>' + escapeHtml(r[0]) + '</span></div>';
       }).join('');
-
-      // UV sun-safety note when high
-      var uvEl = $('wxUvNote');
-      if (uvEl) uvEl.innerHTML = (w.uv != null && w.uv >= 6)
-        ? '☀️ <b>UV ' + escapeHtml(String(w.uv)) + '</b> — it burns fast on the water up here. Wear sunscreen and a hat.'
-        : '';
-
+      if ($('wxObs') && w.obsTime) setText('wxObs', 'Observed ' + (rel(w.obsTime) || w.obsTime));
       var fcEl = $('wxForecast');
       if (fcEl && Array.isArray(w.forecast5)) {
         fcEl.innerHTML = w.forecast5.map(function (f) {
@@ -326,26 +288,6 @@
     }).join('');
     return '<div class="rc-links"><h4>Official sources</h4>' + items + '</div>';
   }
-
-  // Plain-language lake state from wind speed (guidance, not a guarantee).
-  function lakeState(mph) {
-    if (mph == null) return null;
-    if (mph < 5) return { t: 'Glassy / calm', sev: 'ok' };
-    if (mph < 10) return { t: 'Light chop', sev: 'ok' };
-    if (mph < 15) return { t: 'Choppy', sev: 'warn' };
-    if (mph < 20) return { t: 'Whitecaps forming', sev: 'warn' };
-    return { t: 'Small-craft caution — consider getting off the water', sev: 'danger' };
-  }
-  function trendArrow(trend) {
-    return trend === 'rising' ? '↑' : trend === 'falling' ? '↓' : trend === 'steady' ? '→' : '';
-  }
-  function pressureTip(trend) {
-    if (trend === 'falling') return 'Falling barometer ahead of a front often turns fish on.';
-    if (trend === 'rising') return 'Sharp rise after a front tends to slow the bite.';
-    if (trend === 'steady') return 'Steady pressure — the bite can be variable.';
-    return '';
-  }
-  function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
   // 1) Instant paint from the bundle so there's never a "--" wait.
   paint(FALLBACK);
