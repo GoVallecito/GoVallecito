@@ -321,6 +321,9 @@ footer.site .copy{border-top:1px solid #2c5142;margin-top:24px;padding-top:16px;
   border-radius:var(--radius);box-shadow:0 0 0 2px rgba(47,125,138,.12),var(--shadow);padding:20px;margin-bottom:6px}
 .pcard .pimg{width:200px;height:200px;border-radius:12px;overflow:hidden;background:var(--sand);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:.8rem;text-align:center}
 .pcard .pimg img{width:100%;height:100%;object-fit:cover}
+.pcard .pimg.ph{background:linear-gradient(135deg,var(--pine),var(--lake));color:#fff;font-weight:800;font-size:1rem;line-height:1.3;padding:14px}
+.pstrip{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.pstrip img{width:84px;height:60px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
 .pcard h3{font-size:1.3rem;margin-bottom:2px}
 .pcard .offer{margin-top:8px;background:#fcefda;border:1px solid #e7cf86;color:#7a5a12;border-radius:8px;padding:6px 10px;font-size:.85rem;display:inline-block}
 .pcard .cta{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}

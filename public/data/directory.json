@@ -1,30 +1,67 @@
 {
-  "_comment": "GoVallecito business directory. Tiers: 'featured' (paid partner — rich card, pinned top of category + featured strip, own profile page), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). Contacts merged from docs/DIRECTORY-CONTACTS.md (researched June 2026). 'featuredReady: true' marks businesses that now have enough info (photo aside) to be promoted to the rich Featured-Partner card when they sign up — it does NOT change how they display. Only verified fields are included; unknowns are intentionally omitted (no guessing). Hours/social for the marina + grill change seasonally — Facebook is the live source.",
-  "categoryOrder": ["Lodging", "Outfitters & Guides", "Dining", "Real Estate", "Marina & Water", "Retail"],
+  "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
+  "categoryOrder": ["Lodging", "Outfitters & Guides", "Dining", "Real Estate", "Marina & Water", "Retail", "Local Services", "Community"],
   "businesses": [
-    {
-      "slug": "pine-river-lodge", "name": "Pine River Lodge", "category": "Lodging", "tier": "featured", "featuredReady": true,
-      "blurb": "27 cabins overlooking the lake since 1960 — heated indoor pool, a Vallecito mainstay for families and anglers.",
-      "phone": "(970) 884-2563", "website": "https://pineriverlodge.com",
-      "facebook": "https://facebook.com/Pineriverlodgevallecito", "address": "Vallecito Lake, Bayfield, CO",
-      "image": "", "badge": "GoVallecito Partner", "profile": "business/pine-river-lodge.html",
-      "cta": { "label": "View lodge & contact", "href": "business/pine-river-lodge.html" },
-      "offer": ""
-    },
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
       "blurb": "Vallecito local broker — more than 25 years in the Four Corners. Honest, year-round guidance from a neighbor who's here to stay.",
       "phone": "(970) 769-5373", "email": "julie.coffelt@cbmp.com", "website": "http://www.julie-coffelt.cbmp.com/",
       "image": "/assets/img/Julie_Coffelt.png", "badge": "GoVallecito Partner", "profile": "real-estate-partner.html",
-      "cta": { "label": "Meet Julie & see listings", "href": "real-estate-partner.html" },
-      "offer": ""
+      "cta": { "label": "Meet Julie & see listings →", "href": "real-estate-partner.html" }
+    },
+    {
+      "slug": "vallecito-marina", "name": "Vallecito Marina & Yacht Club", "category": "Marina & Water", "tier": "featured",
+      "blurb": "The only marina on the lake — fishing boats, pontoons, kayaks, and SUPs, plus slips, buoy service, fuel, and a store.",
+      "phone": "(970) 884-7000", "website": "https://vallecitolakemarina.net", "email": "vallecitomarina@yahoo.com",
+      "facebook": "https://facebook.com/vallecitomarina", "booking": "https://fareharbor.com/embeds/book/vallecitolakemarina/",
+      "address": "14772 CR 501, Bayfield, CO", "hours": "Fri & Sat 8 a.m.–6 p.m. · Sun–Thu 8 a.m.–5 p.m. (May–Sep)",
+      "image": "/assets/img/featured/marina-logo.png",
+      "photos": ["/assets/img/featured/marina-1.jpg", "/assets/img/featured/marina-2.jpg"],
+      "badge": "GoVallecito Partner", "cta": { "label": "Book online →", "href": "https://fareharbor.com/embeds/book/vallecitolakemarina/" }
+    },
+    {
+      "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "category": "Dining", "tier": "featured",
+      "blurb": "Groceries, the La Comida Ranchera kitchen, and liquor — plus the lake-area gas stop with non-ethanol fuel and propane, great for boats, ATVs, and small engines.",
+      "phone": "(970) 884-0844", "facebook": "https://facebook.com/VallecitoLakeCountryMarket",
+      "address": "18071 CR 501, Bayfield, CO", "hours": "Mon 7–7 · Thu–Sat 7–7 · Sun 7–3 · Tue–Wed closed",
+      "highlight": "Non-ethanol fuel", "badge": "GoVallecito Partner",
+      "cta": { "label": "Message on Facebook →", "href": "https://facebook.com/VallecitoLakeCountryMarket" }
+    },
+    {
+      "slug": "blue-spruce", "name": "Blue Spruce RV Park & Cabins", "category": "Lodging", "tier": "featured",
+      "blurb": "RV sites (≈May–Nov) and cabins (year-round) near the lake — a relaxed, wooded basecamp for a Vallecito stay.",
+      "phone": "(970) 884-2641", "website": "https://bluesprucervpark.com", "badge": "GoVallecito Partner",
+      "cta": { "label": "Visit bluesprucervpark.com →", "href": "https://bluesprucervpark.com" }
+    },
+    {
+      "slug": "coronado", "name": "Coronado Consulting & Fire Mitigation", "category": "Local Services", "tier": "featured",
+      "blurb": "Arborist and tree care, wildfire mitigation, and defensible-space work — serving Bayfield, La Plata County, and Durango. Established 2019; certified owners.",
+      "phones": [ { "name": "Robert", "number": "(970) 903-7907" }, { "name": "Danielle", "number": "(575) 202-1642" } ],
+      "email": "coronadocfm@gmail.com", "website": "https://ccfmllc.com",
+      "facebook": "https://facebook.com/profile.php?id=100067915605099", "instagram": "https://instagram.com/coronado_cfm_llc",
+      "address": "485 Forest Lakes Dr, Bayfield, CO",
+      "image": "/assets/img/featured/coronado-logo.jpg",
+      "photos": ["/assets/img/featured/coronado-ops.jpg", "/assets/img/featured/coronado-owners.jpg"],
+      "badge": "GoVallecito Partner", "cta": { "label": "Visit ccfmllc.com →", "href": "https://ccfmllc.com" }
+    },
+    {
+      "slug": "vallecito-church", "name": "Vallecito Church", "category": "Community", "tier": "featured",
+      "blurb": "A Southern Baptist church at the lake. Sunday School 9:00 AM · Worship 10:30 AM — visitors welcome.",
+      "phone": "(970) 884-2901", "website": "https://vallecitochurch.org", "facebook": "https://facebook.com/vallecito.church",
+      "address": "17576 CR 501, Bayfield, CO", "hours": "Sunday School 9:00 AM · Worship 10:30 AM",
+      "badge": "GoVallecito Partner", "cta": { "label": "Service times & info →", "href": "https://vallecitochurch.org" }
+    },
+    {
+      "slug": "excel-excavation", "name": "Excel Excavation", "category": "Local Services", "tier": "featured", "unpublished": true,
+      "_note": "Featured slot reserved — UNPUBLISHED pending verified data. The link David provided was a Facebook community-group member profile (a person), not a business Page; do NOT attach another excavator's info. Need: the business Facebook Page/logo, or the owner's OK + name/phone.",
+      "blurb": ""
     },
 
     {
-      "slug": "vallecito-marina", "name": "Vallecito Marina & Yacht Club", "category": "Marina & Water", "tier": "verified", "featuredReady": true,
-      "blurb": "Fishing/pontoon/kayak/SUP rentals, slips, buoys, on-the-water fuel, and a store — the social hub of the lake.",
-      "phone": "(970) 884-7000", "website": "https://vallecitolakemarina.net",
-      "address": "14772 CR 501, Bayfield, CO", "hours": "7 a.m.–7 p.m. daily, May–Sep (confirm on Facebook)"
+      "slug": "pine-river-lodge", "name": "Pine River Lodge", "category": "Lodging", "tier": "verified",
+      "blurb": "27 cabins overlooking the lake since 1960 — heated indoor pool, a Vallecito mainstay for families and anglers.",
+      "phone": "(970) 884-2563", "website": "https://pineriverlodge.com",
+      "facebook": "https://facebook.com/Pineriverlodgevallecito", "address": "Vallecito Lake, Bayfield, CO"
     },
     {
       "slug": "fisher-guide", "name": "Fisher Guide Service", "category": "Outfitters & Guides", "tier": "verified", "featuredReady": true,
@@ -56,13 +93,6 @@
       "hours": "9 a.m.–7 p.m. daily (in season)"
     },
     {
-      "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "category": "Dining", "tier": "verified",
-      "blurb": "Groceries, Mexican food (La Comida Ranchera), and liquor — plus the lake-area gas pump with non-ethanol fuel and propane, ideal for boats, ATVs, and small engines.",
-      "phone": "(970) 884-0844", "facebook": "https://facebook.com/VallecitoLakeCountryMarket",
-      "address": "18071 CR 501, Bayfield, CO", "hours": "Mon 7–7 · Thu–Sat 7–7 · Sun 7–3 · Tue–Wed closed",
-      "highlight": "Non-ethanol fuel"
-    },
-    {
       "slug": "weminuche-grill", "name": "Weminuche Woodfire Grill", "category": "Dining", "tier": "verified", "featuredReady": true,
       "blurb": "Wood-fired pizza, full bar, and live music on CR 501.",
       "phone": "(970) 884-7153", "website": "https://weminuchegrill.com", "email": "info@weminuchegrill.com",
@@ -83,7 +113,6 @@
 
     { "slug": "5-branches", "name": "5 Branches Camper Park & Cabins", "category": "Lodging", "tier": "basic", "blurb": "Camper park and cabins.", "website": "https://5branches.com" },
     { "slug": "bear-paw", "name": "Bear Paw Lodge", "category": "Lodging", "tier": "basic", "phone": "(970) 884-2508", "website": "https://bearpawlodge.com" },
-    { "slug": "blue-spruce", "name": "Blue Spruce RV Park & Cabins", "category": "Lodging", "tier": "basic", "phone": "(970) 884-2641", "website": "https://bluesprucervpark.com" },
     { "slug": "cabins-on-vallecito", "name": "Cabins on Vallecito Lake", "category": "Lodging", "tier": "basic", "blurb": "Lakeside cabins.", "website": "https://cabinsonvallecitolake.com" },
     { "slug": "croll-cabins", "name": "Croll Cabins", "category": "Lodging", "tier": "basic", "blurb": "Cabins near the lake.", "website": "https://crollcabins.com" },
     { "slug": "elk-point-lodge", "name": "Elk Point Lodge", "category": "Lodging", "tier": "basic", "blurb": "11 lakefront cabins, on-site stables, and a hot tub; open year-round.", "phone": "(970) 884-2482", "website": "https://elkpointlodge.com", "email": "elkpointlodge@gmail.com", "address": "21730 CR 501, Bayfield, CO" },

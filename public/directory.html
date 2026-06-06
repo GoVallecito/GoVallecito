@@ -96,6 +96,7 @@
 
   function contactRow(b){
     var x=[];
+    if(Array.isArray(b.phones)) b.phones.forEach(function(ph){ x.push('<a href="'+telHref(ph.number)+'"><span class="ico">📞</span>'+esc(ph.number)+(ph.name?' ('+esc(ph.name)+')':'')+'</a>'); });
     if(b.phone)    x.push('<a href="'+telHref(b.phone)+'"><span class="ico">📞</span>'+esc(b.phone)+'</a>');
     if(b.website)  x.push('<a href="'+esc(b.website)+'" rel="noopener"><span class="ico">🌐</span>'+esc(host(b.website))+'</a>');
     if(b.email)    x.push('<a href="mailto:'+esc(b.email)+'"><span class="ico">✉️</span>email</a>');
@@ -119,17 +120,22 @@
   }
 
   function featuredCard(b){
-    var img = b.image ? '<div class="pimg"><img src="'+esc(b.image)+'" alt="'+esc(b.name)+'" loading="lazy"></div>'
-                      : '<div class="pimg">Photo coming soon</div>';
-    var cta = b.cta ? '<a class="btn btn-primary" style="background:var(--pine);color:#fff" href="'+esc(b.cta.href)+'">'+esc(b.cta.label)+'</a>' : '';
-    var web = b.website ? '<a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="'+esc(b.website)+'" rel="noopener">Website</a>' : '';
+    var img = b.image
+      ? '<div class="pimg"><img src="'+esc(b.image)+'" alt="'+esc(b.name)+'" loading="lazy" onerror="var p=this.parentNode;p.classList.add(\'ph\');p.textContent=this.alt"></div>'
+      : '<div class="pimg ph">'+esc(b.name)+'</div>';
+    var photos = (Array.isArray(b.photos) && b.photos.length)
+      ? '<div class="pstrip">'+b.photos.map(function(p){ return '<img src="'+esc(p)+'" alt="" loading="lazy" onerror="this.remove()">'; }).join('')+'</div>'
+      : '';
+    var cta = b.cta ? '<a class="btn btn-primary" style="background:var(--pine);color:#fff" href="'+esc(b.cta.href)+'" rel="noopener">'+esc(b.cta.label)+'</a>' : '';
     return '<div class="pcard" data-cat="'+esc(b.category)+'">'+img+
-      '<div><span class="badge badge-partner">★ '+esc(b.badge||'Featured Partner')+'</span>'+
+      '<div><span class="badge badge-partner">★ '+esc(b.badge||'Featured Partner')+'</span> <span class="cat">'+esc(b.category)+'</span>'+
       '<h3>'+esc(b.name)+'</h3>'+
       (b.blurb ? '<p class="muted">'+esc(b.blurb)+'</p>' : '')+
+      (b.hours ? '<div class="hours">🕑 '+esc(b.hours)+'</div>' : '')+
+      (b.highlight ? '<p><span class="badge badge-verified">⛽ '+esc(b.highlight)+'</span></p>' : '')+
       contactRow(b)+
-      (b.offer ? '<div class="offer">🎟️ '+esc(b.offer)+'</div>' : '')+
-      ((cta||web) ? '<div class="cta">'+cta+web+'</div>' : '')+
+      photos+
+      (cta ? '<div class="cta">'+cta+'</div>' : '')+
       '</div></div>';
   }
 
@@ -137,7 +143,7 @@
     var html='';
     DATA.categoryOrder.forEach(function(cat){
       if(current!=='all' && current!==cat) return;
-      var list = DATA.businesses.filter(function(b){return b.category===cat;});
+      var list = DATA.businesses.filter(function(b){return b.category===cat && !b.unpublished;});
       if(!list.length) return;
       list.sort(function(a,b){ return (TIER[a.tier]-TIER[b.tier]) || a.name.localeCompare(b.name); });
       html += '<h3 class="cat-head" id="cat-'+cat.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+'">'+esc(cat)+' <span class="count">'+list.length+'</span></h3>';
@@ -165,7 +171,7 @@
   }
 
   function buildStrip(){
-    var feat = DATA.businesses.filter(function(b){return b.tier==='featured';});
+    var feat = DATA.businesses.filter(function(b){return b.tier==='featured' && !b.unpublished;});
     if(!feat.length) return;
     elStrip.hidden = false;
     elStrip.innerHTML = '⭐ Featured partners: ' + feat.map(function(b){
