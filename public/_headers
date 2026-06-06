@@ -1,0 +1,6 @@
+# Cloudflare Pages headers.
+# Keep the editor-controlled static data fresh (5 min) so restrictions.json and
+# listings.json changes propagate quickly. Note: /data/conditions.json is served
+# by the Worker route in production (with its own Cache-Control), not by Pages.
+/data/*
+  Cache-Control: public, max-age=300

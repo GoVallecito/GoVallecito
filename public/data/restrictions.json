@@ -1,0 +1,8 @@
+{
+  "_comment": "EDITOR-CONTROLLED fire restrictions. This is the ONE piece with no machine feed. Edit this file when San Juan NF / La Plata County / PRID issue or lift a Stage 1 or Stage 2 fire ban. The conditions worker reads it every 15 min and folds it into the Alert tile. See worker/README.md and docs/DATA-SOURCES.md section 3.",
+  "stage": "none",
+  "issuedBy": "",
+  "url": "",
+  "note": "",
+  "updated": "2026-06-05"
+}

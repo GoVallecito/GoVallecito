@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — GoVallecito.com | Vallecito Lake, Colorado</title>
+<meta name="description" content="Contact GoVallecito.com — corrections and updates, business listings, event submissions, and general questions about Vallecito Lake, Colorado. We read everything.">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<div class="annbar" id="annbar" hidden></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
+    <nav class="main">
+      <a href="conditions.html">Conditions</a>
+      <a href="things-to-do.html">Things To Do</a>
+      <a href="fishing.html">Fishing</a>
+      <a href="directory.html">Local Guide</a>
+      <a href="events.html">Events</a>
+      <a href="plan-your-visit.html">Plan Your Visit</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active" aria-current="page">Contact</a>
+      <div class="condstrip"><a href="conditions.html"><b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake</a></div>
+    </nav>
+  </div>
+</header>
+
+<section class="pagehero">
+  <div class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h1>Get in touch</h1>
+    <p>Corrections, business listings, events, or just a question about the lake. We read everything.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <form class="form" id="contactForm" onsubmit="return false">
+      <label>Name<input type="text" name="name" required></label>
+      <label>Email<input type="email" name="email" required></label>
+      <label>Topic
+        <select name="topic">
+          <option>Correction / update</option>
+          <option>Business listing</option>
+          <option>Event submission</option>
+          <option>General question</option>
+          <option>Other</option>
+        </select>
+      </label>
+      <label>Message<textarea name="message" required placeholder="What's on your mind?"></textarea></label>
+      <!-- honeypot anti-spam field (leave blank) -->
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn btn-primary" style="background:var(--pine);color:#fff" type="submit">Send</button>
+      <p class="muted" id="formNote" style="display:none">Thanks — we got it. (Demo form: wire to email/CRM before launch.)</p>
+    </form>
+    <p class="muted" style="margin-top:20px">In an emergency, don't use this form — call <a href="tel:911">911</a>. Lake and emergency numbers are on the <a href="index.html#conditions">home page</a>.</p>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap cols">
+    <div>
+      <div class="brand" style="color:#fff;font-size:1.2rem">GoVallecito<span style="color:#9fe6d6">.com</span></div>
+      <p style="max-width:38ch">A community hub for Vallecito Lake, Colorado — conditions, local businesses, and what to do up here. Independently owned and locally operated.</p>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <p class="linklist">
+        <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
+        <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="events.html">Events</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+      </p>
+    </div>
+    <div>
+      <h3>Trusted sources</h3>
+      <p class="linklist">
+        <a href="https://forecast.weather.gov/MapClick.php?lat=37.3361&lon=-107.5617">National Weather Service</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb (wildfire)</a>
+        <a href="https://waterdata.usgs.gov">USGS Water Data</a>
+        <a href="https://www.cotrip.org">CDOT Travel</a>
+        <a href="https://pineriverirrigationdistrict.com">PRID</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrap copy">© 2026 GoVallecito.com · Made with care in the San Juans · 7,665 ft</div>
+</footer>
+
+<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/conditions.js" defer></script>
+<script>
+document.getElementById('contactForm').addEventListener('submit', function () {
+  if (this.website.value) return; // honeypot tripped — ignore
+  document.getElementById('formNote').style.display = 'block';
+  this.reset();
+});
+</script>
+</body>
+</html>

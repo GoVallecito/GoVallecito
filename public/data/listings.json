@@ -1,0 +1,33 @@
+{
+  "_comment": "MANUAL FALLBACK listings for real-estate-partner.html, used until Julie Coffelt's Coldwell Banker IDX/RESO feed is wired into the IDX container on that page. Edit freely. Photos can be local paths under /assets/img/listings/ or full URLs. These are PLACEHOLDER examples — replace with real, authorized listings before launch. Do NOT scrape MLS; only display listings you are authorized to show.",
+  "agent": {
+    "name": "Julie Coffelt",
+    "brokerage": "Coldwell Banker Mountain Properties",
+    "tagline": "Vallecito local, 15+ years living at the lake",
+    "phone": "",
+    "email": "",
+    "profileUrl": "https://www.cbmp.com/Real-Estate-Agent/julie-coffelt/83564"
+  },
+  "listings": [
+    {
+      "address": "Sample — Lakefront cabin, CR 501",
+      "price": "$695,000",
+      "beds": 3,
+      "baths": 2,
+      "sqft": 1840,
+      "photo": "",
+      "link": "",
+      "blurb": "PLACEHOLDER. Replace with a real, authorized listing."
+    },
+    {
+      "address": "Sample — Mountain view lot, Middle Mountain Rd",
+      "price": "$189,000",
+      "beds": 0,
+      "baths": 0,
+      "sqft": 0,
+      "photo": "",
+      "link": "",
+      "blurb": "PLACEHOLDER. Replace with a real, authorized listing."
+    }
+  ]
+}

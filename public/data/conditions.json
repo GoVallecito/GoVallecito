@@ -1,0 +1,29 @@
+{
+  "updated": "2026-06-05T17:45:00Z",
+  "updatedFriendly": "today 11:45 AM MT",
+  "weather": {
+    "tempF": 74, "desc": "Sunny", "windMph": 8, "windDir": "WSW",
+    "humidity": 28, "highF": 79, "lowF": 46, "source": "WU PWS KCOBAYFI12",
+    "forecast5": [
+      { "day": "Fri", "hi": 79, "lo": 46, "icon": "sunny" },
+      { "day": "Sat", "hi": 77, "lo": 44, "icon": "sunny" },
+      { "day": "Sun", "hi": 72, "lo": 43, "icon": "partly" },
+      { "day": "Mon", "hi": 70, "lo": 41, "icon": "showers" },
+      { "day": "Tue", "hi": 74, "lo": 42, "icon": "partly" }
+    ],
+    "status": "ok", "stale": false
+  },
+  "lake":   { "pct": 78, "storageAf": 101200, "capacityAf": 129700, "elevationFt": 7642, "status": "ok", "stale": false },
+  "stream": { "combinedCfs": 142,
+    "gauges": [
+      { "id": "09352900", "name": "Vallecito Creek", "cfs": 96 },
+      { "id": "09352800", "name": "Pine River", "cfs": 46 }
+    ], "status": "ok", "stale": false },
+  "alert":  { "level": "ok", "title": "All clear",
+    "msg": "No red-flag warnings or fire restrictions in effect.",
+    "redFlag": false, "fireRestrictionStage": "none", "items": [], "status": "ok" },
+  "fires":  { "count": 1, "nearestName": "Example Fire", "nearestMiles": 31,
+    "msg": "1 active incident within 50 mi", "status": "ok", "stale": false },
+  "road":   { "level": "ok", "title": "Clear",
+    "msg": "No active CDOT alerts on the Durango access route.", "status": "ok" }
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vallecito Lake Real Estate — Julie Coffelt | GoVallecito</title>
+<meta name="description" content="Current Vallecito Lake real estate listings with Julie Coffelt, Coldwell Banker Mountain Properties — a Vallecito local with 15+ years living at the lake.">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<div class="annbar" id="annbar" hidden></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
+    <nav class="main">
+      <a href="conditions.html">Conditions</a>
+      <a href="things-to-do.html">Things To Do</a>
+      <a href="fishing.html">Fishing</a>
+      <a href="directory.html">Local Guide</a>
+      <a href="events.html">Events</a>
+      <a href="plan-your-visit.html">Plan Your Visit</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <div class="condstrip"><a href="conditions.html"><b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake</a></div>
+    </nav>
+  </div>
+</header>
+
+<section class="pagehero">
+  <div class="wrap">
+    <div class="eyebrow">Real estate · featured partner</div>
+    <h1>Thinking about a place at the lake?</h1>
+    <p>Vallecito real estate moves on local knowledge — water rights, road access, fire mitigation, which cabins flood and which don't. Julie Coffelt has lived it for 15+ years.</p>
+  </div>
+</section>
+
+<!-- Agent bio -->
+<section class="band">
+  <div class="wrap">
+    <div class="agent-card">
+      <div class="ph" id="agentPhoto">Photo<br>coming soon</div>
+      <div>
+        <div class="eyebrow">Coldwell Banker Mountain Properties</div>
+        <h2 class="sec-title" id="agentName">Julie Coffelt</h2>
+        <p class="muted" id="agentTagline">Vallecito local, 15+ years living at the lake.</p>
+        <p id="agentContact"><a id="agentProfile" href="https://www.cbmp.com/Real-Estate-Agent/julie-coffelt/83564">View Julie's profile at cbmp.com →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Listings -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Current listings</div>
+    <h2 class="sec-title">Homes &amp; land around Vallecito</h2>
+    <p class="sec-lead">Listings shown two ways. Once Julie's brokerage IDX/RESO feed is connected it renders live below; until then we show a hand-maintained set.</p>
+
+    <!-- (1) IDX / RESO embed container — drop the authorized widget/feed here. -->
+    <div class="idx-container" id="idxContainer" hidden>
+      <p><b>IDX listings</b> load here from Coldwell Banker / RESO Web API.</p>
+    </div>
+
+    <!-- (2) Manual fallback rendered from /data/listings.json -->
+    <div class="prop-grid" id="propGrid" aria-live="polite"></div>
+    <p class="muted" id="listingsNote" style="margin-top:14px"></p>
+  </div>
+</section>
+
+<!-- Contact form -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">Get in touch</div>
+    <h2 class="sec-title">Ask Julie about the lake</h2>
+    <p class="sec-lead">Questions about a specific property, the buying process up here, or what's coming to market? Send a note.</p>
+    <form class="form" id="realtorForm" onsubmit="return false">
+      <label>Name<input type="text" name="name" required></label>
+      <label>Email<input type="email" name="email" required></label>
+      <label>Phone<input type="tel" name="phone"></label>
+      <label>What are you looking for?<textarea name="message" placeholder="Cabin, lot, lakefront, budget, timing…"></textarea></label>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn btn-primary" style="background:var(--pine);color:#fff" type="submit">Send to Julie</button>
+      <p class="muted" id="formNote" style="display:none">Thanks — this is a demo form. Wire it to email/CRM before launch.</p>
+    </form>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap cols">
+    <div>
+      <div class="brand" style="color:#fff;font-size:1.2rem">GoVallecito<span style="color:#9fe6d6">.com</span></div>
+      <p style="max-width:38ch">A community hub for Vallecito Lake, Colorado — conditions, local businesses, and what to do up here. Independently owned and locally operated.</p>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <p class="linklist">
+        <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
+        <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="events.html">Events</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+      </p>
+    </div>
+    <div>
+      <h3>Trusted sources</h3>
+      <p class="linklist">
+        <a href="https://forecast.weather.gov/MapClick.php?lat=37.3361&lon=-107.5617">National Weather Service</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb (wildfire)</a>
+        <a href="https://waterdata.usgs.gov">USGS Water Data</a>
+        <a href="https://www.cotrip.org">CDOT Travel</a>
+        <a href="https://pineriverirrigationdistrict.com">PRID</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrap copy">© 2026 GoVallecito.com · Made with care in the San Juans · 7,665 ft</div>
+</footer>
+
+<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/conditions.js" defer></script>
+<script>
+/* Listings mode:
+   - Set USE_IDX = true once an authorized IDX/RESO widget is dropped into
+     #idxContainer; that shows the IDX block and hides the manual grid.
+   - Otherwise we render the manual fallback from /data/listings.json. */
+(function () {
+  var USE_IDX = false;
+  var idx = document.getElementById('idxContainer');
+  var grid = document.getElementById('propGrid');
+  var note = document.getElementById('listingsNote');
+
+  if (USE_IDX) {
+    idx.hidden = false;
+    grid.hidden = true;
+    return;
+  }
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  fetch('/data/listings.json', { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      // Agent details
+      var a = data.agent || {};
+      if (a.name) document.getElementById('agentName').textContent = a.name;
+      if (a.tagline) document.getElementById('agentTagline').textContent = a.tagline;
+      if (a.profileUrl) document.getElementById('agentProfile').href = a.profileUrl;
+      if (a.phone || a.email) {
+        var c = document.getElementById('agentContact');
+        var bits = [];
+        if (a.phone) bits.push('<a href="tel:' + esc(a.phone.replace(/[^0-9+]/g,'')) + '">' + esc(a.phone) + '</a>');
+        if (a.email) bits.push('<a href="mailto:' + esc(a.email) + '">' + esc(a.email) + '</a>');
+        c.insertAdjacentHTML('afterbegin', bits.join(' · ') + ' · ');
+      }
+
+      var listings = data.listings || [];
+      if (!listings.length) { note.textContent = 'No listings posted right now — check back soon.'; return; }
+      grid.innerHTML = listings.map(function (l) {
+        var img = l.photo
+          ? '<div class="img"><img src="' + esc(l.photo) + '" alt="' + esc(l.address) + '" loading="lazy"></div>'
+          : '<div class="img">Photo coming soon</div>';
+        var meta = [];
+        if (l.beds) meta.push(l.beds + ' bd');
+        if (l.baths) meta.push(l.baths + ' ba');
+        if (l.sqft) meta.push(l.sqft.toLocaleString() + ' sqft');
+        var link = l.link
+          ? '<a href="' + esc(l.link) + '">View listing →</a>'
+          : '<a href="#realtorForm">Ask Julie →</a>';
+        return '<div class="prop">' + img + '<div class="body">' +
+          '<div class="price">' + esc(l.price) + '</div>' +
+          '<div><b>' + esc(l.address) + '</b></div>' +
+          (meta.length ? '<div class="meta">' + meta.join(' · ') + '</div>' : '') +
+          (l.blurb ? '<p class="muted" style="font-size:.85rem">' + esc(l.blurb) + '</p>' : '') +
+          link + '</div></div>';
+      }).join('');
+      note.textContent = 'Showing manually-maintained listings. Live MLS/IDX feed connects here once authorized.';
+    })
+    .catch(function () { note.textContent = 'Listings are temporarily unavailable.'; });
+
+  // Demo contact form
+  document.getElementById('realtorForm').addEventListener('submit', function () {
+    if (this.website.value) return; // honeypot
+    document.getElementById('formNote').style.display = 'block';
+    this.reset();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vallecito Lake, Colorado — Live Conditions &amp; Local Guide | GoVallecito</title>
+<meta name="description" content="Live lake levels, marina weather, wildfire and fire-restriction status, and emergency contacts for Vallecito Lake, Colorado. Plan your visit at 7,665 ft.">
+<link rel="canonical" href="https://govallecito.com/">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vallecito Lake, Colorado — Live Conditions &amp; Local Guide">
+<meta property="og:description" content="Live lake levels, marina weather, wildfire &amp; fire-restriction status, road conditions, and emergency contacts — updated every 15 minutes by people who live at Vallecito.">
+<meta property="og:image" content="/assets/img/og-default.jpg">
+<meta property="og:url" content="https://govallecito.com/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<!-- ===== Dismissible realtor announcement bar (filled by announcement-bar.js) ===== -->
+<div class="annbar" id="annbar" hidden></div>
+
+<!-- ===== Header ===== -->
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
+    <nav class="main">
+      <a href="conditions.html">Conditions</a>
+      <a href="things-to-do.html">Things To Do</a>
+      <a href="fishing.html">Fishing</a>
+      <a href="directory.html">Local Guide</a>
+      <a href="events.html">Events</a>
+      <a href="plan-your-visit.html">Plan Your Visit</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a class="nav-cta" href="#conditions">Live Conditions</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Hero + conditions dashboard ===== -->
+<section class="hero" id="conditions">
+  <div class="wrap">
+    <div class="eyebrow">Elevation changes everything · 7,665 ft</div>
+    <h1>Everything you need before you head to the lake.</h1>
+    <p class="sub">Live lake levels, marina weather, wildfire &amp; fire-restriction status, road conditions, and who to call — all in one place, updated every 15 minutes by people who live at Vallecito.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="conditions.html">See full conditions →</a>
+      <a class="btn btn-ghost" href="plan-your-visit.html">Plan your visit</a>
+    </div>
+
+    <div class="dash">
+      <div class="dash-head">
+        <div class="eyebrow" style="color:#9fe6d6">Right now at the lake</div>
+        <div class="upd">Updated <span id="updTime">—</span> · auto-refresh 15 min</div>
+      </div>
+      <div class="grid" aria-live="polite" aria-label="Live conditions at Vallecito Lake">
+
+        <a class="tile c-weather" id="tile-weather" href="conditions.html#weather">
+          <h3>🌡️ Weather · at the marina</h3>
+          <span class="stale-flag">⚠ delayed</span>
+          <div class="big" id="wxTemp">—°</div>
+          <div class="small" id="wxDesc">—</div>
+          <div class="src" id="wxSrc">Wunderground PWS</div>
+        </a>
+
+        <a class="tile c-lake" id="tile-lake" href="conditions.html#lake">
+          <h3>💧 Lake level</h3>
+          <span class="stale-flag">⚠ delayed</span>
+          <div class="big" id="lakePct">—%</div>
+          <div class="gauge"><i id="lakeFill" style="width:0%"></i></div>
+          <div class="small" id="lakeStore">— of full · Vallecito Reservoir</div>
+          <div class="src">USBR / USGS</div>
+        </a>
+
+        <a class="tile c-alert" id="tile-alert" href="conditions.html#alerts">
+          <h3>⚠️ Alert status</h3>
+          <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> All clear</span></div>
+          <div class="small" id="alertMsg" style="margin-top:8px">No red-flag warnings or fire restrictions in effect.</div>
+          <div class="src">NWS · San Juan NF</div>
+        </a>
+
+        <a class="tile c-fire" id="tile-fire" href="conditions.html#wildfires">
+          <h3>🔥 Wildfires · within 50 mi</h3>
+          <span class="stale-flag">⚠ delayed</span>
+          <div class="big" id="fireCount">—</div>
+          <div class="small" id="fireMsg">active incidents</div>
+          <div class="src">NIFC · InciWeb</div>
+        </a>
+
+        <a class="tile c-stream" id="tile-stream" href="conditions.html#streamflow">
+          <h3>🏞️ Streamflow in</h3>
+          <span class="stale-flag">⚠ delayed</span>
+          <div class="big" id="streamVal">—</div>
+          <div class="small" id="streamMsg">Vallecito Creek + Pine River</div>
+          <div class="src">USGS</div>
+        </a>
+
+        <a class="tile c-road" id="tile-road" href="conditions.html#roads">
+          <h3>🛣️ Roads · US 160 / CR 501</h3>
+          <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> Clear</span></div>
+          <div class="small" id="roadMsg" style="margin-top:8px">No active CDOT alerts on the Durango access route.</div>
+          <div class="src">CDOT · COtrip</div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Emergency contacts ===== -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">Save these before you lose signal</div>
+    <h2 class="sec-title">Emergency &amp; lake contacts</h2>
+    <p class="sec-lead">Cell coverage is spotty up here. Screenshot this. In any life-threatening emergency — fire, injury, water rescue — call <b>911</b> first.</p>
+    <div class="emerg">
+      <div class="top">🚨 In an emergency, call 911</div>
+      <div class="rows">
+        <div class="r"><span class="lab">Fire / Medical / Rescue</span><span class="num e"><a href="tel:911">911</a></span></div>
+        <div class="r"><span class="lab">Sheriff — non-emergency dispatch</span><span class="num"><a href="tel:+19703852900">(970) 385-2900</a></span></div>
+        <div class="r"><span class="lab">Upper Pine River Fire District</span><span class="num"><a href="tel:+19708849508">(970) 884-9508</a></span></div>
+        <div class="r"><span class="lab">La Plata County Sheriff (admin)</span><span class="num"><a href="tel:+19702471157">(970) 247-1157</a></span></div>
+        <div class="r"><span class="lab">Vallecito Marina</span><span class="num"><a href="tel:+19708847000">(970) 884-7000</a></span></div>
+        <div class="r"><span class="lab">Pine River Irrigation District</span><span class="num"><a href="tel:+19708842558">(970) 884-2558</a></span></div>
+        <div class="r"><span class="lab">USFS Columbine Ranger District</span><span class="num"><a href="tel:+19708842512">(970) 884-2512</a></span></div>
+        <div class="r"><span class="lab">Road conditions (CDOT)</span><span class="num"><a href="tel:511">511</a></span></div>
+      </div>
+    </div>
+    <p class="muted" style="font-size:.8rem;margin-top:10px">Sign up for emergency alerts: <a href="https://www.lpcgov.org/departments/emergency_management/lpc_alerts.php">La Plata County LPC Alerts</a>. Wildfire alerts: <a href="https://app.watchduty.org">Watch Duty</a>.</p>
+  </div>
+</section>
+
+<!-- ===== Drive times (audience: NM / TX / AZ / CO) ===== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Getting here</div>
+    <h2 class="sec-title">How far is the lake?</h2>
+    <p class="sec-lead">Vallecito sits about 35 minutes northeast of Durango, in the San Juan Mountains of southwest Colorado.</p>
+    <div class="drives">
+      <div class="drive"><span>Durango, CO</span><b>~35 min</b><span class="muted">23 mi</span></div>
+      <div class="drive"><span>Farmington, NM</span><b>~2 hr</b><span class="muted">90 mi</span></div>
+      <div class="drive"><span>Albuquerque, NM</span><b>~3.5 hr</b><span class="muted">215 mi</span></div>
+      <div class="drive"><span>Phoenix, AZ</span><b>~6.5 hr</b><span class="muted">385 mi</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== By the numbers ===== -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">By the numbers</div>
+    <h2 class="sec-title">A small lake, big country</h2>
+    <p class="sec-lead">Vallecito sits at the edge of the Weminuche Wilderness — the largest wilderness area in Colorado.</p>
+    <div class="stats">
+      <div class="stat"><b>7,665 ft</b><span>Elevation</span></div>
+      <div class="stat"><b>12 mi</b><span>Shoreline</span></div>
+      <div class="stat"><b>2,720 ac</b><span>Surface area</span></div>
+      <div class="stat"><b>120 ft</b><span>Max depth</span></div>
+      <div class="stat"><b>~35 min</b><span>From Durango</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Explore deeper ===== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Dive deeper</div>
+    <h2 class="sec-title">Plan the rest of your trip</h2>
+    <p class="sec-lead">Everything we know about the lake, from people who live here.</p>
+    <div class="cards">
+      <div class="ecard"><h3>🎣 Fishing</h3><p class="muted">Six species, four seasons, permits, regs, and the local guides who put you on fish.</p><a href="fishing.html">Fishing guide →</a></div>
+      <div class="ecard"><h3>🥾 Things to do</h3><p class="muted">Trails into the Weminuche, the lake, horseback, ATV, the Tour of Carvings, and dark-sky stargazing.</p><a href="things-to-do.html">See it all →</a></div>
+      <div class="ecard"><h3>🛏️ Where to stay</h3><p class="muted">Lodges, cabins, RV parks, marinas, restaurants, and outfitters — 24 local businesses.</p><a href="directory.html">Local guide →</a></div>
+      <div class="ecard"><h3>📅 Events</h3><p class="muted">Maker's markets, the ice-fishing tournament, live music, and what's happening this week.</p><a href="events.html">Upcoming events →</a></div>
+      <div class="ecard"><h3>🗺️ Plan your visit</h3><p class="muted">Getting here, what's open, where to fuel up, and what to pack for 7,665 ft.</p><a href="plan-your-visit.html">Trip planning →</a></div>
+      <div class="ecard"><h3>📡 Full conditions</h3><p class="muted">5-day forecast, weather alerts, every fire within 50 miles, streamflow gauges, and road status.</p><a href="conditions.html">Live data →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Newsletter ===== -->
+<section class="band">
+  <div class="wrap" style="text-align:center;max-width:620px">
+    <div class="eyebrow">Stay in the loop</div>
+    <h2 class="sec-title">The GoVallecito newsletter</h2>
+    <p class="sec-lead" style="margin:8px auto 18px">Seasonal updates — what's open, what's biting, what's happening at the lake.</p>
+    <form class="nl-form" onsubmit="return false">
+      <input type="email" placeholder="you@email.com" aria-label="Email address">
+      <button class="btn btn-primary" style="background:var(--pine);color:#fff">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap cols">
+    <div>
+      <div class="brand" style="color:#fff;font-size:1.2rem">GoVallecito<span style="color:#9fe6d6">.com</span></div>
+      <p style="max-width:38ch">A community hub for Vallecito Lake, Colorado — conditions, local businesses, and what to do up here. Independently owned and locally operated.</p>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <p class="linklist">
+        <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
+        <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="events.html">Events</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+      </p>
+    </div>
+    <div>
+      <h3>Trusted sources</h3>
+      <p class="linklist">
+        <a href="https://forecast.weather.gov/MapClick.php?lat=37.3361&lon=-107.5617">National Weather Service</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb (wildfire)</a>
+        <a href="https://waterdata.usgs.gov">USGS Water Data</a>
+        <a href="https://www.cotrip.org">CDOT Travel</a>
+        <a href="https://pineriverirrigationdistrict.com">PRID</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrap copy">
+    © 2026 GoVallecito.com · Made with care in the San Juans · 7,665 ft
+  </div>
+</footer>
+
+<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/conditions.js" defer></script>
+</body>
+</html>

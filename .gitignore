@@ -1,0 +1,15 @@
+# Dependencies / tooling
+node_modules/
+.wrangler/
+
+# Wrangler local secrets — NEVER commit
+.dev.vars
+.dev.vars.*
+
+# Claude Code personal/local settings (not shared)
+.claude/settings.local.json
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log

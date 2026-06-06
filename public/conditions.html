@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Conditions — Vallecito Lake, Colorado | GoVallecito</title>
+<meta name="description" content="Live Vallecito Lake conditions: marina weather, 5-day forecast, NWS alerts and Red Flag warnings, wildfires within 50 miles, lake level, streamflow, and road status.">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<div class="annbar" id="annbar" hidden></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
+    <nav class="main">
+      <a href="conditions.html" class="active" aria-current="page">Conditions</a>
+      <a href="things-to-do.html">Things To Do</a>
+      <a href="fishing.html">Fishing</a>
+      <a href="directory.html">Local Guide</a>
+      <a href="events.html">Events</a>
+      <a href="plan-your-visit.html">Plan Your Visit</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <div class="condstrip"><a href="conditions.html"><b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake</a></div>
+    </nav>
+  </div>
+</header>
+
+<section class="pagehero">
+  <div class="wrap">
+    <div class="eyebrow">Right now at the lake · updated <span id="updTime">—</span></div>
+    <h1>Live conditions at Vallecito</h1>
+    <p>Everything that matters before you head up — pulled from the marina station, USGS, the National Weather Service, NIFC, and CDOT, refreshed every 15 minutes. Updates in the background so it loads instantly.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div id="fireBanner" class="restriction-banner is-warn" hidden></div>
+
+    <!-- summary dashboard (same six tiles as home) -->
+    <div class="grid" aria-live="polite" aria-label="Live conditions summary">
+      <a class="tile c-weather" id="tile-weather" href="#weather">
+        <h3>🌡️ Weather · at the marina</h3><span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="wxTemp">—°</div>
+        <div class="small" id="wxDesc">—</div>
+        <div class="src" id="wxSrc">Wunderground PWS</div>
+      </a>
+      <a class="tile c-lake" id="tile-lake" href="#lake">
+        <h3>💧 Lake level</h3><span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="lakePct">—%</div>
+        <div class="gauge"><i id="lakeFill" style="width:0%"></i></div>
+        <div class="small" id="lakeStore">— of full · Vallecito Reservoir</div>
+        <div class="src">USBR / USGS</div>
+      </a>
+      <a class="tile c-alert" id="tile-alert" href="#alerts">
+        <h3>⚠️ Alert status</h3>
+        <div class="big" id="alertBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> All clear</span></div>
+        <div class="small" id="alertMsg" style="margin-top:8px">No red-flag warnings or fire restrictions in effect.</div>
+        <div class="src">NWS · San Juan NF</div>
+      </a>
+      <a class="tile c-fire" id="tile-fire" href="#wildfires">
+        <h3>🔥 Wildfires · within 50 mi</h3><span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="fireCount">—</div>
+        <div class="small" id="fireMsg">active incidents</div>
+        <div class="src">NIFC · InciWeb</div>
+      </a>
+      <a class="tile c-stream" id="tile-stream" href="#streamflow">
+        <h3>🏞️ Streamflow in</h3><span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="streamVal">—</div>
+        <div class="small" id="streamMsg">Vallecito Creek + Pine River</div>
+        <div class="src">USGS</div>
+      </a>
+      <a class="tile c-road" id="tile-road" href="#roads">
+        <h3>🛣️ Roads · US 160 / CR 501</h3>
+        <div class="big" id="roadBig" style="font-size:1.15rem;margin-top:8px"><span class="pill pill-ok"><span class="dot dot-ok"></span> Clear</span></div>
+        <div class="small" id="roadMsg" style="margin-top:8px">No active CDOT alerts on the Durango access route.</div>
+        <div class="src">CDOT · COtrip</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Weather ===== -->
+<section class="band alt anchor-offset" id="weather">
+  <div class="wrap">
+    <div class="eyebrow">Weather · at the marina</div>
+    <h2 class="sec-title">Current weather &amp; 5-day forecast</h2>
+    <p class="sec-lead">Primary reading from the marina's Weather Underground station; National Weather Service for the forecast and as a fallback. Source: <span id="wxSource">—</span>.</p>
+    <div class="databand">
+      <div class="panel">
+        <h3>🌡️ Right now</h3>
+        <div class="kv">
+          <div><b id="wxTemp2">—°</b><span>Temp</span></div>
+          <div><b id="wxWind">—</b><span>Wind</span></div>
+          <div><b id="wxHumidity">—</b><span>Humidity</span></div>
+        </div>
+        <p class="muted" id="wxDesc2">—</p>
+      </div>
+      <div class="panel">
+        <h3>📅 Today</h3>
+        <div class="kv">
+          <div><b id="wxHigh">—</b><span>High</span></div>
+          <div><b id="wxLow">—</b><span>Low</span></div>
+        </div>
+        <div class="forecast" id="wxForecast"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Alerts ===== -->
+<section class="band anchor-offset" id="alerts">
+  <div class="wrap">
+    <div class="eyebrow">Weather alerts &amp; fire restrictions</div>
+    <h2 class="sec-title">Active alerts</h2>
+    <p class="sec-lead">National Weather Service active alerts for the lake area, plus the current fire-restriction stage issued by San Juan National Forest / La Plata County. Red Flag Warnings and Stage 1/2 bans raise the alert level above.</p>
+    <ul class="datalist" id="alertItems"><li class="muted">Loading…</li></ul>
+  </div>
+</section>
+
+<!-- ===== Wildfires ===== -->
+<section class="band alt anchor-offset" id="wildfires">
+  <div class="wrap">
+    <div class="eyebrow">Active wildfires · within 50 mi</div>
+    <h2 class="sec-title">Wildfire activity</h2>
+    <p class="sec-lead">Incident count and nearest fire within 50 miles of the lake, from the NIFC WFIGS feed. For official write-ups see <a href="https://inciweb.wildfire.gov">InciWeb</a>; for real-time alerts, <a href="https://app.watchduty.org">Watch Duty</a>.</p>
+    <div class="databand">
+      <div class="panel"><h3>🔥 Within 50 miles</h3><div class="kv"><div><b id="fireCount2">—</b><span>Active incidents</span></div></div><p class="muted" id="fireNearest">—</p></div>
+      <div class="panel"><h3>Stay aware</h3><p class="muted">Smoke and closures can change fast in fire season. Check before you tow a boat up, and have an exit plan — there's effectively one road in.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Lake level ===== -->
+<section class="band anchor-offset" id="lake">
+  <div class="wrap">
+    <div class="eyebrow">Lake level</div>
+    <h2 class="sec-title">Vallecito Reservoir</h2>
+    <p class="sec-lead">Storage and pool elevation from USGS gauge 09353000, with percent-of-full against the reservoir's ~129,700 acre-foot capacity (cross-checked with USBR). PRID publishes levels too.</p>
+    <div class="databand">
+      <div class="panel">
+        <h3>💧 Storage</h3>
+        <div class="kv">
+          <div><b id="lakePct2">—%</b><span>Of full</span></div>
+          <div><b id="lakeElev">—</b><span>Elevation</span></div>
+        </div>
+        <div class="gauge"><i id="lakeFill2" style="width:0%"></i></div>
+        <p class="muted" id="lakeStore2">—</p>
+      </div>
+      <div class="panel"><h3>What it means</h3><p class="muted">Low water pulls ramps and changes where fish hold; high water after a big snow year can cover the swim beach at the north end. The marina (970) 884-7000 has the day-to-day read.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Streamflow ===== -->
+<section class="band alt anchor-offset" id="streamflow">
+  <div class="wrap">
+    <div class="eyebrow">Streamflow into Vallecito</div>
+    <h2 class="sec-title">Inflow gauges</h2>
+    <p class="sec-lead">Combined discharge from the two creeks feeding the lake, USGS instantaneous values.</p>
+    <ul class="datalist" id="streamGauges"><li class="muted">Loading…</li></ul>
+  </div>
+</section>
+
+<!-- ===== Roads ===== -->
+<section class="band anchor-offset" id="roads">
+  <div class="wrap">
+    <div class="eyebrow">Road conditions · US 160 / CR 501</div>
+    <h2 class="sec-title">Getting up the hill</h2>
+    <p class="sec-lead">CDOT/COtrip alerts on the Durango access route (US-160) and CR 501. Statewide info: dial <a href="tel:511">511</a> or see <a href="https://www.cotrip.org">COtrip</a>.</p>
+    <div class="databand">
+      <div class="panel"><h3>🛣️ Status</h3><div id="roadBig2" style="font-size:1.2rem"><span class="pill pill-ok"><span class="dot dot-ok"></span> Clear</span></div><p class="muted" id="roadMsg2" style="margin-top:8px">—</p></div>
+      <div class="panel"><h3>Winter note</h3><p class="muted">CR 501 climbs and can ice over before US-160 does. In storms, carry chains or run good snow tires — and check before an early-morning fishing run.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Trusted sources ===== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Trusted sources</div>
+    <h2 class="sec-title">Where this data comes from</h2>
+    <p class="sec-lead">We pull from the same official feeds the agencies publish. Go straight to them anytime.</p>
+    <div class="sources">
+      <div class="grp">
+        <h4>Fire &amp; Safety</h4>
+        <a href="https://app.watchduty.org">Watch Duty</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb</a>
+        <a href="https://www.lpcgov.org/departments/emergency_management/">LPC Emergency Mgmt / LPC Alerts</a>
+        <a href="https://www.upperpinefire.org">Upper Pine River Fire</a>
+        <a href="https://vallecitofloodrecovery.com">Vallecito Flood Recovery</a>
+        <a href="https://www.nfpa.org/firewise">Firewise USA</a>
+      </div>
+      <div class="grp">
+        <h4>Lake &amp; Recreation</h4>
+        <a href="https://pineriverirrigationdistrict.com">PRID permits</a>
+        <a href="https://vallecitolakemarina.net">Vallecito Marina</a>
+        <a href="https://www.fs.usda.gov/sanjuan">USFS Columbine RD</a>
+        <a href="https://cpw.state.co.us">CPW rec-lands brochure</a>
+        <a href="https://carvingsatvallecito.org">Tour of Carvings</a>
+        <a href="https://vallecitonordic.org">Vallecito Nordic</a>
+      </div>
+      <div class="grp">
+        <h4>Community</h4>
+        <a href="https://www.facebook.com/VallecitoLakeChamber">Vallecito Lake Chamber (FB)</a>
+        <a href="https://www.cotrip.org">COtrip</a>
+        <a href="https://www.lpcgov.org">La Plata County</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap cols">
+    <div>
+      <div class="brand" style="color:#fff;font-size:1.2rem">GoVallecito<span style="color:#9fe6d6">.com</span></div>
+      <p style="max-width:38ch">A community hub for Vallecito Lake, Colorado — conditions, local businesses, and what to do up here. Independently owned and locally operated.</p>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <p class="linklist">
+        <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
+        <a href="fishing.html">Fishing</a><a href="directory.html">Local Guide</a>
+        <a href="events.html">Events</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+      </p>
+    </div>
+    <div>
+      <h3>Trusted sources</h3>
+      <p class="linklist">
+        <a href="https://forecast.weather.gov/MapClick.php?lat=37.3361&lon=-107.5617">National Weather Service</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb (wildfire)</a>
+        <a href="https://waterdata.usgs.gov">USGS Water Data</a>
+        <a href="https://www.cotrip.org">CDOT Travel</a>
+        <a href="https://pineriverirrigationdistrict.com">PRID</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrap copy">© 2026 GoVallecito.com · Made with care in the San Juans · 7,665 ft</div>
+</footer>
+
+<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/conditions.js" defer></script>
+</body>
+</html>

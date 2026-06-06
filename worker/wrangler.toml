@@ -1,0 +1,44 @@
+name = "govallecito-conditions"
+main = "conditions-worker.js"
+compatibility_date = "2026-01-01"
+
+# 15-minute refresh
+[triggers]
+crons = ["*/15 * * * *"]
+
+# Production data route: the Worker owns GET /data/conditions.json on the live
+# domain and serves it from KV (its fetch handler already does this). A Worker
+# route on the same zone takes precedence over the Cloudflare Pages static site
+# for this one path, so the site keeps reading same-origin /data/conditions.json
+# with live data, while Pages serves everything else statically.
+# Requires the custom domain (govallecito.com) to be on this Cloudflare account.
+# Uncomment after the domain is added; update the zone_name if different.
+# routes = [
+#   { pattern = "govallecito.com/data/conditions.json", zone_name = "govallecito.com" },
+#   { pattern = "www.govallecito.com/data/conditions.json", zone_name = "govallecito.com" }
+# ]
+
+# KV namespace for the cached conditions.json
+# Create with:  npx wrangler kv namespace create CONDITIONS
+# then paste the id below.
+[[kv_namespaces]]
+binding = "CONDITIONS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+# Non-secret config (safe to commit). Uncomment + fill when known:
+[vars]
+# URL of the committed restrictions.json on the live site; the worker reads it
+# every cron to fold the editor's Stage 1/2 fire-ban toggle into the Alert tile.
+RESTRICTIONS_URL = "https://govallecito.com/data/restrictions.json"
+# CDOT/COtrip feed endpoint for US-160 + CR 501 (confirm on their dev portal).
+# Leave unset to keep Roads on a safe "Clear" default until the endpoint is known.
+# CDOT_ENDPOINT = ""
+# WU_STATION_ID may be set here (non-secret) or as a secret. e.g.:
+# WU_STATION_ID = "KCOBAYFI12"
+
+# Secrets (set with `npx wrangler secret put NAME`, never commit them):
+#   WU_API_KEY       free Weather Underground PWS key (from marina's WU member settings)
+#   WU_STATION_ID    e.g. KCOBAYFI12  (or set as a [vars] entry above)
+#   ACCUWEATHER_KEY  optional backup
+#   CDOT_KEY         optional, for CDOT/COtrip feed
+#   AIRNOW_KEY       optional, air quality
