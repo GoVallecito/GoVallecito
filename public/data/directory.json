@@ -24,14 +24,18 @@
       "blurb": "Groceries, the La Comida Ranchera kitchen, and liquor — plus the lake-area gas stop with non-ethanol fuel and propane, great for boats, ATVs, and small engines.",
       "phone": "(970) 884-0844", "facebook": "https://facebook.com/VallecitoLakeCountryMarket",
       "address": "18071 CR 501, Bayfield, CO", "hours": "Mon 7–7 · Thu–Sat 7–7 · Sun 7–3 · Tue–Wed closed",
-      "highlight": "Non-ethanol fuel", "badge": "GoVallecito Partner",
+      "highlight": "Non-ethanol fuel", "image": "/assets/img/featured/countrymarket.gif", "badge": "GoVallecito Partner",
       "cta": { "label": "Message on Facebook →", "href": "https://facebook.com/VallecitoLakeCountryMarket" }
     },
     {
       "slug": "blue-spruce", "name": "Blue Spruce RV Park & Cabins", "category": "Lodging", "tier": "featured",
       "blurb": "RV sites (≈May–Nov) and cabins (year-round) near the lake — a relaxed, wooded basecamp for a Vallecito stay.",
-      "phone": "(970) 884-2641", "website": "https://bluesprucervpark.com", "badge": "GoVallecito Partner",
-      "cta": { "label": "Visit bluesprucervpark.com →", "href": "https://bluesprucervpark.com" }
+      "phone": "(970) 884-2641", "website": "https://bluesprucervpark.com",
+      "facebook": "https://facebook.com/Blue-Spruce-RV-Park-Cabins-168321524197",
+      "instagram": "https://instagram.com/funstaysllc", "youtube": "https://youtube.com/@BlueSpruceRVPark",
+      "booking": "https://bookingsus.newbook.cloud/bluesprucervpark", "address": "1875 CR 500, Bayfield, CO",
+      "image": "/assets/img/featured/bluespruce-logo.png", "badge": "GoVallecito Partner",
+      "cta": { "label": "Book a site →", "href": "https://bookingsus.newbook.cloud/bluesprucervpark" }
     },
     {
       "slug": "coronado", "name": "Coronado Consulting & Fire Mitigation", "category": "Local Services", "tier": "featured",

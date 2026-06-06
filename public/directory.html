@@ -94,6 +94,13 @@
   function telHref(p){return 'tel:'+p.replace(/[^0-9+]/g,'');}
   function host(u){return String(u).replace(/^https?:\/\//,'').replace(/\/$/,'');}
 
+  // Small monochrome brand glyphs (inherit the row's link color via currentColor).
+  var SVG = {
+    facebook: '<svg viewBox="0 0 24 24" width="16" height="16" aria-label="Facebook" role="img" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.14 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.8 8.44-4.94 8.44-9.94Z"/></svg>',
+    instagram: '<svg viewBox="0 0 24 24" width="16" height="16" aria-label="Instagram" role="img" fill="currentColor"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.07.05 1.8.22 2.43.47.66.25 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.63.42 1.36.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.07-.22 1.8-.47 2.43a4.9 4.9 0 0 1-1.15 1.77c-.55.55-1.11.9-1.77 1.15-.63.25-1.36.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.07-.05-1.8-.22-2.43-.47a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.25-.63-.42-1.36-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.07.22-1.8.47-2.43.25-.66.6-1.22 1.15-1.77.55-.55 1.11-.9 1.77-1.15.63-.25 1.36-.42 2.43-.47C8.94 2.01 9.28 2 12 2Zm0 1.8c-2.67 0-2.99.01-4.04.06-.98.04-1.51.21-1.86.35-.47.18-.8.4-1.15.75-.35.35-.57.68-.75 1.15-.14.35-.31.88-.35 1.86-.05 1.05-.06 1.37-.06 4.04s.01 2.99.06 4.04c.04.98.21 1.51.35 1.86.18.47.4.8.75 1.15.35.35.68.57 1.15.75.35.14.88.31 1.86.35 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.98-.04 1.51-.21 1.86-.35.47-.18.8-.4 1.15-.75.35-.35.57-.68.75-1.15.14-.35.31-.88.35-1.86.05-1.05.06-1.37.06-4.04s-.01-2.99-.06-4.04c-.04-.98-.21-1.51-.35-1.86a3.1 3.1 0 0 0-.75-1.15 3.1 3.1 0 0 0-1.15-.75c-.35-.14-.88-.31-1.86-.35-1.05-.05-1.37-.06-4.04-.06Zm0 3.06a5.14 5.14 0 1 1 0 10.28 5.14 5.14 0 0 1 0-10.28Zm0 1.8a3.34 3.34 0 1 0 0 6.68 3.34 3.34 0 0 0 0-6.68Zm5.34-3.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg>',
+    youtube: '<svg viewBox="0 0 24 24" width="16" height="16" aria-label="YouTube" role="img" fill="currentColor"><path d="M23 12s0-3.2-.41-4.73a2.46 2.46 0 0 0-1.73-1.74C19.34 5.13 12 5.13 12 5.13s-7.34 0-8.86.4A2.46 2.46 0 0 0 1.41 7.27 25.7 25.7 0 0 0 1 12a25.7 25.7 0 0 0 .41 4.73 2.46 2.46 0 0 0 1.73 1.74c1.52.4 8.86.4 8.86.4s7.34 0 8.86-.4a2.46 2.46 0 0 0 1.73-1.74C23 15.2 23 12 23 12Zm-13 3.27V8.73L15.5 12 10 15.27Z"/></svg>'
+  };
+
   function contactRow(b){
     var x=[];
     if(Array.isArray(b.phones)) b.phones.forEach(function(ph){ x.push('<a href="'+telHref(ph.number)+'"><span class="ico">📞</span>'+esc(ph.number)+(ph.name?' ('+esc(ph.name)+')':'')+'</a>'); });
@@ -101,8 +108,9 @@
     if(b.website)  x.push('<a href="'+esc(b.website)+'" rel="noopener"><span class="ico">🌐</span>'+esc(host(b.website))+'</a>');
     if(b.email)    x.push('<a href="mailto:'+esc(b.email)+'"><span class="ico">✉️</span>email</a>');
     if(b.booking)  x.push('<a href="'+esc(b.booking)+'" rel="noopener"><span class="ico">📅</span>book</a>');
-    if(b.facebook) x.push('<a href="'+esc(b.facebook)+'" rel="noopener"><span class="ico">f</span>Facebook</a>');
-    if(b.instagram)x.push('<a href="'+esc(b.instagram)+'" rel="noopener"><span class="ico">◎</span>Instagram</a>');
+    if(b.facebook) x.push('<a class="soc" href="'+esc(b.facebook)+'" rel="noopener" aria-label="Facebook" title="Facebook">'+SVG.facebook+'</a>');
+    if(b.instagram)x.push('<a class="soc" href="'+esc(b.instagram)+'" rel="noopener" aria-label="Instagram" title="Instagram">'+SVG.instagram+'</a>');
+    if(b.youtube)  x.push('<a class="soc" href="'+esc(b.youtube)+'" rel="noopener" aria-label="YouTube" title="YouTube">'+SVG.youtube+'</a>');
     if(b.address)  x.push('<span><span class="ico">📍</span>'+esc(b.address)+'</span>');
     return x.length ? '<div class="contacts">'+x.join('')+'</div>' : '';
   }
