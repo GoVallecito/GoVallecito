@@ -29,7 +29,7 @@ id = "e98b1300cb02405cb6da4f417c51b80c"
 [vars]
 # URL of the committed restrictions.json on the live site; the worker reads it
 # every cron to fold the editor's Stage 1/2 fire-ban toggle into the Alert tile.
-RESTRICTIONS_URL = "https://govallecito.com/data/restrictions.json"
+RESTRICTIONS_URL = "https://govallecito-web.pages.dev/data/restrictions.json"
 # CDOT/COtrip feed endpoint for US-160 + CR 501 (confirm on their dev portal).
 # Leave unset to keep Roads on a safe "Clear" default until the endpoint is known.
 # CDOT_ENDPOINT = ""

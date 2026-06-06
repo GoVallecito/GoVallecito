@@ -18,7 +18,7 @@
     // Lead text shown before the link (plain text; emoji ok).
     text: '🏡 Thinking about a place at the lake? Julie Coffelt — Vallecito local, 15 years at the lake, Coldwell Banker Mountain Properties.',
     // Optional small avatar shown at the start of the bar (empty string = none).
-    image: '/assets/img/Julie_Coffelt.png',
+    image: '',
     // Call-to-action link.
     linkText: 'See current Vallecito listings →',
     linkHref: '/real-estate-partner.html',

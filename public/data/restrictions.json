@@ -1,8 +1,10 @@
 {
-  "_comment": "EDITOR-CONTROLLED fire restrictions. This is the ONE piece with no machine feed. Edit this file when San Juan NF / La Plata County / PRID issue or lift a Stage 1 or Stage 2 fire ban. The conditions worker reads it every 15 min and folds it into the Alert tile. See worker/README.md and docs/DATA-SOURCES.md section 3.",
-  "stage": "none",
-  "issuedBy": "",
-  "url": "",
-  "note": "",
+  "_comment": "EDITOR-CONTROLLED fire restrictions. The conditions worker reads it every 15 min and folds it into the Alert tile + the /conditions banner. To change: set stage to none|1|2 and update the fields. See docs/FIRE-RESTRICTIONS.md and worker/README.md.",
+  "stage": "1",
+  "issuedBy": "San Juan National Forest",
+  "scope": "NF lands below 8,000 ft (incl. Vallecito Lake); designated Wilderness excluded",
+  "effective": "2026-05-22",
+  "summary": "No campfires, charcoal, or wood/coal stove fires; no outdoor smoking. Propane/gas stoves OK. $530 min fine.",
+  "url": "https://www.fs.usda.gov/r02/sanjuan/newsroom/forest-orders",
   "updated": "2026-06-05"
 }

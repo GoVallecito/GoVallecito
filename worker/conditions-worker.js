@@ -322,7 +322,7 @@ async function getRoads(env) {
 async function getRestrictions(env) {
   if (!env.RESTRICTIONS_URL) return { stage: "none" };
   const j = await getJson(env.RESTRICTIONS_URL);
-  return { stage: j.stage || "none", issuedBy: j.issuedBy, url: j.url, note: j.note };
+  return { stage: j.stage || "none", issuedBy: j.issuedBy, url: j.url, note: j.note || j.summary };
 }
 
 // Fold the editor restriction stage into the NWS-derived alert tile, applying
@@ -342,7 +342,8 @@ function mergeRestrictionStage(alert, restrictions) {
     if (!alert.redFlag) alert.title = `Stage ${stage} fire restrictions`;
   }
   const extra = `Stage ${stage} fire restrictions in effect` +
-    (restrictions.issuedBy ? ` (${restrictions.issuedBy})` : "") + ".";
+    (restrictions.issuedBy ? ` (${restrictions.issuedBy})` : "") + "." +
+    (restrictions.note ? " " + restrictions.note : "");
   alert.msg = alert.level === "ok" || /no red-flag/i.test(alert.msg) ? extra : `${alert.msg} ${extra}`;
   return alert;
 }
