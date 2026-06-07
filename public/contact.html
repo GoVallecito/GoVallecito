@@ -68,25 +68,11 @@
 
 <section class="band">
   <div class="wrap">
-    <form class="form" id="contactForm" onsubmit="return false">
-      <label>Name<input type="text" name="name" required></label>
-      <label>Email<input type="email" name="email" required></label>
-      <label>Topic
-        <select name="topic">
-          <option>Correction / update</option>
-          <option>Business listing</option>
-          <option>Event submission</option>
-          <option>General question</option>
-          <option>Other</option>
-        </select>
-      </label>
-      <label>Message<textarea name="message" required placeholder="What's on your mind?"></textarea></label>
-      <!-- honeypot anti-spam field (leave blank) -->
-      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn btn-primary" style="background:var(--pine);color:#fff" type="submit">Send</button>
-      <p class="muted" id="formNote" style="display:none">Thanks — we got it. (Demo form: wire to email/CRM before launch.)</p>
-    </form>
-    <p class="muted" style="margin-top:20px">In an emergency, don't use this form — call <a href="tel:911">911</a>. Lake and emergency numbers are on the <a href="index.html#conditions">home page</a>.</p>
+    <p class="sec-lead">Email us directly — corrections, business listings, events, or just a question about the lake. We read everything and reply when we can.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" style="background:var(--pine);color:#fff" href="mailto:contact@govallecito.com">✉️ Email contact@govallecito.com</a>
+    </div>
+    <p class="muted" style="margin-top:16px">Spot an error in our conditions or listings? See <a href="sources.html#corrections">corrections</a>. In an emergency, don't email — call <a href="tel:911">911</a>; lake &amp; emergency numbers are on the <a href="conditions.html#contacts">conditions page</a>.</p>
   </div>
 </section>
 
@@ -123,12 +109,5 @@
 
 <script src="/assets/js/nav.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
-<script>
-document.getElementById('contactForm').addEventListener('submit', function () {
-  if (this.website.value) return; // honeypot tripped — ignore
-  document.getElementById('formNote').style.display = 'block';
-  this.reset();
-});
-</script>
 </body>
 </html>

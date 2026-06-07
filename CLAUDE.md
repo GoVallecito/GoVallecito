@@ -77,6 +77,21 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   (FS pages 403/404), Johnson Creek (no drive-to TH), PRID public ramp, Grimes Creek inlet pin, most
   businesses (Country Market/Weminuche/Rocky Mtn GS/lodges), emergency stations, road pull-off viewpoints.
   Add these to `map-pois.json` with a `src` once coordinates are verified.
+- **DONE — Round 18 (persona-panel fixes; built, verified, deployed Pages + Worker, pushed):** A1 lake
+  copy now cites USACE/USBR (dead USGS 09353000 removed); A2 real-estate demo form → direct phone/email/
+  site buttons + IDX scaffolding copy removed (also fixed the same demo-form on contact.html → direct
+  email); A3 years unified to "25+ years in Four Corners" (meta lake-residency dropped — CONFIRM exact
+  number w/ Julie); A4 getRoads() now uses a tight per-route corridor box (verified: Molas Pass dropped,
+  Durango US-550 kept); A5 LAKE_STALE_MS 7d→72h (verified: 5-day-old reading now flags stale); A6 nav
+  current on all 20 pages; A7 drive time standardized to "~45 min from Durango (23 mi)". B1 PRID fees
+  ($6/day veh, $50/yr, $12/day boat, SUP/kayak vehicle-only; buy online/marina/Vallecito Resort; ramp
+  May 1–Nov 1) on home/plan/things-to-do/fishing/first-visit; B2 where-to-eat on things-to-do; B3 Mercy
+  Hospital ER (970) 247-4311 on conditions + first-visit; B4 "one road in"→"one paved route in (CR 501)"
+  + Florida Rd alt, "≈7,665 ft at full pool", Missionary Ridge in firewise; B5 living-here cards delinked
+  w/ "Guide coming soon"; B6 home "Talk to Julie" quick-action removed. **FLAG for David:** confirm Julie's
+  exact years/lake-residency; Bayfield clinic name/phone not verified (listed Mercy + 911 only).
+  **Round 19 (parked):** camping/RV section + next map-pin batch (swim area, PRID ramp, Grimes inlet,
+  eateries) + perch section.
 - **Insider Q&A:** `docs/DAVID-QA-INSIDER.md` — 20 questions David answers inline async. When he says
   "Q&A has answers," turn them into fishing insider notes, seasonal pages, and Insider-tips content
   (verify anything he marks "verify"). Skipped for now: community submissions.

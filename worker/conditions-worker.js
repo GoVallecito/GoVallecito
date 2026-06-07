@@ -98,7 +98,7 @@ async function safe(fn, prevVal) {
  * so a stale-but-not-erroring feed can never sneak through again.
  * See docs/DATA-SOURCES.md §5. */
 const LAKE_MAX_AGE_MS = 45 * 864e5;   // reject any reading older than ~45 days (kills the 2012 trap)
-const LAKE_STALE_MS   = 7 * 864e5;    // flag stale if older than ~7 days (USBR daily revision lags a few days)
+const LAKE_STALE_MS   = 3 * 864e5;    // flag stale if older than 72h (USBR daily revision lags 2–3 days; 48h would false-flag)
 const ELEV_MIN = 7500, ELEV_MAX = 7700; // sane Vallecito pool-elevation band (full pool 7665 ft)
 
 async function getLake() {
@@ -351,7 +351,16 @@ async function getFires() {
  * CR 501 leg isn't CDOT-reported (use the live cameras). A geographic box keeps us
  * to the Durango corner regardless of feed ordering. Cameras are a separate COtrip
  * subscription not on this key (404), so the camera tiles stay deep-links. */
-const ROAD_BOX = { latMin: 36.9, latMax: 37.85, lonMin: -108.5, lonMax: -106.7 };
+// Tight Durango-access corridor, checked on a feature's OWN coordinate (not route
+// name alone): US 550 just south of Purgatory/Hermosa down to Durango; US 160 from
+// west Durango east to ~Chimney Rock. Keeps Molas Pass + Pagosa→South Fork out.
+function inCorridor(routeName, lat, lon) {
+  if (lat == null || lon == null || isNaN(lat) || isNaN(lon)) return false;
+  const rn = (routeName || "").toUpperCase();   // matches "US 550", "US-550", "US550", "US-550N"
+  if (/US[\s-]?550/.test(rn)) return lat >= 37.20 && lat <= 37.46 && lon >= -108.00 && lon <= -107.70;
+  if (/US[\s-]?160/.test(rn)) return lat >= 37.15 && lat <= 37.45 && lon >= -107.95 && lon <= -107.00;
+  return false;
+}
 const ROAD_SCOPE = "Durango-area state highways (US 550 · US 160); CR 501 isn't covered by CDOT.";
 const ROAD_NOTE  = "The final leg (CR 501) isn't CDOT-reported — check the live cameras or dial 511.";
 
@@ -362,8 +371,6 @@ async function getRoads(env) {
              msg: "Live CDOT status unavailable. Check the cameras or dial 511.", note: ROAD_NOTE };
   }
   const base = "https://data.cotrip.org/api/v1/";
-  const inBox = (lat, lon) => lat != null && lon != null &&
-    lat >= ROAD_BOX.latMin && lat <= ROAD_BOX.latMax && lon >= ROAD_BOX.lonMin && lon <= ROAD_BOX.lonMax;
 
   // --- incidents on US 160 / US 550 in our corner (the actionable signal) ---
   let incidents = [];
@@ -377,7 +384,7 @@ async function getRoads(env) {
         const c = Array.isArray(g.coordinates[0]) ? g.coordinates[0] : g.coordinates;
         if (Array.isArray(c)) { lon = c[0]; lat = c[1]; }
       }
-      return inBox(lat, lon) || /region\s*5/i.test(p.region || "");   // CDOT Region 5 = southwest CO
+      return inCorridor(p.routeName, lat, lon);   // tight geo box, not region/name alone
     }).map(f => {
       const p = f.properties;
       // Real closure = actual lane closures (count > 0 / closed lane types), or the
@@ -399,7 +406,11 @@ async function getRoads(env) {
     segments = (rj.features || []).filter(f => {
       const p = f.properties || {};
       if (!/^US 160$|^US 550$/.test(p.routeName || "")) return false;
-      return inBox(p.primaryLatitude, p.primaryLongitude) || inBox(p.secondaryLatitude, p.secondaryLongitude);
+      const midLat = (p.primaryLatitude + p.secondaryLatitude) / 2;
+      const midLon = (p.primaryLongitude + p.secondaryLongitude) / 2;
+      return inCorridor(p.routeName, p.primaryLatitude, p.primaryLongitude)
+          || inCorridor(p.routeName, p.secondaryLatitude, p.secondaryLongitude)
+          || inCorridor(p.routeName, midLat, midLon);
     }).map(f => {
       const p = f.properties;
       // pick the first real surface condition (skip "forecast text"/"no data" fillers)
@@ -429,7 +440,7 @@ async function getRoads(env) {
     const s = segments.find(s => /snow|ice|icy|pack|slush|wet/.test(s.cond || ""));
     msg = `${s.route}: ${s.cond}.`;
   } else {
-    msg = "No active CDOT incidents on US 550 / US 160 near Durango.";
+    msg = "No reported issues on the Durango access corridor.";
   }
 
   return {

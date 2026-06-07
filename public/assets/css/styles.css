@@ -203,6 +203,9 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 .recard h3{padding:16px 18px 0}
 .recard p{padding:0 18px;margin:0}
 .recard .ecard-cta{margin-top:auto;padding:0 18px 18px;font-weight:700;color:var(--lake)}
+/* "Guide coming soon" tag for not-yet-written Living-Here cards (no dead links) */
+.soon-tag{margin-top:auto;align-self:flex-start;font-weight:700;font-size:.78rem;color:var(--ink-soft);
+  background:var(--sand-2);border:1px solid var(--line);border-radius:999px;padding:3px 11px}
 
 /* newsletter form */
 .nl-form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
