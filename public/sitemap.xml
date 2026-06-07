@@ -12,7 +12,7 @@
   </url>
   <url>
     <loc>https://govallecito.com/business/pine-river-lodge</loc>
-    <lastmod>2026-06-06</lastmod>
+    <lastmod>2026-06-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
@@ -88,6 +88,10 @@
   <url>
     <loc>https://govallecito.com/things-to-do</loc>
     <lastmod>2026-06-07</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://govallecito.com/trails</loc>
     <priority>0.7</priority>
   </url>
   <url>

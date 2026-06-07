@@ -35,6 +35,7 @@
         <div class="navmenu" role="menu">
           <a href="things-to-do.html" role="menuitem">Things To Do</a>
           <a href="fishing.html" role="menuitem">Fishing</a>
+          <a href="trails.html" role="menuitem">Trails</a>
           <a href="map.html" role="menuitem" class="active" aria-current="page">Lake Map</a>
         </div>
       </div>
@@ -138,6 +139,12 @@
 (function () {
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function telHref(p){return 'tel:'+String(p).replace(/[^0-9+]/g,'');}
+  // The POI name IS the link (external opens a new tab; directory/anchor links stay same-tab).
+  function nameLink(p){
+    if (!p.link) return '<b>' + esc(p.name) + '</b>';
+    var ext = /^https?:/.test(p.link) ? ' target="_blank" rel="noopener"' : '';
+    return '<a href="' + esc(p.link) + '"' + ext + '><b>' + esc(p.name) + '</b></a>';
+  }
 
   fetch('/data/map-pois.json', { cache: 'no-store' })
     .then(function (r) { if (!r.ok) throw new Error('pois'); return r.json(); })
@@ -175,9 +182,8 @@
       var icon = L.divIcon({ className: '', html: '<div class="map-emoji-icon">' + cat.emoji + '</div>',
         iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12] });
       var m = L.marker([p.lat, p.lng], { icon: icon, title: p.name });
-      var html = '<b>' + esc(p.name) + '</b>';
+      var html = nameLink(p);                       // name itself is the link (no trailing "info")
       if (p.blurb) html += '<br>' + esc(p.blurb);
-      if (p.link) html += '<br><a href="' + esc(p.link) + '"' + (/^https?:/.test(p.link) ? ' target="_blank" rel="noopener"' : '') + '>More info →</a>';
       if (p.phone) html += '<br><a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>';
       m.bindPopup(html);
       m.addTo(groups[p.category]);
@@ -219,8 +225,7 @@
       if (!list.length) return;
       html += '<h3>' + cat.emoji + ' ' + esc(cat.label) + '</h3><ul>';
       list.forEach(function (p) {
-        html += '<li><b>' + esc(p.name) + '</b>' + (p.blurb ? ' — ' + esc(p.blurb) : '') +
-          (p.link ? ' <a href="' + esc(p.link) + '"' + (/^https?:/.test(p.link) ? ' target="_blank" rel="noopener"' : '') + '>info</a>' : '') +
+        html += '<li>' + nameLink(p) + (p.blurb ? ' — ' + esc(p.blurb) : '') +
           (p.phone ? ' · <a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>' : '') + '</li>';
       });
       html += '</ul>';

@@ -25,27 +25,109 @@ const CAPACITY_AF = 129700;          // Vallecito Reservoir capacity (confirmed)
 const RADIUS_M = 80467;              // 50 mi in meters (fire search radius)
 const UA = "GoVallecito.com (contact@govallecito.com)"; // NWS requires a descriptive UA
 const KV_KEY = "conditions";
+const WEEKLY_KEY = "weekly-water";
+const JSON_CORS = { "content-type": "application/json", "cache-control": "max-age=300",
+                    "access-control-allow-origin": "*" };
 
 export default {
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(refresh(env));
+    // Two crons (see wrangler.toml): the 15-min one refreshes conditions; the
+    // Sunday one regenerates the weekly "This week on the water" summary.
+    if (event.cron === "0 13 * * SUN") ctx.waitUntil(generateWeeklyWater(env));
+    else ctx.waitUntil(refresh(env));
   },
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/data/conditions.json") {
       const cached = await env.CONDITIONS.get(KV_KEY);
-      return new Response(cached || JSON.stringify(fallback()), {
-        headers: { "content-type": "application/json", "cache-control": "max-age=300",
-                   "access-control-allow-origin": "*" }
-      });
+      return new Response(cached || JSON.stringify(fallback()), { headers: JSON_CORS });
+    }
+    if (url.pathname === "/data/weekly-water.json") {
+      const cached = await env.CONDITIONS.get(WEEKLY_KEY);
+      return new Response(cached || JSON.stringify({ auto: true, bullets: [], updated: null }), { headers: JSON_CORS });
     }
     if (url.pathname === "/__refresh") {           // manual trigger for testing
       const out = await refresh(env);
       return new Response(JSON.stringify(out, null, 2), { headers: { "content-type": "application/json" } });
     }
+    if (url.pathname === "/__weekly") {             // manual trigger to seed/test the weekly summary
+      const out = await generateWeeklyWater(env);
+      return new Response(JSON.stringify(out, null, 2), { headers: { "content-type": "application/json" } });
+    }
     return new Response("Not found", { status: 404 });
   }
 };
+
+/* ---------- WEEKLY "This week on the water" (Sunday cron) ----------
+ * Composes a short, honest summary from the LIVE conditions KV + a static 12-month
+ * fishing-calendar table (mirrors fishing.html's calendar). No invented data: every
+ * bullet derives from a live feed or the month table; lake trend is computed against
+ * the previous weekly snapshot stored alongside. Served at /data/weekly-water.json. */
+const MONTHLY_BITE = [
+  "ice fishing — jig for trout & perch through the ice (where ice is safe)",          // Jan
+  "ice fishing; the local ice-fishing tournament is late this month",                  // Feb
+  "late ice transitioning to open water — be cautious on the ice",                     // Mar
+  "ice-out — pike and rainbow trout move into the shallows",                           // Apr
+  "pike, trout, and early walleye as spring runoff builds",                            // May
+  "kokanee trolling starts; smallmouth and trout too — fish early before the wind",    // Jun
+  "kokanee, smallmouth, and trout — dawn starts; watch afternoon thunderstorms",       // Jul
+  "kokanee, smallmouth, and low-light walleye",                                        // Aug
+  "browns, trout, and pike — the best all-around fishing of the year",                 // Sep
+  "browns, trout, and pike with great fall color",                                     // Oct
+  "kokanee snagging opens Nov 15 in the Grimes Creek inlet stretch; ice forming late", // Nov
+  "kokanee snagging through Dec 31; first-ice jigging where the ice is safe"           // Dec
+];
+
+function regsReminder(m) {            // m = 0-based month
+  if (m === 8 || m === 9) return "Reminder: the Grimes Creek inlet is closed to fishing Sep 1–Nov 14.";
+  if (m === 10 || m === 11) return "Reminder: kokanee snagging is open in the Grimes Creek inlet stretch (Nov 15–Dec 31).";
+  return "Always confirm current limits with Colorado Parks & Wildlife before you fish.";
+}
+
+async function generateWeeklyWater(env) {
+  let cond = {}, prev = {};
+  try { cond = JSON.parse(await env.CONDITIONS.get(KV_KEY)) || {}; } catch {}
+  try { prev = JSON.parse(await env.CONDITIONS.get(WEEKLY_KEY)) || {}; } catch {}
+  const now = new Date();
+  const lake = cond.lake || {}, stream = cond.stream || {}, weather = cond.weather || {};
+  const m = now.getUTCMonth();
+  const bullets = [];
+
+  // Lake level + week-over-week trend (vs the snapshot stored last Sunday).
+  if (lake.pct != null || lake.elevationFt != null) {
+    let s = "Lake" + (lake.pct != null ? ` ${lake.pct}%` : "") +
+            (lake.elevationFt != null ? ` · ${lake.elevationFt.toLocaleString()} ft` : "");
+    if (prev.lakeElev != null && lake.elevationFt != null) {
+      const d = lake.elevationFt - prev.lakeElev;
+      s += Math.abs(d) < 0.5 ? " (holding steady this week)"
+         : (d > 0 ? ` (up ${Math.abs(d).toFixed(1)} ft this week)` : ` (down ${Math.abs(d).toFixed(1)} ft this week)`);
+    }
+    if (lake.stale) s += " — reading may be a few days old";
+    bullets.push(s);
+  }
+  // Inflows.
+  if (stream.combinedCfs != null) bullets.push(`Inflow about ${stream.combinedCfs} cfs (Vallecito Creek + Pine River)`);
+  // Weather outlook (next forecast day from NWS).
+  if (Array.isArray(weather.forecast5) && weather.forecast5[0]) {
+    const f = weather.forecast5[0];
+    if (f.hi != null || f.lo != null) bullets.push(`Outlook: ${f.day || "today"} ${f.hi != null ? "high ~" + f.hi + "°" : ""}${f.lo != null ? ", low ~" + f.lo + "°" : ""}`.trim());
+  }
+  // What's biting (static month table).
+  bullets.push(`What's biting: ${MONTHLY_BITE[m]}`);
+  // Seasonal regs reminder.
+  bullets.push(regsReminder(m));
+
+  const out = {
+    auto: true,
+    updated: now.toISOString(),
+    weekOf: now.toLocaleDateString("en-US", { timeZone: "America/Denver", month: "long", day: "numeric", year: "numeric" }),
+    summary: "Auto-generated from this week's live gauges and the seasonal calendar.",
+    bullets,
+    lakeElev: lake.elevationFt != null ? lake.elevationFt : (prev.lakeElev != null ? prev.lakeElev : null)
+  };
+  await env.CONDITIONS.put(WEEKLY_KEY, JSON.stringify(out));
+  return out;
+}
 
 async function refresh(env) {
   // Keep last-good values so a single failure never blanks the page.

@@ -128,6 +128,32 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   invented ratings/reviews**. Alt-text audit clean; internal cross-linking already strong. All 22 JSON-LD
   blocks validated. **PROJECT-STATUS.md rewritten + CUTOVER RUNBOOK added** (DAVID/CLAUDE-CODE steps +
   rollback; step 0 = VERIFY old-site host before cutover). Worker untouched.
+- **DONE — Round 22 (built, verified, deployed Worker+Pages, pushed):** David's batch — spec in
+  `docs/REVIEW-UPDATES-22.md`, trails content source in `docs/TRAILS-VALLECITO.md`. **B LIVE FIXES:**
+  PRID annual corrected **$50→$60** (2026) site-wide; "or Vallecito Resort" PRID-outlet refs → "or Pine
+  River Lodge" (3 spots; **"JW Vallecito Resort" business name preserved**); outlets = PRID office (13029
+  CR 501) / Pine River Lodge / Vallecito Marina. **B HUB:** full 🎫 Licenses & permits hub on
+  `fishing.html#permits` (3 `.tbl` tables — fishing/boating/trail+OHV — w/ cpwshop.com + PRID pay-page
+  BUY links); all other pages keep only a "$6/day" teaser + link to the hub (prices stated once).
+  **A:** home `.hero` scrim layer removed (CSS) — readability via text-shadow only, NO translucent
+  overlay (verified desktop+mobile; `.pagehero` scrim left intact by design). **C:** new
+  `public/trails.html` (cautions box w/ ⚠️ Oct 2025 flood — Middle Bridge on Vallecito Creek #529 washed
+  out; Granite Peaks Ranch private inholding on Pine River #523; Wilderness regs; Emerald closure; trails
+  by difficulty w/ FS numbers + `#t-<slug>` anchors); "Trails" added to Explore nav on all 20 pages;
+  things-to-do 🥾 section → teaser + "Full trail guide →"; map Vallecito Creek TH pin → `trails.html#t-
+  vallecito-creek` + washout caveat in popup. **D:** Julie photo removed from home dive-deeper Real
+  Estate card (text-only `.ecard`). **E:** map text-list + popups — bold name IS the link, trailing
+  "info"/"More info →" dropped (external→new tab, anchors→same tab). **F:** second Worker cron
+  `0 13 * * SUN` → `generateWeeklyWater()` writes KV `weekly-water` → served at `/data/weekly-water.json`
+  (+`/__weekly` manual); `fishing.html` shows editor `fishing-report.json` if fresh (<14d) else the auto
+  block w/ honest "Auto-generated from live data, updated Sundays" label — **NO invented data** (real
+  lake %/ft, inflow cfs, NWS outlook, seasonal bite, regs reminder). Sitemap re-run (21 URLs incl.
+  /trails). **FLAG for David:** verify JW Vallecito RV details; rec.gov per-CG fees still link-only.
+- **Round 23 (queued, approved June 7 2026):** spec in `docs/REVIEW-UPDATES-23.md` — red-flag SITE-WIDE
+  visibility (condbar danger mode on every page + visibilitychange refetch; pipeline itself VERIFIED
+  correct: point-precise NWS query, 15-min cron, RFW=danger — confirmed live against the real June 7–9
+  RFW covering Vallecito) + marina directory image → dock photo (not logo) + church image from their
+  own site (rendered fetch; NOT Facebook; else David-ask).
 - **Phase 2 remaining:** seasonal guides + Living-in-Vallecito content (blocked on David's insider Q&A),
   weekly fishing report feed (needs marina/guide source), species deep-pages, photo gallery,
   AI-search Q&A pages. Positioning: "the most complete independent guide to Vallecito Lake."
