@@ -29,6 +29,18 @@ real RFW in effect through June 9). The gap is that OTHER pages only show temp/l
    Red Flag Warnings take priority over everything else on the site."
 5. Verify with the CURRENT live RFW (active through ~June 9): strip red on home + 3 other pages,
    correct text, link works, mobile legible.
+6. **RFW SUPERSEDES the Stage block on conditions.html (David's explicit rule):** while
+   `alert.redFlag === true`, the TOP of the conditions page's alerts/restrictions area shows the
+   **Red Flag Warning as the governing notice** — the Stage-restriction block does NOT lead. Copy
+   pattern (don't invent law; this phrasing is defensible and matches the intent):
+   > 🔴 **Red Flag Warning — extreme fire danger** (through {ends}). Treat this as a no-burn period:
+   > no open flames of any kind, including campfires in developed rings. Propane/gas stoves and
+   > lanterns with shut-off valves only.
+   Below it, ONE demoted line: "Stage {n} fire restrictions remain in effect as the baseline and
+   resume as the lead notice when this warning ends." When the RFW expires/clears from the NWS feed,
+   the page automatically reverts to the Stage block leading (already data-driven — the worker drops
+   `redFlag` when NWS does; just make the front-end render order follow it). Verify both states: live
+   now (RFW leads), and simulate cleared (stage leads again) by testing the render with a mocked JSON.
 
 ## B. Marina image — photo instead of logo
 directory.json `vallecito-marina`: set `image` to one of the existing dock/boats photos

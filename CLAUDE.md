@@ -187,6 +187,19 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   again — purely render-order driven by the live JSON. **VERIFIED:** live RFW (lead = RFW, Stage 1
   demoted, condbar red) AND a mocked cleared state via patched fetch + forced `visibilitychange` (lead
   gone, full Stage 1 card returns, condbar back to normal) — no console errors.
+- **Round 24 (queued, approved June 7 2026):** preferred-partner profile pages — spec
+  `docs/REVIEW-UPDATES-24.md`, repeatable process `docs/PARTNER-PROFILE-PROCESS.md`, researched facts
+  `docs/PARTNER-PROFILES-RESEARCH.md`. Church main image from the About page
+  (vallecito-church.constantcontactsites.com/about-vallecito-church-). Build `partner-<slug>.html` for
+  marina, country-market, blue-spruce, coronado, vallecito-church (NOT Julie = bespoke; NOT Excel =
+  unpublished). Standing rule: every NEW `tier:featured` partner gets a deep-dive + own page via the
+  process doc. Honesty flags baked in: drop "non-ethanol" (Country Market), "ISA arborist" (Coronado),
+  "yacht-club membership" (marina) — all unverified.
+- **Round 25 mini (queued, approved June 7 2026):** spec `docs/REVIEW-UPDATES-25.md` — (A) hero
+  mountain-silhouette artifact: `.hero:before` SVG overlay REMOVED by Cowork in the working tree
+  (styles.css), verify + ship; (B) contacts accessibility: "🚨 Emergency & lake contacts" FIRST in the
+  footer linklist on every page → conditions.html#contacts, + a compact tap-to-call contacts card pinned
+  atop directory.html (use only the already-verified numbers from conditions). Build with Round 24.
 - **Phase 2 remaining:** seasonal guides + Living-in-Vallecito content (blocked on David's insider Q&A),
   weekly fishing report feed (needs marina/guide source), species deep-pages, photo gallery,
   AI-search Q&A pages. Positioning: "the most complete independent guide to Vallecito Lake."
