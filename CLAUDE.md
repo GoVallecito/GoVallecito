@@ -118,8 +118,18 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   Excel Excavation data + Vallecito Church logo; a heads-up to Julie; the **go-live cutover** (attach
   govallecito.com to Pages, activate the Worker route in wrangler.toml, flip `conditions.js` DATA_URL to
   same-origin); delete the stray **govallecito-site** Worker project from the dashboard importer.
-- **Phase 2 roadmap:** weekly fishing report, species pages, seasonal guides, Living-in-Vallecito content,
-  photo gallery, schema (FAQ/LocalBusiness/Article/Breadcrumb), image alt-text, internal linking,
+- **DONE — Round 21 (SEO + launch-readiness; built, verified, deployed + pushed):** robots.txt +
+  sitemap.xml (20 URLs, clean canonical paths, git lastmod — `scripts/gen-sitemap.mjs`) + custom 404.html
+  (nav + links) + favicons (PIL `scripts/gen_seo_assets.py`: favicon-32, apple-touch-icon, og-default.jpg
+  1200×630 from Beall panorama). Per-page canonical + OG + twitter:card on all 20 pages; per-page og:image
+  (heroes). JSON-LD: home WebSite+Organization, BreadcrumbList on all inner pages, FAQPage on first-visit
+  (from visible content), directory LocalBusiness ×21 + Julie RealEstateAgent generated from directory.json
+  via `scripts/gen-schema.mjs` (re-run after editing directory.json; markers in directory.html) — **no
+  invented ratings/reviews**. Alt-text audit clean; internal cross-linking already strong. All 22 JSON-LD
+  blocks validated. **PROJECT-STATUS.md rewritten + CUTOVER RUNBOOK added** (DAVID/CLAUDE-CODE steps +
+  rollback; step 0 = VERIFY old-site host before cutover). Worker untouched.
+- **Phase 2 remaining:** seasonal guides + Living-in-Vallecito content (blocked on David's insider Q&A),
+  weekly fishing report feed (needs marina/guide source), species deep-pages, photo gallery,
   AI-search Q&A pages. Positioning: "the most complete independent guide to Vallecito Lake."
 
 ## docs/ index

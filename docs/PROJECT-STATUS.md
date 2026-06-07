@@ -1,66 +1,86 @@
 # GoVallecito.com — Project Status & Launch Readiness
 
-_Snapshot as of June 6, 2026. Preview is live; the public domain has NOT been cut over yet._
+_Snapshot as of June 7, 2026. Preview is live; the public domain has NOT been cut over yet._
 
 ## Where everything lives
 - **Preview (live on the web):** https://govallecito-web.pages.dev
-- **Code repo:** github.com/GoVallecito/GoVallecito
-- **Your real site:** govallecito.com — still the OLD site, untouched. Nothing publishes there until you say go.
-- **Hosting:** Cloudflare Pages (static site) + a Cloudflare Worker (15-min cron) that pulls every data
-  source, writes one `conditions.json` to KV, and serves it. Preview reads the Worker via its CORS
-  endpoint; production will serve it same-origin once the domain is attached.
+- **Code repo:** github.com/GoVallecito/GoVallecito (`main`)
+- **Real site:** govallecito.com — still the OLD site, untouched. Nothing publishes there until cutover.
+- **Hosting:** Cloudflare Pages (static `public/`) + a Cloudflare Worker (`govallecito-conditions`, 15-min
+  cron) that pulls every source, writes one `conditions.json` to KV, and serves it. Preview reads the
+  Worker via its CORS endpoint; production serves it same-origin once the domain is attached (see runbook).
 
-## What's built & working
-**Live conditions dashboard** (auto-refresh every 15 min, calm "Checking…" first paint, last-good cached):
-- Weather — NWS (marina PWS `KCOBAYFI57` staged, lights up when the free key is in + station online)
-- Lake level — USACE CWMS / USBR RISE (the dead USGS gauge is permanently ruled out + guarded)
-- Streamflow — USGS Vallecito Creek + Pine River, with "last updated"
-- Weather alerts + Red Flag — NWS (automatic)
-- **Fire restrictions — currently showing Stage 1** (San Juan NF; editor-controlled toggle)
-- Wildfires within 50 mi — NIFC/InciWeb
-- Roads — CDOT (safe default until the endpoint is set)
+## What's built & working (Rounds 13–21 shipped)
+**Live conditions dashboard** (auto-refresh 15 min; last-good cached; honest stale badges):
+weather (NWS; marina PWS staged), lake level (USACE CWMS → USBR RISE; dead USGS gauge ruled out;
+**72 h stale threshold**), streamflow (USGS), NWS alerts + Red Flag, fire restrictions (editor toggle,
+Stage 1), wildfires within 50 mi (NIFC), **roads (CDOT/COtrip LIVE** — tight Durango-corridor filter,
+honest CR-501 caveat). Each tile shows source + local-time "updated".
 
-**Pages:** redesigned Home, Conditions (full dashboard + alerts + fire-restriction detail + emergency
-contacts + fire-station table + map), Things To Do, Fishing, Local Guide/Directory, Real-Estate Partner
-(Julie), Plan Your Visit, About, Contact, "How We Verify / Sources," and a "Living in Vallecito" landing
-+ 6 stub pages (Phase-2 content to write later).
+**Pages (20 + custom 404):** Home, Conditions, Things To Do (incl. Camping & RV, Where to eat), Fishing
+(weekly report, 7 species, calendar, access, regs), **Lake Map** (Leaflet/OSM, 12 verified pins),
+Directory, Real Estate (Julie — direct contact, no demo form), Plan Your Visit, **First Visit**, Living
+in Vallecito (+6 sub-stubs, delinked "coming soon"), About, How We Verify (sources), Contact (direct
+email), Pine River Lodge profile.
 
-**Directory:** 8 categories incl. new **Local Services** + **Community**; tiered listings with **Featured
-Partners** — Marina, Coronado Consulting & Fire Mitigation, Blue Spruce, Country Market, Vallecito Church,
-and Julie. Real logos/photos wired for Marina & Coronado (Blue Spruce + Country Market added in Round 10).
+**Navigation:** grouped-dropdown header on every page (Conditions · Explore · Local Guide · Plan Your
+Visit · About) + mobile hamburger + live conditions strip; consistent footer.
 
-**Trust & safety:** verified emergency contacts (incl. Poison Control, CPW, State Patrol, Search & Rescue)
-with a disclaimer; sources page; honest "automated + locally curated" wording; AA-contrast pass (Round 10).
+**Trust & SEO:** positioning statement; per-tile source/timestamp; editorial + corrections + photo-credits
+on the sources page; real freely-licensed photography (credited); robots.txt, sitemap.xml, canonical +
+Open Graph/Twitter on every page, JSON-LD (WebSite/Organization, BreadcrumbList, FAQPage, LocalBusiness),
+favicons. No invented ratings/reviews anywhere.
 
-**Audits:** two external reviews (factual/credibility + UX/persona) addressed across Rounds 6–10.
+## Open items that need DAVID (no code blocked on me)
+1. **Marina weather** — free Weather Underground key for KCOBAYFI57 (+ station online); until then NWS.
+2. **Julie** — confirm exact years / "25+ years in Four Corners" wording; courtesy heads-up before launch.
+3. **Excel Excavation** — business Facebook Page or owner name+phone (slot reserved, unpublished).
+4. **Vallecito Church** — logo (site is empty).
+5. **Bayfield clinic** — name/phone (currently we list Mercy Hospital ER + 911 only).
+6. **Map "drop-a-pin" asks** — north-end swim area, and exact pins for Country Market / Weminuche Grill
+   (no authoritative coordinate found — excluded rather than guessed).
+7. **COTRIP_KEY** is in chat transcripts — rotate when convenient (see runbook step 5).
 
-## In-flight
-- **Round 10** (contrast fixes + Facebook logo icons + featured-logo sizing + Blue Spruce/Country Market
-  images) — prompt delivered; apply via Claude Code, then it's done.
+## Launch readiness
+**Launch-ready as a conditions + local-guide hub.** Content, live data, trust signals, and SEO plumbing
+are in place. Remaining niceties (marina weather, more David photos, Living-Here guide content) can land
+after launch without visible gaps.
 
-## Open items that need YOU (no code waiting on me)
-1. **Photos** — the single biggest visual upgrade. Drop files into `public/assets/img/` per
-   `PHOTO-WISHLIST.md`; the hero, sections, and gallery are wired with graceful fallbacks.
-2. **Marina weather** — a free Weather Underground API key from KCOBAYFI57's owner (and the station back
-   online). Until then weather stays on NWS.
-3. **Excel Excavation** — a business Facebook *Page* or owner name + phone (the link sent was a personal
-   group profile); it's reserved but unpublished.
-4. **Vallecito Church** — confirm the display name (you said "Community Church"; verified name is
-   "Vallecito Church / Baptist") and provide a logo (its website is empty).
-5. **Julie** — a courtesy heads-up before launch that she's featured (her info is already public).
-6. Optional: a CDOT road-data endpoint; a real `og-default.jpg` social-share image.
+---
 
-## Go-live (the cutover — your Cloudflare account, ~20 min, reversible)
-1. Add **govallecito.com** as a custom domain on the `govallecito-web` Pages project.
-2. Deploy the Worker + activate its route for `/data/conditions.json` on the zone (uncomment `routes` in
-   `wrangler.toml`); switch `conditions.js` `DATA_URL` back to same-origin.
-3. (When available) set the WU secrets so marina weather goes live.
-4. Verify the live domain, then announce. Old site is replaced only at this step.
-- Housekeeping: delete the stray **`govallecito-site`** Worker project the dashboard importer created.
+## CUTOVER RUNBOOK (preview → govallecito.com)
+Each step tagged **[DAVID]** (Cloudflare/registrar/Google account actions) or **[CLAUDE-CODE]** (repo
+edits + redeploys). Order matters. Reversible — see Rollback.
 
-## My read on launch readiness
-The site is **launch-ready as an information/conditions hub right now** — accurate, fast, trustworthy,
-mobile-friendly, with live data and Stage-1 fire status showing correctly. The two things I'd want before
-a public push: **(a) at least a hero photo or two** (so first-timers get the emotional hook), and **(b) a
-final mobile eyeball** of the `/conditions` map + fire-station table. Everything else (marina weather,
-more logos, Living-in-Vallecito content) can land *after* launch without anyone noticing gaps.
+0. **[DAVID — VERIFY FIRST] Where is the old site hosted?** Confirm the current host/registrar and DNS
+   for govallecito.com (e.g., is DNS already on Cloudflare, or at another registrar?). This determines
+   how the domain attaches and how rollback works. **Do not proceed until this is known.**
+1. **[DAVID]** Add the **govallecito.com** zone to the Cloudflare account (if not already), then attach
+   it as a **custom domain** on the `govallecito-web` Pages project — add both `govallecito.com` and
+   `www.govallecito.com`. (Cloudflare will guide the DNS records; this is the step that moves traffic.)
+2. **[CLAUDE-CODE]** Uncomment the `routes` block in `worker/wrangler.toml` (the
+   `govallecito.com/data/conditions.json` + `www` routes), then redeploy the worker
+   (`npx wrangler deploy` from `worker/`). This makes the worker own `/data/conditions.json` same-origin.
+3. **[CLAUDE-CODE]** Flip `DATA_URL` in `public/assets/js/conditions.js` from the
+   `…workers.dev/data/conditions.json` CORS URL back to same-origin `/data/conditions.json`; redeploy
+   Pages (`npx wrangler pages deploy public --project-name=govallecito-web`).
+4. **[DAVID + CLAUDE-CODE] Verify the live domain:** conditions paint on https://govallecito.com;
+   `/data/conditions.json` is served by the worker (check response headers / `cf-ray`); all clean URLs
+   return 200 (`curl -I https://govallecito.com/conditions` etc.); `robots.txt` + `sitemap.xml` reachable;
+   hard-refresh / `?cb=` for edge cache. Then announce.
+5. **[DAVID] Post-launch:** create the Google Search Console property and submit
+   `https://govallecito.com/sitemap.xml`; **delete the stray `govallecito-site`** Worker project the
+   importer made; **rotate `COTRIP_KEY`** (regenerate in manage-api.cotrip.org → `npx wrangler secret put
+   COTRIP_KEY` from `worker/`); set the WU marina-weather secrets if/when available.
+
+### Rollback
+The new site only goes live at **step 1** (custom-domain attach). To roll back: **remove the custom
+domain from the `govallecito-web` Pages project** (and revert the DNS change from step 1). Because the
+old site lives on a separate host (per step 0 — **VERIFY**), it is unaffected by anything in this repo
+until DNS actually points at Cloudflare; reverting DNS restores it. Steps 2–3 are repo-only and revert by
+re-commenting the worker routes / restoring the `workers.dev` `DATA_URL` and redeploying.
+
+## docs/ index
+`PROJECT-STATUS.md` (this) · `REVIEW-UPDATES-01..21.md` (change specs) · `FREE-IMAGES-VALLECITO.md`
+(photo rights record) · `DATA-SOURCES.md` · `DIRECTORY-CONTACTS.md` · `DAVID-QA-INSIDER.md` (pending
+insider content) · `PHOTO-WISHLIST.md` · `REVIEW-PERSONAS-01.md` + `PERSONA-REVIEW-PROMPT.md`.
