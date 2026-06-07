@@ -310,37 +310,86 @@
       }
     }
 
-    // ----- fire-restriction detail section (conditions.html #fire-restrictions) -----
-    // Driven entirely by restrictions.json (passed through as d.restriction).
-    var rEl = $('fire-restrictions');
-    if (rEl && d.restriction) {
-      var r = d.restriction;
-      if (r.stage && r.stage !== 'none') {
-        var cls = r.stage === '3' ? 'is-danger' : r.stage === '2' ? 'is-orange' : 'is-warn';
-        var meta = [];
-        if (r.issuedBy) meta.push(escapeHtml(r.issuedBy));
-        if (r.effective) meta.push('effective ' + escapeHtml(r.effective));
-        if (r.scope) meta.push(escapeHtml(r.scope));
-        var cols = '';
-        if (Array.isArray(r.prohibited) && r.prohibited.length) {
-          cols += '<div><h4>🚫 Prohibited</h4><ul>' + r.prohibited.map(function (x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
-        }
-        if (Array.isArray(r.allowed) && r.allowed.length) {
-          cols += '<div><h4>✅ Allowed</h4><ul>' + r.allowed.map(function (x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
-        }
-        rEl.innerHTML = '<div class="restriction-card ' + cls + '">' +
-          '<div class="rc-head">🔥 Stage ' + escapeHtml(r.stage) + ' Fire Restrictions — in effect</div>' +
-          (meta.length ? '<p class="rc-meta">' + meta.join(' · ') + '</p>' : '') +
-          (cols ? '<div class="rc-cols">' + cols + '</div>' : '') +
-          (r.penalty ? '<p class="rc-penalty">⚖️ ' + escapeHtml(r.penalty) + '</p>' : '') +
-          resourceLinks(r.resources) + '</div>';
+    // ----- Red Flag Warning lead notice + fire-restriction detail (#alerts) -----
+    // A6: while alert.redFlag is true, the RFW is the GOVERNING notice at the top
+    // of #alerts and the Stage block is demoted to one baseline line. When NWS
+    // drops the RFW (redFlag false), the Stage block automatically leads again —
+    // purely render-order driven by the live JSON, no manual toggle.
+    var rfw = !!(d.alert && d.alert.redFlag);
+    var stageNum = (d.restriction && d.restriction.stage && d.restriction.stage !== 'none')
+      ? d.restriction.stage
+      : (d.alert && d.alert.fireRestrictionStage && d.alert.fireRestrictionStage !== 'none'
+          ? d.alert.fireRestrictionStage : null);
+
+    var leadEl = $('rfwLead');
+    if (leadEl) {
+      if (rfw) {
+        var endsTxt = rfwEnds(d);
+        leadEl.innerHTML = '<div class="restriction-card is-danger">' +
+          '<div class="rc-head">🔴 Red Flag Warning — extreme fire danger' +
+            (endsTxt ? ' (through ' + escapeHtml(endsTxt) + ')' : '') + '</div>' +
+          '<p class="rc-meta">Treat this as a no-burn period: no open flames of any kind, ' +
+            'including campfires in developed rings. Propane/gas stoves and lanterns with ' +
+            'shut-off valves only.</p></div>';
       } else {
-        rEl.innerHTML = '<div class="restriction-card is-ok">' +
-          '<div class="rc-head">✅ No fire restrictions currently in effect</div>' +
-          '<p class="rc-meta">Always check before you burn.</p>' +
-          resourceLinks(r.resources) + '</div>';
+        leadEl.innerHTML = '';
       }
     }
+
+    // The fire-restriction detail (driven by restrictions.json). While the RFW
+    // leads, this is demoted to a single baseline line; otherwise it shows the
+    // full Stage card (or the no-restrictions card).
+    var rEl = $('fire-restrictions');
+    if (rEl) {
+      if (rfw && stageNum) {
+        rEl.innerHTML = '<p class="muted rc-demoted">Stage ' + escapeHtml(stageNum) +
+          ' fire restrictions remain in effect as the baseline and resume as the lead ' +
+          'notice when this warning ends.</p>';
+      } else if (d.restriction) {
+        var r = d.restriction;
+        if (r.stage && r.stage !== 'none') {
+          var cls = r.stage === '3' ? 'is-danger' : r.stage === '2' ? 'is-orange' : 'is-warn';
+          var meta = [];
+          if (r.issuedBy) meta.push(escapeHtml(r.issuedBy));
+          if (r.effective) meta.push('effective ' + escapeHtml(r.effective));
+          if (r.scope) meta.push(escapeHtml(r.scope));
+          var cols = '';
+          if (Array.isArray(r.prohibited) && r.prohibited.length) {
+            cols += '<div><h4>🚫 Prohibited</h4><ul>' + r.prohibited.map(function (x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
+          }
+          if (Array.isArray(r.allowed) && r.allowed.length) {
+            cols += '<div><h4>✅ Allowed</h4><ul>' + r.allowed.map(function (x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
+          }
+          rEl.innerHTML = '<div class="restriction-card ' + cls + '">' +
+            '<div class="rc-head">🔥 Stage ' + escapeHtml(r.stage) + ' Fire Restrictions — in effect</div>' +
+            (meta.length ? '<p class="rc-meta">' + meta.join(' · ') + '</p>' : '') +
+            (cols ? '<div class="rc-cols">' + cols + '</div>' : '') +
+            (r.penalty ? '<p class="rc-penalty">⚖️ ' + escapeHtml(r.penalty) + '</p>' : '') +
+            resourceLinks(r.resources) + '</div>';
+        } else {
+          rEl.innerHTML = '<div class="restriction-card is-ok">' +
+            '<div class="rc-head">✅ No fire restrictions currently in effect</div>' +
+            '<p class="rc-meta">Always check before you burn.</p>' +
+            resourceLinks(r.resources) + '</div>';
+        }
+      }
+    }
+  }
+
+  // Latest end time among active Red Flag Warning items, formatted in lake-local
+  // time (e.g. "Tue, Jun 9, 10:00 PM MDT"). Returns null if none parseable.
+  function rfwEnds(d) {
+    if (!d || !d.alert || !Array.isArray(d.alert.items)) return null;
+    var ts = d.alert.items
+      .filter(function (i) { return /red flag/i.test(i.event || ''); })
+      .map(function (i) { return Date.parse(i.ends); })
+      .filter(function (t) { return !isNaN(t); });
+    if (!ts.length) return null;
+    try {
+      return new Date(Math.max.apply(null, ts)).toLocaleString('en-US', {
+        timeZone: 'America/Denver', weekday: 'short', month: 'short', day: 'numeric',
+        hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' });
+    } catch (e) { return null; }
   }
 
   function iconEmoji(icon) {

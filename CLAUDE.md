@@ -176,6 +176,17 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   mountain-lake landscape (stock, not the building), and their circular logo — **no photo of the actual
   building.** Per spec: church entry LEFT AS-IS, NOT pulled from Facebook. **FLAG for David:** ask the
   church directly for an exterior building photo (easy partner ask).
+- **DONE — Round 23b / item A6 (built, verified both states, deployed Pages, pushed):** on
+  conditions.html a new `#rfwLead` div sits above `#fire-restrictions`. While `alert.redFlag === true`,
+  `conditions.js` `paintDetail()` renders the **RFW as the governing lead notice** (red `restriction-card
+  is-danger`: "🔴 Red Flag Warning — extreme fire danger (through {ends})" + no-burn copy: no open flames
+  incl. developed rings, propane/gas stoves & lanterns w/ shut-off valves only) and **demotes the Stage
+  block** to ONE line ("Stage {n} fire restrictions remain in effect as the baseline and resume as the
+  lead notice when this warning ends."). `{ends}` = latest RFW item end, lake-local time, via new
+  `rfwEnds()` helper. When NWS drops `redFlag`, `#rfwLead` clears and the full Stage card auto-leads
+  again — purely render-order driven by the live JSON. **VERIFIED:** live RFW (lead = RFW, Stage 1
+  demoted, condbar red) AND a mocked cleared state via patched fetch + forced `visibilitychange` (lead
+  gone, full Stage 1 card returns, condbar back to normal) — no console errors.
 - **Phase 2 remaining:** seasonal guides + Living-in-Vallecito content (blocked on David's insider Q&A),
   weekly fishing report feed (needs marina/guide source), species deep-pages, photo gallery,
   AI-search Q&A pages. Positioning: "the most complete independent guide to Vallecito Lake."
