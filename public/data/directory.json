@@ -1,6 +1,6 @@
 {
   "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
-  "categoryOrder": ["Real Estate", "Lodging", "Dining", "Marina & Water", "Retail", "Local Services", "Community", "Outfitters & Guides"],
+  "categoryOrder": ["Real Estate", "Lodging", "Dining & Markets", "Marina & Water", "Local Services", "Community", "Outfitters & Guides"],
   "businesses": [
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
@@ -20,7 +20,7 @@
       "badge": "GoVallecito Partner", "cta": { "label": "Book online →", "href": "https://fareharbor.com/embeds/book/vallecitolakemarina/" }
     },
     {
-      "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "category": "Dining", "tier": "featured",
+      "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "category": "Dining & Markets", "tier": "featured",
       "blurb": "Groceries, the La Comida Ranchera kitchen, and liquor — plus the lake-area gas stop with non-ethanol fuel and propane, great for boats, ATVs, and small engines.",
       "phone": "(970) 884-0844", "facebook": "https://facebook.com/VallecitoLakeCountryMarket",
       "address": "18071 CR 501, Bayfield, CO", "hours": "Mon 7–7 · Thu–Sat 7–7 · Sun 7–3 · Tue–Wed closed",
@@ -97,7 +97,7 @@
       "hours": "9 a.m.–7 p.m. daily (in season)"
     },
     {
-      "slug": "weminuche-grill", "name": "Weminuche Woodfire Grill", "category": "Dining", "tier": "verified", "featuredReady": true,
+      "slug": "weminuche-grill", "name": "Weminuche Woodfire Grill", "category": "Dining & Markets", "tier": "verified", "featuredReady": true,
       "blurb": "Wood-fired pizza, full bar, and live music on CR 501.",
       "phone": "(970) 884-7153", "website": "https://weminuchegrill.com", "email": "info@weminuchegrill.com",
       "facebook": "https://facebook.com/theweminuchegrill",
@@ -123,7 +123,7 @@
     { "slug": "jw-vallecito", "name": "JW Vallecito Resort", "category": "Lodging", "tier": "basic", "phone": "(888) 258-9458", "website": "https://jwvallecito.com" },
     { "slug": "lone-wolf", "name": "Lone Wolf Cabins & Getaway", "category": "Lodging", "tier": "basic", "phone": "(970) 884-0414", "website": "https://lonewolfcabins.com" },
     { "slug": "elk-point-stables", "name": "Elk Point Lodge Stables", "category": "Outfitters & Guides", "tier": "basic", "blurb": "Guided horseback rides at Elk Point Lodge, Thu–Mon (seasonal).", "phone": "(970) 884-2482", "website": "https://elkpointlodge.com" },
-    { "slug": "rocky-mountain-store", "name": "Rocky Mountain General Store & Custom Meats", "category": "Retail", "tier": "basic", "blurb": "Groceries, custom meats, deli, and liquor.", "phone": "(970) 884-0999", "address": "17454 CR 501, Bayfield, CO", "hours": "Open Wed, Fri, Sat, Sun" },
+    { "slug": "rocky-mountain-store", "name": "Rocky Mountain General Store & Custom Meats", "category": "Dining & Markets", "tier": "basic", "blurb": "Groceries, custom meats with elk brats, deli, and liquor.", "phone": "(970) 884-0999", "address": "17454 CR 501, Bayfield, CO", "hours": "Open Wed, Fri, Sat, Sun" },
     { "slug": "coldwell-banker", "name": "Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "basic", "phone": "(970) 259-3333", "website": "https://cbmp.com" },
     { "slug": "wells-group", "name": "Wells Group / RE/MAX / NextHome", "category": "Real Estate", "tier": "basic", "website": "https://durangohomesforsale.com" }
   ]

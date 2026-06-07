@@ -54,19 +54,18 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
 ## Current open items (June 2026)
 - **DONE:** CDOT roads integration — `getRoads()` live, `/__cdottest` removed, deployed + pushed
   (commit `8afba75`). See Secrets/config above.
-- **Round 13 (queued, approved):** grouped-dropdown top nav + retire the scrolling realtor bar → a
-  "Real Estate at the Lake" featured card (home + directory) + Real Estate in nav/footer. Spec in
-  `docs/REVIEW-UPDATES-13.md` + `ROUND-13-BUILD-PROMPT.md`.
-- **Round 14 (queued):** linking + polish pass — Things-To-Do & guides two-hop links (on-site →
-  directory anchor → external site/FB); replace Blue Spruce white-on-white logo with a real campground
-  photo; Local Guide order (Real Estate first, outfitters last); clickable/expandable conditions alerts;
-  inflow-gauge emojis; fix "See live conditions" button sizing; home section reorder (Live conditions →
-  At a glance → Plan the rest → By the numbers) + remove "Getting Here" from home only. Spec in
-  `docs/REVIEW-UPDATES-14.md`. Build 13+14 together via `ROUND-13-14-BUILD-PROMPT.md`.
-- **Round 15 (queued, approved):** trust pass — positioning statement ("The independent guide to
-  Vallecito Lake…"), per-tile source + timestamp (+stale badge), editorial/corrections sections on the
-  sources page, About-the-Team placeholder, new `first-visit.html` guide. Spec in
-  `docs/REVIEW-UPDATES-15.md`. Build AFTER 13+14.
+- **DONE (June 6 2026): Rounds 13+14** (commit `46f58b3`) — grouped nav on all 19 pages, annbar retired,
+  Real Estate featured card, two-hop directory links + `#biz-<slug>` anchors, Blue Spruce photo, home
+  reorder, conditions alert/emoji/button polish. **Round 15** (commit `470902c`) — positioning statement,
+  per-tile source+timestamp (+stale badge), editorial/corrections anchors on sources page, About-the-Team
+  placeholder, `first-visit.html`. Specs in `docs/REVIEW-UPDATES-13..15.md`.
+- **DONE — micro-fixes (Cowork-made, verified + deployed + pushed):** (a) `directory.json` — Dining + Retail merged into one **"Dining & Markets"**
+  category (Country Market, Weminuche Grill, Rocky Mountain General Store; per David — the general store
+  has a deli + elk brats/hand-cut meats); (b) `things-to-do.html` — Kayak/SUP line now says "rent at the
+  marina or bring your own" (marina rents them); (c) `index.html` — hero "Start here →" CTA repointed
+  from plan-your-visit to `first-visit.html`; (d) `first-visit.html` — ANS line tightened (VERIFIED:
+  CPW lists Vallecito as an inspection station, ramp inspections in season; ANS stamp required for
+  motorized/sail; clean-drain-dry law).
 - **Later (from June 2026 strategy review, David-approved order TBD):** fishing hub v1 (species pages,
   calendar, weekly report via editor file), interactive Leaflet map, insider-knowledge + seasonal content
   (needs a David Q&A session). Skipped for now: community submissions.
@@ -80,7 +79,7 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
 
 ## docs/ index
 - `PROJECT-STATUS.md` — full status + launch readiness (read after this).
-- `REVIEW-UPDATES-01..14.md` — chronological change specs (13 = nav + realtor card; 14 = linking + polish).
+- `REVIEW-UPDATES-01..15.md` — chronological change specs (13 = nav; 14 = linking/polish; 15 = trust pass).
 - `DATA-SOURCES.md` — every feed + exact endpoints. `FIRE-RESTRICTIONS.md` — restriction authorities.
 - `DIRECTORY-CONTACTS.md`, `FEATURED-ASSETS.md` — business data/logos.
 - `STRATEGY-nav-and-realtor.md` — competitor patterns + nav/realtor plan.
