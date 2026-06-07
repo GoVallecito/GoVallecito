@@ -39,10 +39,11 @@ RESTRICTIONS_URL = "https://govallecito-web.pages.dev/data/restrictions.json"
 # (US 160 Durango-Bayfield, then CR 501) is NOT a CDOT segment — so the roads tile is
 # honestly scoped to "Durango-area highways," with cameras/511 for the final leg.
 # (Legacy CDOT_ENDPOINT/CDOT_KEY vars are no longer used.)
-# WU_STATION_ID (non-secret) — KCOBAYFI57 "Vallecito Reservoir", right at the lake.
-# WU_API_KEY (the free PWS key) is still needed as a SECRET before the WU path
-# activates; until then getWeather stays on the NWS fallback.
-WU_STATION_ID = "KCOBAYFI57"
+# WU_STATION_ID (non-secret) — KCOBAYFI100 "Vallecito Reservoir", the marina station
+# (replaced KCOBAYFI57, which was offline). WU_API_KEY (the marina's PWS read key) is a
+# SECRET; with both set, getWeather prefers this station and falls back to NWS if it's
+# stale (>90 min) or the key is rejected.
+WU_STATION_ID = "KCOBAYFI100"
 
 # Secrets (set with `npx wrangler secret put NAME` from this worker/ folder, never commit them):
 #   COTRIP_KEY       CDOT/COtrip API key — POWERS getRoads() (set ✓, June 2026)
