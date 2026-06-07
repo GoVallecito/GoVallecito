@@ -90,7 +90,7 @@
     <div class="filters" id="filters" role="group" aria-label="Filter listings by category"></div>
     <div id="directory" aria-live="polite"></div>
     <p class="muted" id="noresults" style="margin-top:16px;display:none">No listings in that category yet.</p>
-    <p class="muted" style="margin-top:24px">Own a business at the lake or spot something out of date? <a href="contact.html">Tell us</a> — we read everything. Want a <b>Featured Partner</b> profile like Pine River Lodge or Julie Coffelt (photo, longer write-up, booking button, pinned to the top of your category)? <a href="contact.html">Get in touch</a>.</p>
+    <p class="muted" style="margin-top:24px">Own a business at the lake or spot something out of date? <a href="contact.html">Tell us</a> — we read everything. Want a <b>Featured Partner</b> profile like the Vallecito Marina or Julie Coffelt (photo, longer write-up, booking button, pinned to the top of your category)? <a href="contact.html">Get in touch</a>.</p>
   </div>
 </section>
 
@@ -185,7 +185,9 @@
     var photos = (Array.isArray(b.photos) && b.photos.length)
       ? '<div class="pstrip">'+b.photos.map(function(p){ return '<img src="'+esc(p)+'" alt="" loading="lazy" onerror="this.remove()">'; }).join('')+'</div>'
       : '';
-    var cta = b.cta ? '<a class="btn btn-primary" style="background:var(--pine);color:#fff" href="'+esc(b.cta.href)+'" rel="noopener">'+esc(b.cta.label)+'</a>' : '';
+    var profileBtn = b.profile ? '<a class="btn btn-primary" style="background:var(--pine);color:#fff" href="'+esc(b.profile)+'">Full profile →</a>' : '';
+    var cta = b.cta ? '<a class="btn '+(b.profile?'btn-ghost" style="border-color:var(--line);color:var(--pine)':'btn-primary" style="background:var(--pine);color:#fff')+'" href="'+esc(b.cta.href)+'" rel="noopener">'+esc(b.cta.label)+'</a>' : '';
+    var ctas = profileBtn + cta;
     return '<div class="pcard" id="biz-'+esc(b.slug)+'" data-cat="'+esc(b.category)+'">'+img+
       '<div><span class="badge badge-partner">★ '+esc(b.badge||'Featured Partner')+'</span> <span class="cat">'+esc(b.category)+'</span>'+
       '<h3>'+esc(b.name)+'</h3>'+
@@ -195,7 +197,7 @@
       (b.highlight ? '<p><span class="badge badge-verified">⛽ '+esc(b.highlight)+'</span></p>' : '')+
       contactRow(b)+
       photos+
-      (cta ? '<div class="cta">'+cta+'</div>' : '')+
+      (ctas ? '<div class="cta">'+ctas+'</div>' : '')+
       '</div></div>';
   }
 

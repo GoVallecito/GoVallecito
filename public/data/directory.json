@@ -17,14 +17,15 @@
       "address": "14772 CR 501, Bayfield, CO", "hours": "Fri & Sat 8 a.m.–6 p.m. · Sun–Thu 8 a.m.–5 p.m. (May–Sep)",
       "image": "/assets/img/featured/marina-1.jpg", "imageAlt": "Boats docked at Vallecito Marina on the lake", "imageFit": "cover",
       "photos": ["/assets/img/featured/marina-logo.png", "/assets/img/featured/marina-2.jpg"],
-      "badge": "GoVallecito Partner", "cta": { "label": "Book online →", "href": "https://fareharbor.com/embeds/book/vallecitolakemarina/" }
+      "badge": "GoVallecito Partner", "profile": "partner-vallecito-marina.html",
+      "cta": { "label": "Book online →", "href": "https://fareharbor.com/embeds/book/vallecitolakemarina/" }
     },
     {
       "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "category": "Dining & Markets", "tier": "featured",
-      "blurb": "Groceries, the La Comida Ranchera kitchen, and liquor — plus the lake-area gas stop with non-ethanol fuel and propane, great for boats, ATVs, and small engines.",
+      "blurb": "Groceries, the La Comida Ranchera kitchen, and liquor — plus gas and propane. The lake's one-stop shop, open year-round.",
       "phone": "(970) 884-0844", "facebook": "https://facebook.com/VallecitoLakeCountryMarket",
       "address": "18071 CR 501, Bayfield, CO", "hours": "Mon 7–7 · Thu–Sat 7–7 · Sun 7–3 · Tue–Wed closed",
-      "highlight": "Non-ethanol fuel", "image": "/assets/img/featured/countrymarket.gif", "badge": "GoVallecito Partner",
+      "image": "/assets/img/featured/countrymarket.gif", "badge": "GoVallecito Partner", "profile": "partner-country-market.html",
       "cta": { "label": "Message on Facebook →", "href": "https://facebook.com/VallecitoLakeCountryMarket" }
     },
     {
@@ -35,26 +36,30 @@
       "instagram": "https://instagram.com/funstaysllc", "youtube": "https://youtube.com/@BlueSpruceRVPark",
       "booking": "https://bookingsus.newbook.cloud/bluesprucervpark", "address": "1875 CR 500, Bayfield, CO",
       "image": "/assets/img/featured/blue-spruce.jpg", "imageAlt": "Blue Spruce RV Park & Cabins — wooded sites near Vallecito Lake", "imageFit": "cover", "badge": "GoVallecito Partner",
+      "profile": "partner-blue-spruce.html",
       "rv": "Full hookups — water, sewer, 30 & 50 amp electric. RV sites ≈May 1–Nov 1; cabins year-round.",
       "cta": { "label": "Book a site →", "href": "https://bookingsus.newbook.cloud/bluesprucervpark" }
     },
     {
       "slug": "coronado", "name": "Coronado Consulting & Fire Mitigation", "category": "Local Services", "tier": "featured",
-      "blurb": "Arborist and tree care, wildfire mitigation, and defensible-space work — serving Bayfield, La Plata County, and Durango. Established 2019; certified owners.",
+      "blurb": "Wildfire mitigation, defensible-space work, hazard-tree and tree care — serving Bayfield, La Plata County, and Durango. Established 2019; insured, certified sawyers.",
       "phones": [ { "name": "Robert", "number": "(970) 903-7907" }, { "name": "Danielle", "number": "(575) 202-1642" } ],
       "email": "coronadocfm@gmail.com", "website": "https://ccfmllc.com",
       "facebook": "https://facebook.com/profile.php?id=100067915605099", "instagram": "https://instagram.com/coronado_cfm_llc",
       "address": "485 Forest Lakes Dr, Bayfield, CO",
       "image": "/assets/img/featured/coronado-logo.jpg",
       "photos": ["/assets/img/featured/coronado-ops.jpg", "/assets/img/featured/coronado-owners.jpg"],
-      "badge": "GoVallecito Partner", "cta": { "label": "Visit ccfmllc.com →", "href": "https://ccfmllc.com" }
+      "badge": "GoVallecito Partner", "profile": "partner-coronado.html",
+      "cta": { "label": "Visit ccfmllc.com →", "href": "https://ccfmllc.com" }
     },
     {
       "slug": "vallecito-church", "name": "Vallecito Church", "category": "Community", "tier": "featured",
-      "blurb": "A Southern Baptist church at the lake. Sunday School 9:00 AM · Worship 10:30 AM — visitors welcome.",
+      "blurb": "A community church at the lake with Southern Baptist roots, here since 1951. Sunday School 9:00 AM · Worship 10:30 AM — visitors welcome.",
       "phone": "(970) 884-2901", "website": "https://vallecitochurch.org", "facebook": "https://facebook.com/vallecito.church",
       "address": "17576 CR 501, Bayfield, CO", "hours": "Sunday School 9:00 AM · Worship 10:30 AM",
-      "badge": "GoVallecito Partner", "cta": { "label": "Service times & info →", "href": "https://vallecitochurch.org" }
+      "image": "/assets/img/featured/vallecito-church.jpg", "imageAlt": "Vallecito Church identity banner", "imageFit": "cover",
+      "badge": "GoVallecito Partner", "profile": "partner-vallecito-church.html",
+      "cta": { "label": "Service times & info →", "href": "https://vallecitochurch.org" }
     },
     {
       "slug": "excel-excavation", "name": "Excel Excavation", "category": "Local Services", "tier": "featured", "unpublished": true,

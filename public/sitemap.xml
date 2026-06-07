@@ -71,6 +71,26 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://govallecito.com/partner-blue-spruce</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://govallecito.com/partner-coronado</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://govallecito.com/partner-country-market</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://govallecito.com/partner-vallecito-church</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://govallecito.com/partner-vallecito-marina</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://govallecito.com/plan-your-visit</loc>
     <lastmod>2026-06-07</lastmod>
     <priority>0.7</priority>
@@ -92,6 +112,7 @@
   </url>
   <url>
     <loc>https://govallecito.com/trails</loc>
+    <lastmod>2026-06-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
