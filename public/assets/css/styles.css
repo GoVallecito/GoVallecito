@@ -105,9 +105,8 @@ body.nav-open{overflow:hidden}
 /* No scrim over the photo (R22): keep text readable with a strong text-shadow only. */
 .hero .wrap h1,.hero .wrap .sub,.hero .wrap .slogan,.hero .wrap .eyebrow{
   text-shadow:0 1px 3px rgba(10,20,15,.6),0 2px 22px rgba(10,20,15,.55)}
-.hero:before{content:"";position:absolute;inset:0;background:
-  url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="200"><path d="M0 150 L150 70 L300 130 L470 40 L650 120 L820 50 L1000 120 L1200 60 L1200 200 L0 200 Z" fill="%231a3529" opacity="0.55"/><path d="M0 175 L200 110 L380 160 L560 90 L760 150 L950 95 L1200 150 L1200 200 L0 200 Z" fill="%23142a20" opacity="0.7"/></svg>') bottom/cover no-repeat;
-  opacity:.5;pointer-events:none}
+/* R25: removed the old decorative SVG mountain-silhouette overlay (.hero:before) — it predated the
+   real photo hero and read as a "transparent mountain range" artifact over the panorama. */
 .hero .wrap{position:relative;z-index:2}
 .hero h1{font-size:clamp(2.1rem,5vw,3.3rem);max-width:14ch}
 .hero p.sub{max-width:54ch;color:#dfeae3;font-size:1.05rem;margin:14px 0 20px}
@@ -307,6 +306,20 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 @media(max-width:720px){.sources{grid-template-columns:1fr}}
 
 /* ---------- directory ---------- */
+/* R25: tap-to-call local-contacts card pinned atop the directory */
+.loc-contacts{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;
+  box-shadow:var(--shadow);margin-bottom:22px}
+.loc-contacts h2{font-size:1.1rem;margin:0 0 2px}
+.loc-contacts .grid-call{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 10px}
+.loc-contacts .grid-call a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);
+  border-radius:10px;background:var(--sand-2);color:var(--ink);text-decoration:none}
+.loc-contacts .grid-call a span{font-size:.78rem;color:var(--ink-soft)}
+.loc-contacts .grid-call a b{font-size:1rem;color:var(--pine)}
+.loc-contacts .grid-call a.is-emerg{background:#fae6e3;border-color:#e3b3ab}
+.loc-contacts .grid-call a.is-emerg b{color:#b3261e}
+.loc-contacts .grid-call a:hover{border-color:var(--pine)}
+@media(max-width:640px){.loc-contacts .grid-call{grid-template-columns:repeat(2,1fr)}}
+
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
 .filters button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:600;
   font-size:.88rem;cursor:pointer;color:var(--ink-soft)}
