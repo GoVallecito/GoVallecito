@@ -130,8 +130,46 @@
       setText('stripLake', (d.lake.pct != null ? d.lake.pct + '%' : '--'));
     }
 
+    // ----- per-tile trust line: Source · Updated (local time) · (stale) -----
+    paintSources(d);
+
     // ----- optional detailed fields (conditions.html) -----
     paintDetail(d);
+  }
+
+  // Short, honest source label per feed (derived from the feed when it varies).
+  function srcLabel(kind, feed) {
+    if (kind === 'weather') return feed && feed.sourceType === 'pws' ? 'Marina station' : 'NWS';
+    if (kind === 'lake') {
+      var s = (feed && feed.source || '').toLowerCase();
+      if (s.indexOf('cwms') >= 0 || s.indexOf('usace') >= 0) return 'USACE';
+      if (s.indexOf('rise') >= 0 || s.indexOf('usbr') >= 0) return 'USBR';
+      return 'USACE/USBR';
+    }
+    return { stream: 'USGS', alert: 'NWS · San Juan NF', fire: 'NIFC', road: 'CDOT/COtrip' }[kind] || '';
+  }
+
+  // Write "Source: X · Updated 10:15 AM MDT (stale)" into a tile's .src footer.
+  // Tiles are whole-card links, so the source name is plain text (no nested <a>);
+  // the How-We-Verify page is reachable from the footer + the conditions hero.
+  function tileMeta(tileId, label, timeStr, stale) {
+    var tile = $(tileId);
+    if (!tile) return;
+    var el = tile.querySelector('.src');
+    if (!el) return;
+    el.innerHTML = 'Source: ' + escapeHtml(label) +
+      (timeStr ? ' · Updated ' + escapeHtml(timeStr) : '') +
+      (stale ? ' <span class="stale-badge" title="showing last good reading">(stale)</span>' : '');
+  }
+
+  function paintSources(d) {
+    var g = d.updatedFriendly || fmtClock(d.updated) || '';
+    if (d.weather) tileMeta('tile-weather', srcLabel('weather', d.weather), g, d.weather.stale);
+    if (d.lake)    tileMeta('tile-lake', srcLabel('lake', d.lake), fmtClock(d.lake.asOf) || g, d.lake.stale);
+    if (d.alert)   tileMeta('tile-alert', srcLabel('alert'), g, false);
+    if (d.fires)   tileMeta('tile-fire', srcLabel('fire'), g, d.fires.stale);
+    if (d.stream)  tileMeta('tile-stream', srcLabel('stream'), fmtClock(d.stream.asOf) || g, d.stream.stale);
+    if (d.road)    tileMeta('tile-road', srcLabel('road'), fmtClock(d.road.asOf) || g, d.road.stale);
   }
 
   // Fills the richer elements on conditions.html. Every write is guarded, so
@@ -270,6 +308,17 @@
 
   function iconEmoji(icon) {
     return ({ sunny: '☀️', partly: '⛅', cloudy: '☁️', showers: '🌧️', storm: '⛈️', snow: '❄️' })[icon] || '☀️';
+  }
+
+  // Absolute clock in lake-local time, e.g. "10:15 AM MDT". For per-tile "Updated".
+  function fmtClock(iso) {
+    if (!iso) return null;
+    var t = Date.parse(iso);
+    if (isNaN(t)) return null;
+    try {
+      return new Date(t).toLocaleString('en-US', { timeZone: 'America/Denver',
+        hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' });
+    } catch (e) { return null; }
   }
 
   // Relative time from an ISO string, e.g. "20 min ago", "3 hr ago", "2 days ago".
