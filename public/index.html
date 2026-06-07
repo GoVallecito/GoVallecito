@@ -19,23 +19,51 @@
 </head>
 <body>
 
-<!-- ===== Dismissible realtor announcement bar (filled by announcement-bar.js) ===== -->
-<div class="annbar" id="annbar" hidden></div>
 
 <!-- ===== Header ===== -->
-<header class="site">
+<header class="site" id="siteHeader">
   <div class="wrap">
     <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
-    <nav class="main">
+    <button type="button" class="navtoggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
+      <span class="navtoggle-bar"></span><span class="navtoggle-bar"></span><span class="navtoggle-bar"></span>
+    </button>
+    <nav class="main" id="primaryNav" aria-label="Primary">
       <a href="conditions.html">Conditions</a>
-      <a href="things-to-do.html">Things To Do</a>
-      <a href="fishing.html">Fishing</a>
-      <a href="directory.html">Local Guide</a>
-      <a href="plan-your-visit.html">Plan Your Visit</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a class="nav-cta" href="#conditions">Live Conditions</a>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Explore<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="things-to-do.html" role="menuitem">Things To Do</a>
+          <a href="fishing.html" role="menuitem">Fishing</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Local Guide<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="directory.html" role="menuitem">Directory (Businesses)</a>
+          <a href="real-estate-partner.html" role="menuitem">Real Estate</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Plan Your Visit<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="plan-your-visit.html" role="menuitem">Getting Here</a>
+          <a href="living-in-vallecito.html" role="menuitem">Living Here</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">About<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="about.html" role="menuitem">About</a>
+          <a href="sources.html" role="menuitem">How We Verify</a>
+          <a href="contact.html" role="menuitem">Contact</a>
+        </div>
+      </div>
     </nav>
+  </div>
+  <div class="condbar">
+    <div class="wrap">
+      <a href="conditions.html"><span class="condbar-dot" aria-hidden="true"></span>Live now: <b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake <span class="condbar-more">· full conditions →</span></a>
+    </div>
   </div>
 </header>
 
@@ -53,30 +81,8 @@
   </div>
 </section>
 
-<!-- ===== Vallecito at a glance + actions ===== -->
-<section class="band">
-  <div class="wrap">
-    <div class="eyebrow">First time here?</div>
-    <h2 class="sec-title">Vallecito at a glance</h2>
-    <p class="sec-lead">The quick answers — then dig into <a href="plan-your-visit.html">Plan your visit</a> for the details.</p>
-    <div class="glance">
-      <div class="q"><h3>Can I swim?</h3><p>Yes — the north end is the spot. No lifeguards, and the water stays snowmelt-cold into June.</p></div>
-      <div class="q"><h3>Can I bring a boat?</h3><p>Yes — rentals at the marina, and a PRID recreation permit is required.</p></div>
-      <div class="q"><h3>Family-friendly?</h3><p>Very — easy lakeside walks, swimming, and the self-guided Tour of Carvings.</p></div>
-      <div class="q"><h3>Best season?</h3><p>Summer for the water; September–October for fishing, fewer crowds, and golden aspens.</p></div>
-      <div class="q"><h3>Why Vallecito over Durango or Purgatory?</h3><p>Quieter and uncrowded, wilderness on three sides, and a real lake-town feel at altitude.</p></div>
-    </div>
-    <div class="cta-row" style="margin-top:18px">
-      <a class="btn btn-primary" style="background:var(--pine);color:#fff" href="directory.html#cat-lodging">🛏️ Book lodging</a>
-      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="fishing.html#guides">🎣 Reserve a guide</a>
-      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="directory.html#cat-marina-water">🚤 Rent a boat</a>
-      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="real-estate-partner.html">🏡 Talk to Julie</a>
-    </div>
-  </div>
-</section>
-
 <!-- ===== Right now (live conditions dashboard) ===== -->
-<section class="band alt" id="conditions">
+<section class="band" id="conditions">
   <div class="wrap">
     <div class="eyebrow">Right now at the lake</div>
     <h2 class="sec-title">Live conditions</h2>
@@ -134,6 +140,28 @@
   </div>
 </section>
 
+<!-- ===== Vallecito at a glance + actions ===== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">First time here?</div>
+    <h2 class="sec-title">Vallecito at a glance</h2>
+    <p class="sec-lead">The quick answers — then dig into <a href="plan-your-visit.html">Plan your visit</a> for the details.</p>
+    <div class="glance">
+      <div class="q"><h3>Can I swim?</h3><p>Yes — the north end is the spot. No lifeguards, and the water stays snowmelt-cold into June.</p></div>
+      <div class="q"><h3>Can I bring a boat?</h3><p>Yes — rentals at the marina, and a PRID recreation permit is required.</p></div>
+      <div class="q"><h3>Family-friendly?</h3><p>Very — easy lakeside walks, swimming, and the self-guided Tour of Carvings.</p></div>
+      <div class="q"><h3>Best season?</h3><p>Summer for the water; September–October for fishing, fewer crowds, and golden aspens.</p></div>
+      <div class="q"><h3>Why Vallecito over Durango or Purgatory?</h3><p>Quieter and uncrowded, wilderness on three sides, and a real lake-town feel at altitude.</p></div>
+    </div>
+    <div class="cta-row" style="margin-top:18px">
+      <a class="btn btn-primary" style="background:var(--pine);color:#fff" href="directory.html#cat-lodging">🛏️ Book lodging</a>
+      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="fishing.html#guides">🎣 Reserve a guide</a>
+      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="directory.html#cat-marina-water">🚤 Rent a boat</a>
+      <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="real-estate-partner.html">🏡 Talk to Julie</a>
+    </div>
+  </div>
+</section>
+
 <!-- ===== Explore deeper ===== -->
 <section class="band">
   <div class="wrap">
@@ -141,6 +169,12 @@
     <h2 class="sec-title">Plan the rest of your trip</h2>
     <p class="sec-lead">Everything we know about the lake, from people who live here.</p>
     <div class="cards">
+      <a class="ecard recard" href="real-estate-partner.html">
+        <img class="recard-img" src="/assets/img/Julie_Coffelt.png" alt="Julie Coffelt, local Vallecito real-estate broker" loading="lazy">
+        <h3>🏡 Real estate at the lake</h3>
+        <p class="muted">Thinking about owning up here? Meet Julie Coffelt — your local Vallecito broker, 25+ years in the Four Corners.</p>
+        <span class="ecard-cta">Browse listings →</span>
+      </a>
       <div class="ecard"><h3>🎣 Fishing</h3><p class="muted">Six species, four seasons, permits, regs, and the local guides who put you on fish.</p><a href="fishing.html">Fishing guide →</a></div>
       <div class="ecard"><h3>🥾 Things to do</h3><p class="muted">Trails into the Weminuche, the lake, horseback, ATV, the Tour of Carvings, and dark-sky stargazing.</p><a href="things-to-do.html">See it all →</a></div>
       <div class="ecard"><h3>🛏️ Where to stay</h3><p class="muted">Lodges, cabins, RV parks, marinas, restaurants, and outfitters — <span id="bizCount">two dozen</span> local businesses.</p><a href="directory.html">Local guide →</a></div>
@@ -151,23 +185,8 @@
   </div>
 </section>
 
-<!-- ===== Drive times (audience: NM / TX / AZ / CO) ===== -->
-<section class="band alt">
-  <div class="wrap">
-    <div class="eyebrow">Getting here</div>
-    <h2 class="sec-title">How far is the lake?</h2>
-    <p class="sec-lead">Vallecito sits in the San Juan Mountains of southwest Colorado, about a half-hour northeast of Durango. Times vary with weather, season, and traffic.</p>
-    <div class="drives">
-      <div class="drive"><span>Durango, CO</span><b>30–45 min</b><span class="muted">~23 mi</span></div>
-      <div class="drive"><span>Farmington, NM</span><b>1.75–2.25 hr</b><span class="muted">~90 mi</span></div>
-      <div class="drive"><span>Albuquerque, NM</span><b>3.25–4 hr</b><span class="muted">~215 mi</span></div>
-      <div class="drive"><span>Phoenix, AZ</span><b>6–7 hr</b><span class="muted">~385 mi</span></div>
-    </div>
-  </div>
-</section>
-
 <!-- ===== By the numbers ===== -->
-<section class="band">
+<section class="band alt">
   <div class="wrap">
     <div class="eyebrow">By the numbers</div>
     <h2 class="sec-title">A small lake, big country</h2>
@@ -236,7 +255,7 @@
   </div>
 </footer>
 
-<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/nav.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
 <script>
 /* Dynamic business count + home gallery (graceful when photos are missing). */

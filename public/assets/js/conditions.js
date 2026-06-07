@@ -87,9 +87,18 @@
     }
 
     // ----- alert status -----
+    // The whole alert tile is a link to the full alert detail (#alerts), so the
+    // message text is always clickable; we also expose the full text via title +
+    // aria-label so a long/clipped message is never permanently cut off.
     if (d.alert) {
       badge('alertBig', d.alert.level, d.alert.title);
-      setText('alertMsg', d.alert.msg || '');
+      var amsg = d.alert.msg || '';
+      setText('alertMsg', amsg);
+      var amEl = $('alertMsg');
+      if (amEl) { amEl.title = amsg; amEl.classList.add('is-link'); }
+      var aTile = $('tile-alert');
+      if (aTile && amsg) aTile.setAttribute('aria-label',
+        'Alert status: ' + (d.alert.title || '') + '. ' + amsg + ' — open full alert detail.');
     }
 
     // ----- wildfires -----
@@ -103,7 +112,7 @@
     if (d.stream) {
       var cfs = d.stream.combinedCfs;
       setText('streamVal', (cfs != null ? cfs : '—') + ' cfs');
-      setText('streamMsg', 'Vallecito Creek + Pine River' + (d.stream.asOf ? ' · updated ' + rel(d.stream.asOf) : ', combined'));
+      setText('streamMsg', '🌊 Vallecito Creek + Pine River' + (d.stream.asOf ? ' · updated ' + rel(d.stream.asOf) : ', combined'));
       markStale('tile-stream', d.stream.stale);
     }
 
@@ -183,8 +192,8 @@
       var gEl = $('streamGauges');
       if (gEl) {
         gEl.innerHTML = d.stream.gauges.map(function (g) {
-          return '<li><span>' + escapeHtml(g.name) + ' <span class="muted">(USGS ' + escapeHtml(g.id) +
-            (g.asOf ? ' · ' + escapeHtml(rel(g.asOf)) : '') + ')</span></span><b>' +
+          return '<li><span>🌊 ' + escapeHtml(g.name) + ' <span class="muted">(USGS ' + escapeHtml(g.id) +
+            (g.asOf ? ' · ' + escapeHtml(rel(g.asOf)) : '') + ')</span></span><b>💧 ' +
             (g.cfs != null ? g.cfs + ' cfs' : '—') + '</b></li>';
         }).join('');
       }

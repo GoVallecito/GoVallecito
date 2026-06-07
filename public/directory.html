@@ -9,21 +9,50 @@
 </head>
 <body>
 
-<div class="annbar" id="annbar" hidden></div>
 
-<header class="site">
+<header class="site" id="siteHeader">
   <div class="wrap">
     <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
-    <nav class="main">
+    <button type="button" class="navtoggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
+      <span class="navtoggle-bar"></span><span class="navtoggle-bar"></span><span class="navtoggle-bar"></span>
+    </button>
+    <nav class="main" id="primaryNav" aria-label="Primary">
       <a href="conditions.html">Conditions</a>
-      <a href="things-to-do.html">Things To Do</a>
-      <a href="fishing.html">Fishing</a>
-      <a href="directory.html" class="active" aria-current="page">Local Guide</a>
-      <a href="plan-your-visit.html">Plan Your Visit</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <div class="condstrip"><a href="conditions.html"><b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake</a></div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Explore<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="things-to-do.html" role="menuitem">Things To Do</a>
+          <a href="fishing.html" role="menuitem">Fishing</a>
+        </div>
+      </div>
+      <div class="navgroup is-active">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Local Guide<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="directory.html" role="menuitem" class="active" aria-current="page">Directory (Businesses)</a>
+          <a href="real-estate-partner.html" role="menuitem">Real Estate</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Plan Your Visit<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="plan-your-visit.html" role="menuitem">Getting Here</a>
+          <a href="living-in-vallecito.html" role="menuitem">Living Here</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">About<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="about.html" role="menuitem">About</a>
+          <a href="sources.html" role="menuitem">How We Verify</a>
+          <a href="contact.html" role="menuitem">Contact</a>
+        </div>
+      </div>
     </nav>
+  </div>
+  <div class="condbar">
+    <div class="wrap">
+      <a href="conditions.html"><span class="condbar-dot" aria-hidden="true"></span>Live now: <b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake <span class="condbar-more">· full conditions →</span></a>
+    </div>
   </div>
 </header>
 
@@ -76,7 +105,7 @@
   <div class="wrap copy">© 2026 GoVallecito.com · Made with care in the San Juans</div>
 </footer>
 
-<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/nav.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
 <script>
 /* Tiered directory rendered from /data/directory.json.
@@ -116,7 +145,7 @@
   }
 
   function basicRow(b){
-    return '<div class="lcard" data-cat="'+esc(b.category)+'">'+
+    return '<div class="lcard" id="biz-'+esc(b.slug)+'" data-cat="'+esc(b.category)+'">'+
       (b.tier==='verified' ? '<span class="badge badge-verified">✓ Verified Local</span>' : '')+
       '<div class="cat">'+esc(b.category)+'</div>'+
       '<h3>'+esc(b.name)+'</h3>'+
@@ -128,14 +157,15 @@
   }
 
   function featuredCard(b){
+    var fit = b.imageFit === 'cover' ? ' pimg--cover' : '';
     var img = b.image
-      ? '<div class="pimg"><img src="'+esc(b.image)+'" alt="'+esc(b.name)+'" loading="lazy" onerror="var p=this.parentNode;p.classList.add(\'ph\');p.textContent=this.alt"></div>'
+      ? '<div class="pimg'+fit+'"><img src="'+esc(b.image)+'" alt="'+esc(b.imageAlt||b.name)+'" loading="lazy" onerror="var p=this.parentNode;p.classList.add(\'ph\');p.textContent=this.alt"></div>'
       : '<div class="pimg ph">'+esc(b.name)+'</div>';
     var photos = (Array.isArray(b.photos) && b.photos.length)
       ? '<div class="pstrip">'+b.photos.map(function(p){ return '<img src="'+esc(p)+'" alt="" loading="lazy" onerror="this.remove()">'; }).join('')+'</div>'
       : '';
     var cta = b.cta ? '<a class="btn btn-primary" style="background:var(--pine);color:#fff" href="'+esc(b.cta.href)+'" rel="noopener">'+esc(b.cta.label)+'</a>' : '';
-    return '<div class="pcard" data-cat="'+esc(b.category)+'">'+img+
+    return '<div class="pcard" id="biz-'+esc(b.slug)+'" data-cat="'+esc(b.category)+'">'+img+
       '<div><span class="badge badge-partner">★ '+esc(b.badge||'Featured Partner')+'</span> <span class="cat">'+esc(b.category)+'</span>'+
       '<h3>'+esc(b.name)+'</h3>'+
       (b.blurb ? '<p class="muted">'+esc(b.blurb)+'</p>' : '')+
@@ -187,9 +217,18 @@
     }).join('&nbsp;·&nbsp;');
   }
 
+  // Deep-link support: Things-To-Do / fishing link to directory.html#biz-<slug>.
+  // Content renders async, so scroll to the target after render (and on hashchange).
+  function scrollToHash(){
+    if(!location.hash) return;
+    var el=document.getElementById(location.hash.slice(1));
+    if(el) el.scrollIntoView();
+  }
+  window.addEventListener('hashchange', scrollToHash);
+
   fetch('/data/directory.json',{cache:'no-store'})
     .then(function(r){return r.json();})
-    .then(function(d){ DATA=d; buildStrip(); buildFilters(); render(); })
+    .then(function(d){ DATA=d; buildStrip(); buildFilters(); render(); scrollToHash(); })
     .catch(function(){ elDir.innerHTML='<p class="muted">Directory temporarily unavailable.</p>'; });
 })();
 </script>

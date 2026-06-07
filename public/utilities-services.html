@@ -9,21 +9,50 @@
 </head>
 <body>
 
-<div class="annbar" id="annbar" hidden></div>
 
-<header class="site">
+<header class="site" id="siteHeader">
   <div class="wrap">
     <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
-    <nav class="main">
+    <button type="button" class="navtoggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
+      <span class="navtoggle-bar"></span><span class="navtoggle-bar"></span><span class="navtoggle-bar"></span>
+    </button>
+    <nav class="main" id="primaryNav" aria-label="Primary">
       <a href="conditions.html">Conditions</a>
-      <a href="things-to-do.html">Things To Do</a>
-      <a href="fishing.html">Fishing</a>
-      <a href="directory.html">Local Guide</a>
-      <a href="plan-your-visit.html">Plan Your Visit</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <div class="condstrip"><a href="conditions.html"><b id="stripTemp">--&deg;</b> &middot; <span id="stripLake">--%</span> lake</a></div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Explore<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="things-to-do.html" role="menuitem">Things To Do</a>
+          <a href="fishing.html" role="menuitem">Fishing</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Local Guide<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="directory.html" role="menuitem">Directory (Businesses)</a>
+          <a href="real-estate-partner.html" role="menuitem">Real Estate</a>
+        </div>
+      </div>
+      <div class="navgroup is-active">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Plan Your Visit<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="plan-your-visit.html" role="menuitem">Getting Here</a>
+          <a href="living-in-vallecito.html" role="menuitem" class="active" aria-current="page">Living Here</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">About<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="about.html" role="menuitem">About</a>
+          <a href="sources.html" role="menuitem">How We Verify</a>
+          <a href="contact.html" role="menuitem">Contact</a>
+        </div>
+      </div>
     </nav>
+  </div>
+  <div class="condbar">
+    <div class="wrap">
+      <a href="conditions.html"><span class="condbar-dot" aria-hidden="true"></span>Live now: <b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake <span class="condbar-more">· full conditions →</span></a>
+    </div>
   </div>
 </header>
 
@@ -84,7 +113,7 @@
   <div class="wrap copy">&copy; 2026 GoVallecito.com &middot; Made with care in the San Juans</div>
 </footer>
 
-<script src="/assets/js/announcement-bar.js" defer></script>
+<script src="/assets/js/nav.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
 </body>
 </html>

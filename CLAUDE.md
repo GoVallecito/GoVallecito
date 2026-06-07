@@ -21,7 +21,7 @@ A rebuild of GoVallecito.com — a community/conditions hub for Vallecito Lake, 
 - **Data sources:** weather = NWS (marina PWS `KCOBAYFI57` staged, needs `WU_API_KEY`); lake = USACE CWMS →
   USBR RISE (USGS 09353000 is DEAD/2012 — never use); streams = USGS 09352900+09352800; alerts/Red Flag =
   NWS; fires = NIFC within 50 mi; fire restrictions = editor toggle `public/data/restrictions.json`
-  (currently Stage 1); roads = CDOT (being wired via COtrip key).
+  (currently Stage 1); roads = CDOT/COtrip (LIVE, Durango corridor; final CR-501 leg via cameras/511).
 
 ## Deploy / commands (David is wrangler-logged-in)
 - Pages: `npx wrangler pages deploy public --project-name=govallecito-web`
@@ -30,19 +30,14 @@ A rebuild of GoVallecito.com — a community/conditions hub for Vallecito Lake, 
 - Secrets (in Cloudflare, never in repo): `npx wrangler secret put NAME`.
 
 ## Secrets / config state
-- `COTRIP_KEY` — **SET on `govallecito-conditions` (June 6 2026), but the value is REJECTED by the COtrip
-  API.** Empirically (probed direct + via `/__cdottest`): base `https://data.cotrip.org/api/v1/` is
-  correct and the gateway recognizes routes; `roadConditions` + `incidents` routes EXIST (HTTP 403) but
-  the key is not accepted — **every request returns 403 "Not Authorized" (Akamai), identical with the
-  key, without a key, and across all param-name variants** (`apiKey`/`key`/`api_key`/`apikey`/`ApiKey`
-  query + `Ocp-Apim-Subscription-Key`/`apiKey` headers). `cameras` + root return 404 "not defined by this
-  API" → that route isn't in the plan (matches: **Cameras is a separate subscription, NOT active**).
-  Conclusion: this is a **key activation / wrong-value problem, not a code problem.** The value looks like
-  a 4-group dashed license code, not a typical API key. **David to verify in `manage-api.cotrip.org`:**
-  (1) the subscription is *approved/active* (CDOT approves manually); (2) copy the real API key from
-  "API Access URLs / subscriber API details"; (3) Road Conditions + Incidents products are attached.
-  Until a working key is in, `getRoads()` stays the safe "Clear" default. Subscription per portal =
-  Incidents/Planned Events/Weather Stations/Road Conditions.
+- `COTRIP_KEY` — **SET and WORKING on `govallecito-conditions` (key `Y6ANSTG-…`, June 6 2026).**
+  `getRoads()` is LIVE: reads CDOT `roadConditions` + `incidents`, filtered to the Durango access corridor
+  (US 550 / US 160), with honest scoping. The TEMP `/__cdottest` probe + `cdotProbe()` have been REMOVED.
+  **Honest caveat:** CDOT does NOT report US-160 Durango→Bayfield or CR 501, so the roads tile can't be a
+  complete "is the road to the lake open" indicator — it's scoped to "Durango-area highways," with the
+  camera deep-links + 511 for the final CR-501 leg. **Cameras = separate COtrip subscription (NOT active)**
+  → camera tiles stay link-only (Path A). To rotate the key: regenerate in `manage-api.cotrip.org`, then
+  `npx wrangler secret put COTRIP_KEY` from the `worker/` folder. (David has waived secrecy on this key.)
 - `WU_API_KEY` — NOT set yet (marina weather stays on NWS until it is). `WU_STATION_ID=KCOBAYFI57` (var).
 
 ## Workflow convention
@@ -57,13 +52,24 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
 - COtrip is JS-only (no scrapeable image URLs); CDOT data needs the Worker (key) not the shell.
 
 ## Current open items (June 2026)
-- **In progress:** CDOT integration. A TEMP diagnostic route `/__cdottest` exists in the Worker to probe
-  CDOT feeds server-side (so the key isn't exposed in the shell). **Deploy worker → hit /__cdottest →
-  use the output to wire `getRoads()` (live road conditions) and, if the cameras feed returns data,
-  upgrade the Plan-Your-Visit camera tiles to live stills. REMOVE `/__cdottest` + `cdotProbe()` after.**
+- **DONE:** CDOT roads integration — `getRoads()` live, `/__cdottest` removed, deployed + pushed
+  (commit `8afba75`). See Secrets/config above.
 - **Round 13 (queued, approved):** grouped-dropdown top nav + retire the scrolling realtor bar → a
   "Real Estate at the Lake" featured card (home + directory) + Real Estate in nav/footer. Spec in
-  `docs/REVIEW-UPDATES-13.md`.
+  `docs/REVIEW-UPDATES-13.md` + `ROUND-13-BUILD-PROMPT.md`.
+- **Round 14 (queued):** linking + polish pass — Things-To-Do & guides two-hop links (on-site →
+  directory anchor → external site/FB); replace Blue Spruce white-on-white logo with a real campground
+  photo; Local Guide order (Real Estate first, outfitters last); clickable/expandable conditions alerts;
+  inflow-gauge emojis; fix "See live conditions" button sizing; home section reorder (Live conditions →
+  At a glance → Plan the rest → By the numbers) + remove "Getting Here" from home only. Spec in
+  `docs/REVIEW-UPDATES-14.md`. Build 13+14 together via `ROUND-13-14-BUILD-PROMPT.md`.
+- **Round 15 (queued, approved):** trust pass — positioning statement ("The independent guide to
+  Vallecito Lake…"), per-tile source + timestamp (+stale badge), editorial/corrections sections on the
+  sources page, About-the-Team placeholder, new `first-visit.html` guide. Spec in
+  `docs/REVIEW-UPDATES-15.md`. Build AFTER 13+14.
+- **Later (from June 2026 strategy review, David-approved order TBD):** fishing hub v1 (species pages,
+  calendar, weekly report via editor file), interactive Leaflet map, insider-knowledge + seasonal content
+  (needs a David Q&A session). Skipped for now: community submissions.
 - **Pending on David:** photos (`docs/PHOTO-WISHLIST.md` → `public/assets/img/`); marina `WU_API_KEY`;
   Excel Excavation data + Vallecito Church logo; a heads-up to Julie; the **go-live cutover** (attach
   govallecito.com to Pages, activate the Worker route in wrangler.toml, flip `conditions.js` DATA_URL to
@@ -74,7 +80,7 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
 
 ## docs/ index
 - `PROJECT-STATUS.md` — full status + launch readiness (read after this).
-- `REVIEW-UPDATES-01..13.md` — chronological change specs (13 = nav + realtor card).
+- `REVIEW-UPDATES-01..14.md` — chronological change specs (13 = nav + realtor card; 14 = linking + polish).
 - `DATA-SOURCES.md` — every feed + exact endpoints. `FIRE-RESTRICTIONS.md` — restriction authorities.
 - `DIRECTORY-CONTACTS.md`, `FEATURED-ASSETS.md` — business data/logos.
 - `STRATEGY-nav-and-realtor.md` — competitor patterns + nav/realtor plan.

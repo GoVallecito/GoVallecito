@@ -1,6 +1,6 @@
 {
   "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
-  "categoryOrder": ["Lodging", "Outfitters & Guides", "Dining", "Real Estate", "Marina & Water", "Retail", "Local Services", "Community"],
+  "categoryOrder": ["Real Estate", "Lodging", "Dining", "Marina & Water", "Retail", "Local Services", "Community", "Outfitters & Guides"],
   "businesses": [
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
@@ -34,7 +34,7 @@
       "facebook": "https://facebook.com/Blue-Spruce-RV-Park-Cabins-168321524197",
       "instagram": "https://instagram.com/funstaysllc", "youtube": "https://youtube.com/@BlueSpruceRVPark",
       "booking": "https://bookingsus.newbook.cloud/bluesprucervpark", "address": "1875 CR 500, Bayfield, CO",
-      "image": "/assets/img/featured/bluespruce-logo.png", "badge": "GoVallecito Partner",
+      "image": "/assets/img/featured/blue-spruce.jpg", "imageAlt": "Blue Spruce RV Park & Cabins — wooded sites near Vallecito Lake", "imageFit": "cover", "badge": "GoVallecito Partner",
       "cta": { "label": "Book a site →", "href": "https://bookingsus.newbook.cloud/bluesprucervpark" }
     },
     {
