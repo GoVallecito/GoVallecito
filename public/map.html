@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lake Map — Vallecito Lake, Colorado | GoVallecito</title>
+<meta name="description" content="Interactive map of Vallecito Lake, Colorado: USFS campgrounds, the marina and boat access, public lake access, and landmarks — with verified coordinates. Toggle layers; tap a pin for details.">
+<link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<header class="site" id="siteHeader">
+  <div class="wrap">
+    <a class="brand" href="index.html">GoVallecito<span>.com</span></a>
+    <button type="button" class="navtoggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
+      <span class="navtoggle-bar"></span><span class="navtoggle-bar"></span><span class="navtoggle-bar"></span>
+    </button>
+    <nav class="main" id="primaryNav" aria-label="Primary">
+      <a href="conditions.html">Conditions</a>
+      <div class="navgroup is-active">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Explore<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="things-to-do.html" role="menuitem">Things To Do</a>
+          <a href="fishing.html" role="menuitem">Fishing</a>
+          <a href="map.html" role="menuitem" class="active" aria-current="page">Lake Map</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Local Guide<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="directory.html" role="menuitem">Directory (Businesses)</a>
+          <a href="real-estate-partner.html" role="menuitem">Real Estate</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">Plan Your Visit<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="first-visit.html" role="menuitem">First Visit</a>
+          <a href="plan-your-visit.html" role="menuitem">Getting Here</a>
+          <a href="living-in-vallecito.html" role="menuitem">Living Here</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button type="button" class="navgroup-btn" aria-expanded="false" aria-haspopup="true">About<span class="caret" aria-hidden="true">▾</span></button>
+        <div class="navmenu" role="menu">
+          <a href="about.html" role="menuitem">About</a>
+          <a href="sources.html" role="menuitem">How We Verify</a>
+          <a href="contact.html" role="menuitem">Contact</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div class="condbar">
+    <div class="wrap">
+      <a href="conditions.html"><span class="condbar-dot" aria-hidden="true"></span>Live now: <b id="stripTemp">--°</b> · <span id="stripLake">--%</span> lake <span class="condbar-more">· full conditions →</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="pagehero">
+  <div class="wrap">
+    <div class="eyebrow">Explore · Lake map</div>
+    <h1>Vallecito Lake map</h1>
+    <p>Campgrounds, the marina and boat access, public lake access, and landmarks around the reservoir. Tap a pin for details; toggle the layers above the map. Every pin uses a verified coordinate — see <a href="sources.html#how-we-verify" style="color:#9fe6d6">how we verify</a>.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="map-chips" id="mapChips" role="group" aria-label="Toggle map layers"></div>
+    <div style="position:relative">
+      <div id="map" role="application" aria-label="Interactive map of Vallecito Lake"></div>
+      <div id="mapFallback" class="map-fallback" hidden>
+        <p><b>Map tiles couldn't load.</b> You may be offline. The full list of locations is below.</p>
+      </div>
+    </div>
+    <p class="map-note">📍 Live weather, lake level, fire, and road status are on the <a href="conditions.html">conditions page</a> — this map shows places, not live data. Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors.</p>
+
+    <!-- Plain-text POI list: SEO, accessibility, no-JS fallback (rendered from the same JSON) -->
+    <div class="poi-list" id="poiList">
+      <h2 class="sec-title" style="font-size:1.3rem;margin-top:24px">All locations</h2>
+      <p class="muted" id="poiListLoading">Loading locations…</p>
+      <div id="poiListBody"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap cols">
+    <div>
+      <div class="brand" style="color:#fff;font-size:1.2rem">GoVallecito<span style="color:#9fe6d6">.com</span></div>
+      <div class="footer-slogan">Elevation Changes Everything</div>
+      <p style="max-width:38ch">The independent guide to Vallecito Lake — local conditions, recreation, businesses, and community information in one place. Independently owned and operated.</p>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <p class="linklist">
+        <a href="conditions.html">Conditions</a><a href="things-to-do.html">Things To Do</a>
+        <a href="fishing.html">Fishing</a><a href="map.html">Lake Map</a><a href="directory.html">Local Guide</a>
+        <a href="plan-your-visit.html">Plan Your Visit</a><a href="living-in-vallecito.html">Living Here</a>
+        <a href="about.html">About</a><a href="contact.html">Contact</a>
+        <a href="sources.html">How we verify</a><a href="sources.html#corrections">Corrections</a>
+      </p>
+    </div>
+    <div>
+      <h3>Trusted sources</h3>
+      <p class="linklist">
+        <a href="https://forecast.weather.gov/MapClick.php?lat=37.3361&lon=-107.5617">National Weather Service</a>
+        <a href="https://inciweb.wildfire.gov">InciWeb (wildfire)</a>
+        <a href="https://waterdata.usgs.gov">USGS Water Data</a>
+        <a href="https://www.cotrip.org">CDOT Travel</a>
+        <a href="https://pineriverirrigationdistrict.com">PRID</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrap copy">© 2026 GoVallecito.com · Made with care in the San Juans</div>
+</footer>
+
+<script src="/assets/js/nav.js" defer></script>
+<script src="/assets/js/conditions.js" defer></script>
+<script src="/assets/vendor/leaflet/leaflet.js"></script>
+<script>
+/* Vallecito lake map — Leaflet + OpenStreetMap, config-driven from data/map-pois.json.
+   Layers toggle via chips; emoji divIcons; popups; plain-text list fallback below. */
+(function () {
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function telHref(p){return 'tel:'+String(p).replace(/[^0-9+]/g,'');}
+
+  fetch('/data/map-pois.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('pois'); return r.json(); })
+    .then(function (data) { initMap(data); renderList(data); })
+    .catch(function () {
+      var l = document.getElementById('poiListLoading');
+      if (l) l.textContent = 'Locations are temporarily unavailable.';
+    });
+
+  function initMap(data) {
+    if (typeof L === 'undefined') return; // Leaflet failed to load — text list still renders
+    var cats = {};
+    data.categories.forEach(function (c) { cats[c.key] = c; });
+
+    var c = data.center || { lat: 37.42, lng: -107.548, zoom: 12 };
+    var map = L.map('map', { scrollWheelZoom: false }).setView([c.lat, c.lng], c.zoom);
+
+    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    // Only show the offline fallback if NO tiles load at all (a stray 404 on one
+    // tile is normal and shouldn't hide a working map).
+    var loadedAny = false;
+    tiles.on('tileload', function () { loadedAny = true; var f = document.getElementById('mapFallback'); if (f) f.hidden = true; });
+    tiles.addTo(map);
+    setTimeout(function () { if (!loadedAny) { var f = document.getElementById('mapFallback'); if (f) f.hidden = false; } }, 5000);
+
+    // one layer group per category
+    var groups = {}, counts = {}, bounds = [];
+    data.categories.forEach(function (cat) { groups[cat.key] = L.layerGroup(); counts[cat.key] = 0; });
+
+    data.pois.forEach(function (p) {
+      var cat = cats[p.category]; if (!cat || !groups[p.category]) return;
+      var icon = L.divIcon({ className: '', html: '<div class="map-emoji-icon">' + cat.emoji + '</div>',
+        iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12] });
+      var m = L.marker([p.lat, p.lng], { icon: icon, title: p.name });
+      var html = '<b>' + esc(p.name) + '</b>';
+      if (p.blurb) html += '<br>' + esc(p.blurb);
+      if (p.link) html += '<br><a href="' + esc(p.link) + '"' + (/^https?:/.test(p.link) ? ' target="_blank" rel="noopener"' : '') + '>More info →</a>';
+      if (p.phone) html += '<br><a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>';
+      m.bindPopup(html);
+      m.addTo(groups[p.category]);
+      counts[p.category]++;
+      bounds.push([p.lat, p.lng]);
+    });
+
+    // add default-on groups; build chips
+    var chips = document.getElementById('mapChips');
+    data.categories.forEach(function (cat) {
+      var on = cat.defaultOn !== false;
+      if (on) groups[cat.key].addTo(map);
+      if (chips) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'map-chip'; b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.innerHTML = cat.emoji + ' ' + esc(cat.label) + ' <span class="ct">' + counts[cat.key] + '</span>';
+        b.addEventListener('click', function () {
+          var nowOn = b.getAttribute('aria-pressed') !== 'true';
+          b.setAttribute('aria-pressed', nowOn ? 'true' : 'false');
+          if (nowOn) groups[cat.key].addTo(map); else map.removeLayer(groups[cat.key]);
+        });
+        chips.appendChild(b);
+      }
+    });
+
+    if (bounds.length) map.fitBounds(bounds, { padding: [40, 40] });
+    setTimeout(function () { map.invalidateSize(); }, 200);
+  }
+
+  function renderList(data) {
+    var body = document.getElementById('poiListBody');
+    var loading = document.getElementById('poiListLoading');
+    if (loading) loading.style.display = 'none';
+    if (!body) return;
+    var cats = {}; data.categories.forEach(function (c) { cats[c.key] = c; });
+    var html = '';
+    data.categories.forEach(function (cat) {
+      var list = data.pois.filter(function (p) { return p.category === cat.key; });
+      if (!list.length) return;
+      html += '<h3>' + cat.emoji + ' ' + esc(cat.label) + '</h3><ul>';
+      list.forEach(function (p) {
+        html += '<li><b>' + esc(p.name) + '</b>' + (p.blurb ? ' — ' + esc(p.blurb) : '') +
+          (p.link ? ' <a href="' + esc(p.link) + '"' + (/^https?:/.test(p.link) ? ' target="_blank" rel="noopener"' : '') + '>info</a>' : '') +
+          (p.phone ? ' · <a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>' : '') + '</li>';
+      });
+      html += '</ul>';
+    });
+    body.innerHTML = html;
+  }
+})();
+</script>
+</body>
+</html>

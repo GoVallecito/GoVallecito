@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fishing — Vallecito Lake, Colorado | GoVallecito</title>
-<meta name="description" content="Vallecito Lake fishing guide: species (kokanee, pike, trout, walleye, smallmouth), seasons, permits, 2026 regulations, and local guides.">
+<meta name="description" content="The complete Vallecito Lake fishing guide: a weekly report, six species with tactics, a month-by-month calendar, shore vs. boat access, permits, corrected 2026 CPW regulations, and local guides.">
 <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
@@ -23,6 +23,7 @@
         <div class="navmenu" role="menu">
           <a href="things-to-do.html" role="menuitem">Things To Do</a>
           <a href="fishing.html" role="menuitem" class="active" aria-current="page">Fishing</a>
+          <a href="map.html" role="menuitem">Lake Map</a>
         </div>
       </div>
       <div class="navgroup">
@@ -61,61 +62,158 @@
   <div class="wrap">
     <div class="eyebrow">Fishing</div>
     <h1>Six species, four seasons, one very good lake</h1>
-    <p>Kokanee salmon are the headliner and a 20-pound-plus northern pike is the trophy. Here's what's biting, when, and what you need to fish legally.</p>
+    <p>Kokanee salmon are the headliner and a 20-pound-plus northern pike is the trophy. Below: this week's report, every species with how to fish it, a month-by-month calendar, shore-vs-boat access, and the regs you need to fish legally.</p>
   </div>
 </section>
 
-<section class="band">
+<!-- jump nav -->
+<nav class="jumpnav" aria-label="On this page">
   <div class="wrap">
-    <h2 class="sec-title anchor-offset" id="species">🐟 Species</h2>
-    <p class="sec-lead">Plus brook trout up in the creek above the lake.</p>
+    <a href="#report">Report</a>
+    <a href="#species">Species</a>
+    <a href="#calendar">Calendar</a>
+    <a href="#access">Access</a>
+    <a href="#permits">Permits</a>
+    <a href="#regs">Regs</a>
+    <a href="#guides">Guides</a>
+  </div>
+</nav>
+
+<!-- ===== Weekly report (rendered from data/fishing-report.json) ===== -->
+<section class="band anchor-offset" id="report">
+  <div class="wrap">
+    <div id="reportBody" class="report-card">
+      <p class="muted">Loading this week's outlook…</p>
+    </div>
+    <p class="muted" style="font-size:.82rem;margin-top:10px">The bite changes fast — for the current word, ask at the <a href="directory.html#biz-vallecito-marina">marina</a> or book a <a href="#guides">local guide</a>.</p>
+  </div>
+</section>
+
+<!-- ===== Species ===== -->
+<section class="band alt anchor-offset" id="species">
+  <div class="wrap">
+    <h2 class="sec-title">🐟 Species &amp; how to fish them</h2>
+    <p class="sec-lead">Six gamefish in the reservoir, plus brook trout up the creeks. At a glance, then the details.</p>
     <table class="tbl">
-      <thead><tr><th>Species</th><th>Notes</th><th>Best months</th></tr></thead>
+      <thead><tr><th>Species</th><th>Status</th><th>Best months</th></tr></thead>
       <tbody>
-        <tr><td><b>Kokanee Salmon</b></td><td>The headliner — troll in summer, snag during the fall run</td><td>Jun–Aug (troll), Sep–Dec (spawn)</td></tr>
-        <tr><td><b>Northern Pike</b></td><td>The trophy — 20+ lb fish in here</td><td>Apr–Jun, Sep–Oct</td></tr>
-        <tr><td><b>Rainbow Trout</b></td><td>Stocked, reliable</td><td>Apr–Jun, Sep–Oct</td></tr>
-        <tr><td><b>Brown Trout</b></td><td>Best in the fall</td><td>Late Sep–Nov</td></tr>
-        <tr><td><b>Walleye</b></td><td>Low-light bite</td><td>May–Jun, Sep–Oct</td></tr>
-        <tr><td><b>Smallmouth Bass</b></td><td>Rocky structure, summer</td><td>Jun–Aug</td></tr>
+        <tr><td><b><a href="#kokanee">Kokanee Salmon</a></b></td><td>Stocked · the headliner</td><td>Jun–Aug troll; Nov 15–Dec 31 snag (Grimes Creek stretch)</td></tr>
+        <tr><td><b><a href="#pike">Northern Pike</a></b></td><td>Self-sustaining · the trophy</td><td>Apr–Jun, Sep–Oct</td></tr>
+        <tr><td><b><a href="#rainbow">Rainbow Trout</a></b></td><td>Stocked · reliable</td><td>Apr–Jun, Sep–Oct</td></tr>
+        <tr><td><b><a href="#brown">Brown Trout</a></b></td><td>Self-sustaining</td><td>Late Sep–Nov</td></tr>
+        <tr><td><b><a href="#walleye">Walleye</a></b></td><td>Self-sustaining · low-light</td><td>May–Jun, Sep–Oct</td></tr>
+        <tr><td><b><a href="#smallmouth">Smallmouth Bass</a></b></td><td>Self-sustaining</td><td>Jun–Aug</td></tr>
       </tbody>
     </table>
 
-    <h2 class="sec-title anchor-offset" id="seasons" style="margin-top:34px">📅 Seasons</h2>
-    <div class="prose">
-      <ul>
-        <li><b>Ice-out (Apr–May)</b> — pike and trout move shallow.</li>
-        <li><b>Summer (Jun–Aug)</b> — kokanee trolling; the wind usually comes up by 2 p.m., so fish early.</li>
-        <li><b>Fall (Sep–Oct)</b> — the best all-around fishing of the year.</li>
-        <li><b>Ice (Nov–Mar)</b> — hard-water season; the tournament is late February.</li>
-      </ul>
-    </div>
+    <div class="prose" style="margin-top:24px">
+      <h3 class="anchor-offset" id="kokanee">🐟 Kokanee salmon</h3>
+      <p>The headliner — landlocked sockeye, stocked annually by CPW. <b>Troll</b> from June through August (small dodgers/squids, downriggers or leaded line to find the temperature band); fish early, before the wind comes up around 2 p.m. The fall fishery is a <b>snagging</b> season, <b>Nov 15 – Dec 31</b>, and only in the Grimes Creek inlet stretch (see <a href="#regs">regs</a>); bag limit 10. Honest note: kokanee numbers have had down years (local guides point to fish lost during the 2015 spillway releases), so a given season can run hot or thin — check the <a href="#report">weekly report</a> above, or ask at the <a href="directory.html#biz-vallecito-marina">marina</a> or a <a href="#guides">guide</a> for this year's outlook.</p>
 
-    <h2 class="sec-title anchor-offset" id="permits" style="margin-top:34px">🎫 Permits</h2>
+      <h3 class="anchor-offset" id="pike" style="margin-top:22px">🐟 Northern pike</h3>
+      <p>Self-sustaining and the trophy of the lake — 20-pound-plus fish live here. Best in the <b>north end</b> (weedy, shallower water) in late spring and again in early fall. No bag limit — <b>CPW encourages harvest</b> to protect native fish downstream, so keep what you'll eat. Big baits: spoons, large spinnerbaits, swimbaits.</p>
+
+      <h3 class="anchor-offset" id="rainbow" style="margin-top:22px">🐟 Rainbow trout</h3>
+      <p>Stocked annually and the most reliable catch for casual anglers. Best around <b>ice-out</b> and again in <b>fall</b>. Troll, bait-fish from shore, or cast spinners; bag limit 4 (trout).</p>
+
+      <h3 class="anchor-offset" id="brown" style="margin-top:22px">🐟 Brown trout</h3>
+      <p>Self-sustaining and wilier than the rainbows. <b>Late September through November</b> is prime as browns get aggressive ahead of their fall spawn. Streamers and larger lures near structure.</p>
+
+      <h3 class="anchor-offset" id="walleye" style="margin-top:22px">🐟 Walleye</h3>
+      <p>Self-sustaining; a low-light, structure-oriented fish. Work <b>10–40 ft</b> from a boat with bottom bouncers/worm harnesses or vertical jigs; dawn, dusk, and overcast days are best. Tough to target from shore. Bag limit 5.</p>
+
+      <h3 class="anchor-offset" id="smallmouth" style="margin-top:22px">🐟 Smallmouth bass</h3>
+      <p>Self-sustaining; hold on <b>rocky structure and around docks</b>. June–July are the shallow months as the water warms; tubes, jigs, and crankbaits. No bag limit (CPW encourages harvest).</p>
+
+      <p class="muted" style="margin-top:18px"><b>Up the creeks:</b> small <b>brook trout</b> are catchable in Vallecito Creek and the Pine River above the lake.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Month-by-month calendar ===== -->
+<section class="band anchor-offset" id="calendar">
+  <div class="wrap">
+    <h2 class="sec-title">🗓️ Month-by-month</h2>
+    <p class="sec-lead">A rough rhythm of the season — mountain conditions vary year to year, so check <a href="conditions.html">live conditions</a> and the <a href="#report">weekly report</a> before you go.</p>
+    <div class="table-scroll">
+    <table class="tbl">
+      <thead><tr><th>Month</th><th>What's fishable</th><th>Tactic of the month</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><b>January</b></td><td>Ice fishing (where ice is safe)</td><td>Jig for trout &amp; perch through the ice</td><td>Mid-winter; no official ice reports — check locally before you walk out.</td></tr>
+        <tr><td><b>February</b></td><td>Ice fishing</td><td>Jigging; the local ice-fishing tournament is late Feb</td><td>Hard-water peak.</td></tr>
+        <tr><td><b>March</b></td><td>Late ice → transition</td><td>Cautious ice jigging early in the month</td><td>Ice gets unreliable as it warms; ice-out approaches.</td></tr>
+        <tr><td><b>April</b></td><td>Pike, rainbow trout (ice-out)</td><td>Cast/troll the shallows as pike and trout move up</td><td>Ice-out begins; lake may be low and rising.</td></tr>
+        <tr><td><b>May</b></td><td>Pike, trout, early walleye</td><td>Shallow presentations; low-light for walleye</td><td>Runoff builds in the creeks; conditions change fast.</td></tr>
+        <tr><td><b>June</b></td><td>Kokanee (troll), smallmouth, trout</td><td>Start trolling for kokanee; fish at first light</td><td>Free Fishing Days (first full weekend); wind by ~2 p.m.; creeks high with runoff.</td></tr>
+        <tr><td><b>July</b></td><td>Kokanee, smallmouth, trout</td><td>Troll deeper as water warms; smallmouth on rock</td><td>Afternoon thunderstorms + wind — start at dawn; busiest month.</td></tr>
+        <tr><td><b>August</b></td><td>Kokanee, smallmouth, walleye</td><td>Low-light walleye; keep trolling kokanee</td><td>Warm; monsoon storms; early starts pay.</td></tr>
+        <tr><td><b>September</b></td><td>Browns, trout, pike — best all-around</td><td>Streamers for browns; cover water for pike</td><td><b>Grimes Creek inlet closes Sep 1</b> (through Nov 14); fewer crowds.</td></tr>
+        <tr><td><b>October</b></td><td>Browns, trout, pike</td><td>Fall feed — bigger lures</td><td>Cold nights, great color.</td></tr>
+        <tr><td><b>November</b></td><td>Kokanee snagging (from Nov 15)</td><td>Snag kokanee in the Grimes Creek stretch only</td><td>Grimes Creek closure ends Nov 14, snagging opens Nov 15; ice forms late.</td></tr>
+        <tr><td><b>December</b></td><td>Kokanee snagging (to Dec 31); early ice</td><td>Snagging in the stretch; first-ice jigging where safe</td><td>Cold; verify ice with locals.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Shore vs boat access ===== -->
+<section class="band alt anchor-offset" id="access">
+  <div class="wrap">
+    <h2 class="sec-title">🎣 Shore vs. boat</h2>
+    <div class="databand">
+      <div class="panel">
+        <h3>🚶 From shore</h3>
+        <p class="muted">Bank access is realistic around the public areas and the PRID public-ramp area; trout and pike are the most shore-friendly targets, while <b>walleye are tough from shore</b> (they hold deep). Watch the <a href="conditions.html#lake">live lake level</a> — when it drops, the shoreline and some access points shift. See the <a href="map.html">lake map</a> for public access points.</p>
+        <!-- INSIDER SPOTS: real local shore spots to be added from docs/DAVID-QA-INSIDER.md in a later round. Don't invent specific spots here. -->
+      </div>
+      <div class="panel">
+        <h3>🚤 From a boat</h3>
+        <p class="muted">Rent a boat (fishing boats, pontoons) at the <a href="directory.html#biz-vallecito-marina">Vallecito Marina</a>, or launch your own at the marina or the PRID public ramp. Colorado requires an <b>aquatic nuisance species (ANS) inspection</b> for trailered/motorized boats before launch — Vallecito is an inspection station in season; carry the ANS stamp and <b>clean, drain, and dry</b> (see <a href="first-visit.html#common-mistakes">first-visit notes</a>). And fish early: the <b>afternoon wind</b> on this lake is real and predictable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Permits + Regs ===== -->
+<section class="band anchor-offset" id="permits">
+  <div class="wrap">
+    <h2 class="sec-title">🎫 Permits</h2>
     <div class="prose">
       <ul>
         <li><b>Colorado fishing license</b> — required, age 16+.</li>
-        <li><b>Habitat Stamp</b> — $12.76, ages 18–64.</li>
+        <li><b>Habitat Stamp</b> — required with most licenses, ages 18–64.</li>
         <li><b>PRID recreation permit</b> — for the reservoir; <a href="tel:+19708842558">(970) 884-2558</a>.</li>
       </ul>
     </div>
 
     <h2 class="sec-title anchor-offset" id="regs" style="margin-top:34px">📋 Regulations (2026)</h2>
-    <p class="muted">Always confirm current limits with Colorado Parks &amp; Wildlife before you fish.</p>
+    <p class="muted">Bag/possession limits and special-water rules below. <b>Always confirm current limits with <a href="https://cpw.state.co.us/thingstodo/Pages/Fishing.aspx" rel="noopener">Colorado Parks &amp; Wildlife</a> before you fish.</b></p>
+    <div class="table-scroll">
     <table class="tbl">
       <tbody>
-        <tr><td><b>Trout</b></td><td>Bag limit 4</td></tr>
-        <tr><td><b>Walleye</b></td><td>Bag limit 5</td></tr>
-        <tr><td><b>Kokanee</b></td><td>Bag limit 10</td></tr>
-        <tr><td><b>Pike / Smallmouth / Perch</b></td><td>No limit</td></tr>
-        <tr><td><b>Snagging</b></td><td>Nov 15 – Dec 31 (Vallecito &amp; Grimes Creek only)</td></tr>
-        <tr><td><b>Kokanee spawn closure</b></td><td>Sep 1 – Nov 30</td></tr>
+        <tr><td><b>Trout (rainbow / brown)</b></td><td>Bag &amp; possession limit 4</td></tr>
+        <tr><td><b>Kokanee salmon</b></td><td>Bag &amp; possession limit 10</td></tr>
+        <tr><td><b>Walleye</b></td><td>Bag limit 5 (statewide default)</td></tr>
+        <tr><td><b>Northern pike</b></td><td><b>Unlimited</b> — CPW encourages harvest (protects native fish downstream)</td></tr>
+        <tr><td><b>Smallmouth bass</b></td><td><b>Unlimited</b> — CPW encourages harvest</td></tr>
+        <tr><td><b>Yellow perch</b></td><td>Unlimited</td></tr>
+        <tr><td><b>Grimes Creek inlet — fall closure</b></td><td>Fishing <b>prohibited Sep 1 – Nov 14</b>, in the Grimes Creek inlet area <b>only</b> (from the Bureau of Reclamation property boundary downstream to the reservoir's standing-water line) — <b>not the whole lake</b>.</td></tr>
+        <tr><td><b>Snagging (kokanee)</b></td><td>Allowed <b>Nov 15 – Dec 31</b>, in that same Grimes Creek inlet stretch only.</td></tr>
         <tr><td><b>License season</b></td><td>Mar 1, 2026 – Mar 31, 2027</td></tr>
-        <tr><td><b>Free fishing days</b></td><td>First full weekend of June</td></tr>
+        <tr><td><b>Free Fishing Days</b></td><td>First full weekend of June (no license required those two days)</td></tr>
       </tbody>
     </table>
+    </div>
+    <p class="muted" style="font-size:.82rem;margin-top:10px">Sources: Colorado Parks &amp; Wildlife <a href="https://cpw.state.co.us/learn/Pages/Commission-Regulations.aspx" rel="noopener">Chapter W-1</a> final fishing regulations and CPW eRegulations special-waters listings (Grimes Creek inlet closure Sep 1–Nov 14; snagging Nov 15–Dec 31; kokanee limit 10). Verified June 2026 — confirm before you fish.</p>
+  </div>
+</section>
 
-    <h2 class="sec-title anchor-offset" id="guides" style="margin-top:34px">🧭 Guides</h2>
+<!-- ===== Guides + local notes ===== -->
+<section class="band alt anchor-offset" id="guides">
+  <div class="wrap">
+    <h2 class="sec-title">🧭 Local guides</h2>
+    <p class="sec-lead">Hire local — they'll have this week's pattern dialed.</p>
     <div class="prose">
       <ul>
         <li><b><a href="directory.html#biz-fisher-guide">Fisher Guide Service</a></b> — <a href="tel:+19707690669">(970) 769-0669</a></li>
@@ -123,11 +221,7 @@
         <li><b><a href="directory.html#biz-charter-vallecito">Charter Vallecito</a></b> — <a href="tel:+19707693300">(970) 769-3300</a></li>
         <li><b><a href="directory.html#biz-go-fish-durango">Go Fish Durango</a></b></li>
       </ul>
-    </div>
-
-    <h2 class="sec-title anchor-offset" id="local-notes" style="margin-top:34px">🗒️ Local notes</h2>
-    <div class="prose">
-      <p>Fish early — the afternoon wind is real and predictable. Watch the <a href="conditions.html#lake">lake level</a>; when it drops, the fish reposition and some ramps get tricky. And during the fall kokanee run, know exactly where snagging is and isn't allowed.</p>
+      <p class="muted" style="margin-top:14px"><b>Local notes:</b> fish early — the afternoon wind is predictable. Watch the <a href="conditions.html#lake">lake level</a>; when it drops, fish reposition and some ramps get tricky. During the fall run, know exactly where snagging is and isn't allowed (Grimes Creek inlet stretch only). New here? See the <a href="first-visit.html">first-visit guide</a> and the <a href="map.html">lake map</a>.</p>
     </div>
   </div>
 </section>
@@ -165,5 +259,40 @@
 
 <script src="/assets/js/nav.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
+<script>
+/* Weekly fishing report — rendered from /data/fishing-report.json (editor file).
+   Honesty rule: if `updated` is more than 14 days old, we DON'T imply freshness —
+   we label it "report from <date>" (same pattern as the conditions stale badges). */
+(function () {
+  var el = document.getElementById('reportBody');
+  if (!el) return;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function fmtDate(s){ var t=Date.parse(s); if(isNaN(t)) return s||'';
+    return new Date(t).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'}); }
+  var DOT = { hot:'🔥', good:'🟢', fair:'🟡', slow:'🔴', unknown:'⚪' };
+  fetch('/data/fishing-report.json', { cache: 'no-store' })
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      var ageDays = (Date.now() - Date.parse(d.updated)) / 86400000;
+      var fresh = !isNaN(ageDays) && ageDays <= 14;
+      var head = fresh
+        ? '🎣 This week on the water — updated ' + esc(fmtDate(d.updated))
+        : '🎣 Fishing outlook — report from ' + esc(fmtDate(d.updated));
+      var species = (d.species || []).map(function(s){
+        return '<li>' + (DOT[(s.status||'').toLowerCase()] || '⚪') + ' <b>' + esc(s.name) + '</b>' +
+          (s.status ? ' <span class="muted">(' + esc(s.status) + ')</span>' : '') +
+          (s.note ? ' — ' + esc(s.note) : '') + '</li>';
+      }).join('');
+      el.innerHTML =
+        '<h2 class="sec-title" style="font-size:1.35rem">' + head + '</h2>' +
+        (d.summary ? '<p style="margin:8px 0 0">' + esc(d.summary) + '</p>' : '') +
+        (species ? '<ul class="report-species">' + species + '</ul>' : '') +
+        (d.author ? '<p class="muted" style="font-size:.78rem;margin-top:6px">— ' + esc(d.author) + '</p>' : '');
+    })
+    .catch(function(){
+      el.innerHTML = '<p class="muted">This week\'s report is unavailable right now — ask at the marina or a local guide for the current bite.</p>';
+    });
+})();
+</script>
 </body>
 </html>

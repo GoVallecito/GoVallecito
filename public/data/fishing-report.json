@@ -1,0 +1,13 @@
+{
+  "_comment": "Weekly fishing report — EDITOR FILE. Update these fields and redeploy: (1) `updated` = YYYY-MM-DD of this report; (2) `summary` = a few honest sentences; (3) each species `status` (one of: hot | good | fair | slow | unknown) + `note`. Rendered at the top of fishing.html (#report). HONESTY: if `updated` is more than 14 days old, the page automatically shows 'report from <date>' instead of implying it's current — so it's fine to leave it between updates. No invented catch numbers; keep it to what's actually known.",
+  "updated": "2026-06-06",
+  "author": "GoVallecito",
+  "summary": "Season outlook (early summer): kokanee trolling typically ramps up as June warms — start at first light before the afternoon wind. Pike are active in the north-end shallows after ice-out, and stocked rainbows are reliable. This is a baseline outlook, not a live catch report — for this week's actual bite, ask at the marina or book a local guide. We'll post real updates here through the season.",
+  "species": [
+    { "name": "Kokanee", "status": "fair", "note": "Trolling builds as the water warms into summer; numbers vary year to year — ask the marina/guides for the current outlook." },
+    { "name": "Northern Pike", "status": "good", "note": "Active in the weedy north-end shallows in late spring and early fall." },
+    { "name": "Rainbow Trout", "status": "good", "note": "Reliable around ice-out and through spring, from boat or shore." },
+    { "name": "Walleye", "status": "fair", "note": "Low-light bite; work 10–40 ft from a boat." },
+    { "name": "Smallmouth Bass", "status": "fair", "note": "Rocky structure and docks as the shallows warm into June–July." }
+  ]
+}

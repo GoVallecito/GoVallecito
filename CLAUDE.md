@@ -66,9 +66,20 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   from plan-your-visit to `first-visit.html`; (d) `first-visit.html` — ANS line tightened (VERIFIED:
   CPW lists Vallecito as an inspection station, ramp inspections in season; ANS stamp required for
   motorized/sail; clean-drain-dry law).
-- **Later (from June 2026 strategy review, David-approved order TBD):** fishing hub v1 (species pages,
-  calendar, weekly report via editor file), interactive Leaflet map, insider-knowledge + seasonal content
-  (needs a David Q&A session). Skipped for now: community submissions.
+- **DONE — Rounds 16+17 (built, verified, deployed + pushed):** R16 fishing hub v1 — corrected the live
+  regs inaccuracy (Grimes Creek inlet closure Sep 1–Nov 14, snagging Nov 15–Dec 31 that stretch only;
+  pike/smallmouth unlimited), six species sections, month-by-month calendar, shore/boat access, and a
+  weekly report via `public/data/fishing-report.json` (editor file; >14-day auto-fallback). R17 interactive
+  lake map — `map.html` with self-hosted Leaflet (`public/assets/vendor/leaflet/`) + OSM, config-driven
+  `public/data/map-pois.json`; "Lake Map" added to Explore nav on all 20 pages. **Map POIs: only verified
+  coords shipped (9)** — 5 USFS campgrounds + Old Timers + dam (fs.usda.gov / Wikipedia-USBR), Blue Spruce
+  (spec), marina (Google listing). **EXCLUDED pending verified coords** (build report): trailheads
+  (FS pages 403/404), Johnson Creek (no drive-to TH), PRID public ramp, Grimes Creek inlet pin, most
+  businesses (Country Market/Weminuche/Rocky Mtn GS/lodges), emergency stations, road pull-off viewpoints.
+  Add these to `map-pois.json` with a `src` once coordinates are verified.
+- **Insider Q&A:** `docs/DAVID-QA-INSIDER.md` — 20 questions David answers inline async. When he says
+  "Q&A has answers," turn them into fishing insider notes, seasonal pages, and Insider-tips content
+  (verify anything he marks "verify"). Skipped for now: community submissions.
 - **Pending on David:** photos (`docs/PHOTO-WISHLIST.md` → `public/assets/img/`); marina `WU_API_KEY`;
   Excel Excavation data + Vallecito Church logo; a heads-up to Julie; the **go-live cutover** (attach
   govallecito.com to Pages, activate the Worker route in wrangler.toml, flip `conditions.js` DATA_URL to

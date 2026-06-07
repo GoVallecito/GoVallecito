@@ -433,6 +433,35 @@ footer.site .copy{border-top:1px solid #2c5142;margin-top:24px;padding-top:16px;
 @media(max-width:560px){.contacts-strip{font-size:.9rem}.contacts-strip .cs-all{margin-left:0}}
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
+/* ---------- lake map (map.html) ---------- */
+#map{width:100%;height:70vh;min-height:380px;border-radius:var(--radius);border:1px solid var(--line);z-index:1;background:#dfe6e1}
+.map-chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.map-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;
+  padding:6px 12px;font-weight:700;font-size:.85rem;cursor:pointer;color:var(--ink-soft)}
+.map-chip[aria-pressed="true"]{background:var(--pine);color:#fff;border-color:var(--pine)}
+.map-chip .ct{opacity:.7;font-weight:600}
+.map-emoji-icon{font-size:20px;line-height:26px;text-align:center;width:26px;height:26px;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.map-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:rgba(247,245,240,.95);border-radius:var(--radius);padding:20px;z-index:2}
+.map-note{font-size:.8rem;color:var(--ink-soft);margin-top:8px}
+.poi-list h3{font-size:1rem;margin:16px 0 6px}
+.poi-list ul{margin:0;padding-left:18px}
+.poi-list li{margin:5px 0}
+.leaflet-popup-content{font-size:.9rem;line-height:1.4}
+
+/* ---------- fishing: jump nav + weekly report ---------- */
+.jumpnav{position:sticky;top:60px;z-index:30;background:rgba(247,245,240,.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line)}
+.jumpnav .wrap{display:flex;gap:6px;flex-wrap:wrap;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+.jumpnav a{white-space:nowrap;font-weight:700;font-size:.85rem;color:var(--ink-soft);padding:6px 12px;border-radius:999px}
+.jumpnav a:hover{background:rgba(29,59,47,.07);color:var(--pine);text-decoration:none}
+.report-card{background:#fff;border:1px solid var(--lake);border-radius:var(--radius);
+  box-shadow:0 0 0 2px rgba(47,125,138,.12),var(--shadow);padding:18px 20px}
+.report-species{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.report-species li{font-size:.92rem}
+@media(max-width:560px){.jumpnav{top:56px}}
+
 /* live road-camera link tiles (plan-your-visit) */
 .cam-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:8px 0 6px}
 .cam-tile{display:flex;flex-direction:column;gap:4px;justify-content:center;align-items:flex-start;

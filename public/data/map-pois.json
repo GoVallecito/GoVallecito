@@ -1,0 +1,51 @@
+{
+  "_comment": "Lake-map POIs — config file (same pattern as directory.json). EVERY poi has a verified `src` for its coordinate; if a coordinate can't be verified to an authoritative source it is EXCLUDED, not approximated (a wrong pin destroys trust). To add a POI: append an object with id, name, category (must match a categories[].key), lat, lng, blurb, optional link/phone, and a `src`. See ROUND-16-17 build report for the list of POIs excluded pending verified coordinates (trailheads, PRID ramp, Grimes Creek inlet, most businesses, emergency stations, road pull-offs).",
+  "center": { "lat": 37.42, "lng": -107.548, "zoom": 12 },
+  "categories": [
+    { "key": "campground", "label": "Campgrounds", "emoji": "🏕️", "defaultOn": true },
+    { "key": "boat", "label": "Boat launch / marina", "emoji": "🚤", "defaultOn": true },
+    { "key": "access", "label": "Public lake access", "emoji": "🎣", "defaultOn": true },
+    { "key": "viewpoint", "label": "Landmarks", "emoji": "📷", "defaultOn": true }
+  ],
+  "pois": [
+    { "id": "marina", "name": "Vallecito Marina & Yacht Club", "category": "boat", "lat": 37.3966, "lng": -107.5623,
+      "blurb": "Boat/pontoon/kayak/SUP rentals, slips, fuel, store — the only marina on the lake.",
+      "link": "directory.html#biz-vallecito-marina", "phone": "(970) 884-7000",
+      "src": "Google Maps business listing for 14772 CR 501, Bayfield CO" },
+
+    { "id": "cg-vallecito", "name": "Vallecito Campground (USFS)", "category": "campground", "lat": 37.4776, "lng": -107.5466,
+      "blurb": "San Juan NF campground near the north end / Vallecito Creek.",
+      "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/vallecito-campground",
+      "src": "fs.usda.gov San Juan NF — Vallecito Campground page (Lat/Long field)" },
+    { "id": "cg-graham", "name": "Graham Creek Campground (USFS)", "category": "campground", "lat": 37.39041, "lng": -107.54001,
+      "blurb": "San Juan NF campground on the east side of the reservoir.",
+      "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/graham-creek-campground",
+      "src": "fs.usda.gov San Juan NF — Graham Creek Campground page (Lat/Long field)" },
+    { "id": "cg-pine-point", "name": "Pine Point Campground (USFS)", "category": "campground", "lat": 37.4004, "lng": -107.5351,
+      "blurb": "San Juan NF campground on the east shore.",
+      "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/pine-point-campground",
+      "src": "fs.usda.gov San Juan NF — Pine Point Campground page (Lat/Long field)" },
+    { "id": "cg-middle-mountain", "name": "Middle Mountain Campground (USFS)", "category": "campground", "lat": 37.40891, "lng": -107.53601,
+      "blurb": "San Juan NF campground, east/north shore.",
+      "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/middle-mountain-campground",
+      "src": "fs.usda.gov San Juan NF — Middle Mountain Campground page (Lat/Long field)" },
+    { "id": "cg-north-canyon", "name": "North Canyon Campground (USFS)", "category": "campground", "lat": 37.39391, "lng": -107.53901,
+      "blurb": "San Juan NF campground on the east side of the reservoir.",
+      "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/north-canyon-campground",
+      "src": "fs.usda.gov San Juan NF — North Canyon Campground page (Lat/Long field)" },
+    { "id": "blue-spruce", "name": "Blue Spruce RV Park & Cabins", "category": "campground", "lat": 37.4661, "lng": -107.5539,
+      "blurb": "Private RV park + cabins near the lake (a GoVallecito partner).",
+      "link": "directory.html#biz-blue-spruce",
+      "src": "Blue Spruce site Google Maps link (1875 CR 500), per build spec" },
+
+    { "id": "old-timers", "name": "Old Timers Day Use Area (USFS)", "category": "access", "lat": 37.3769, "lng": -107.5605,
+      "blurb": "Public day-use / shore access on the east shore, ~1.5 mi north of the dam.",
+      "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/old-timers-day-use-area",
+      "src": "fs.usda.gov San Juan NF — Old Timers Day Use Area page (Lat/Long field)" },
+
+    { "id": "dam", "name": "Vallecito Dam", "category": "viewpoint", "lat": 37.37884, "lng": -107.57353,
+      "blurb": "The dam at the south end of the reservoir (USBR; on the Pine River).",
+      "link": "https://water.usace.army.mil/overview/spk/locations/vallecito",
+      "src": "Wikipedia/USBR — Vallecito Dam coordinates" }
+  ]
+}
