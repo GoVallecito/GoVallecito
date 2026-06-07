@@ -340,26 +340,103 @@ async function getFires() {
            msg, status: "ok", stale: false };
 }
 
-/* ---------- ROADS: CDOT/COtrip US-160 + CR 501 ---------- */
-// COtrip's exact public endpoint/key must be confirmed on their developer portal.
-// Provide CDOT_ENDPOINT (and CDOT_KEY if required) as Worker vars to activate.
+/* ---------- ROADS: CDOT / COtrip (best-effort, honestly framed) ----------
+ * The COtrip v1 feed (auth = COTRIP_KEY query apiKey) is capped at ~100 statewide
+ * road-condition segments and its pagination is non-functional (constant cursor,
+ * params ignored), so we can't enumerate everything. Vallecito's true access road
+ * (US 160 Durango<->Bayfield, then CR 501) is NOT a CDOT reporting segment, and
+ * CR 501 is a county road CDOT never covers. So this is an HONEST best-effort: we
+ * surface the SW-Colorado approach segments CDOT *can* see (US 550 near Durango,
+ * US 160) plus any active incidents on US 160 / US 550, and we tell users the final
+ * CR 501 leg isn't CDOT-reported (use the live cameras). A geographic box keeps us
+ * to the Durango corner regardless of feed ordering. Cameras are a separate COtrip
+ * subscription not on this key (404), so the camera tiles stay deep-links. */
+const ROAD_BOX = { latMin: 36.9, latMax: 37.85, lonMin: -108.5, lonMax: -106.7 };
+const ROAD_SCOPE = "Durango-area state highways (US 550 · US 160); CR 501 isn't covered by CDOT.";
+const ROAD_NOTE  = "The final leg (CR 501) isn't CDOT-reported — check the live cameras or dial 511.";
+
 async function getRoads(env) {
-  if (!env.CDOT_ENDPOINT) {
-    return { level: "ok", title: "Clear",
-             msg: "No active CDOT alerts on the Durango access route.", status: "unconfigured" };
+  const key = env.COTRIP_KEY;
+  if (!key) {
+    return { level: "ok", title: "Clear", status: "unconfigured", scope: ROAD_SCOPE,
+             msg: "Live CDOT status unavailable. Check the cameras or dial 511.", note: ROAD_NOTE };
   }
-  const url = env.CDOT_KEY ? `${env.CDOT_ENDPOINT}?apiKey=${env.CDOT_KEY}` : env.CDOT_ENDPOINT;
-  const j = await getJson(url);
-  const feats = (j.features || []).filter(f => {
-    const s = JSON.stringify(f.properties || f.attributes || {}).toLowerCase();
-    return s.includes("160") || s.includes("501");
-  });
-  const closed = feats.some(f => JSON.stringify(f).toLowerCase().includes("closed"));
-  const level = closed ? "danger" : feats.length ? "warn" : "ok";
-  const title = closed ? "Closure" : feats.length ? "Caution" : "Clear";
-  const msg = feats.length ? `${feats.length} active CDOT alert${feats.length === 1 ? "" : "s"} on US-160 / CR 501.`
-                           : "No active CDOT alerts on the Durango access route.";
-  return { level, title, msg, status: "ok" };
+  const base = "https://data.cotrip.org/api/v1/";
+  const inBox = (lat, lon) => lat != null && lon != null &&
+    lat >= ROAD_BOX.latMin && lat <= ROAD_BOX.latMax && lon >= ROAD_BOX.lonMin && lon <= ROAD_BOX.lonMax;
+
+  // --- incidents on US 160 / US 550 in our corner (the actionable signal) ---
+  let incidents = [];
+  try {
+    const ij = await getJson(`${base}incidents?apiKey=${encodeURIComponent(key)}`);
+    incidents = (ij.features || []).filter(f => {
+      const p = f.properties || {};
+      if (!/US-?160|US-?550/i.test(p.routeName || "")) return false;
+      const g = f.geometry; let lat = null, lon = null;
+      if (g && g.coordinates) {
+        const c = Array.isArray(g.coordinates[0]) ? g.coordinates[0] : g.coordinates;
+        if (Array.isArray(c)) { lon = c[0]; lat = c[1]; }
+      }
+      return inBox(lat, lon) || /region\s*5/i.test(p.region || "");   // CDOT Region 5 = southwest CO
+    }).map(f => {
+      const p = f.properties;
+      // Real closure = actual lane closures (count > 0 / closed lane types), or the
+      // traveler text says the road is closed. NOTE: don't stringify laneImpacts —
+      // its field NAMES ("laneClosures","closedLaneTypes") contain "closed" and would
+      // false-positive on every incident.
+      const laneClosed = (p.laneImpacts || []).some(li =>
+        (parseInt(li.laneClosures, 10) || 0) > 0 || (li.closedLaneTypes || []).length > 0);
+      const closed = laneClosed || /\bclosed\b|\bclosure\b|road closed/i.test(p.travelerInformationMessage || "");
+      return { route: p.routeName, severity: (p.severity || "").toLowerCase(),
+               type: p.type, closed, msg: p.travelerInformationMessage || p.type || "" };
+    });
+  } catch (e) { console.error("CDOT incidents:", e.message); }
+
+  // --- surface conditions on US 160 / US 550 segments in our corner ---
+  let segments = [];
+  try {
+    const rj = await getJson(`${base}roadConditions?apiKey=${encodeURIComponent(key)}`);
+    segments = (rj.features || []).filter(f => {
+      const p = f.properties || {};
+      if (!/^US 160$|^US 550$/.test(p.routeName || "")) return false;
+      return inBox(p.primaryLatitude, p.primaryLongitude) || inBox(p.secondaryLatitude, p.secondaryLongitude);
+    }).map(f => {
+      const p = f.properties;
+      // pick the first real surface condition (skip "forecast text"/"no data" fillers)
+      const cond = (p.currentConditions || [])
+        .map(c => (c.conditionDescription || "").toLowerCase())
+        .find(d => d && !/forecast|no data/.test(d)) || null;
+      return { route: p.routeName, name: p.name, cond };
+    });
+  } catch (e) { console.error("CDOT roadConditions:", e.message); }
+
+  // --- derive level / title / message ---
+  const sev = s => (s === "major" || s === "severe") ? 2 : (s ? 1 : 0);
+  const anyClosed = incidents.some(i => i.closed) || segments.some(s => /closed|closure/.test(s.cond || ""));
+  const anyBad    = segments.some(s => /snow|ice|icy|pack|slush|wet/.test(s.cond || ""));
+  const worstInc  = incidents.reduce((m, i) => Math.max(m, sev(i.severity)), 0);
+
+  let level = "ok", title = "Clear";
+  if (anyClosed || worstInc >= 2)          { level = "danger"; title = "Closure / major"; }
+  else if (incidents.length || anyBad)     { level = "warn";   title = "Caution"; }
+
+  let msg;
+  if (incidents.length) {
+    const top = incidents.slice().sort((a, b) => (b.closed - a.closed) || (sev(b.severity) - sev(a.severity)))[0];
+    msg = shorten(top.msg, 140);
+    if (incidents.length > 1) msg += ` (+${incidents.length - 1} more CDOT incident${incidents.length - 1 === 1 ? "" : "s"} nearby).`;
+  } else if (anyBad) {
+    const s = segments.find(s => /snow|ice|icy|pack|slush|wet/.test(s.cond || ""));
+    msg = `${s.route}: ${s.cond}.`;
+  } else {
+    msg = "No active CDOT incidents on US 550 / US 160 near Durango.";
+  }
+
+  return {
+    level, title, msg, note: ROAD_NOTE, scope: ROAD_SCOPE,
+    incidents, segments, source: "CDOT / COtrip",
+    asOf: new Date().toISOString(), status: "ok", stale: false
+  };
 }
 
 /* ---------- FIRE RESTRICTIONS: editor-controlled restrictions.json ---------- */
@@ -406,6 +483,7 @@ async function getJson(url, headers) {
   return JSON.parse(new TextDecoder("utf-8").decode(buf));
 }
 function headlineFor(items, re) { return (items.find(i => re.test(i.event || "")) || {}).headline; }
+function shorten(s, n) { s = (s || "").trim(); return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s; }
 function round(n) { return n == null || isNaN(n) ? null : Math.round(n); }
 function r2(n) { return n == null || isNaN(n) ? null : Math.round(n * 100) / 100; }
 function cToF(c) { return c == null ? null : Math.round(c * 9 / 5 + 32); }

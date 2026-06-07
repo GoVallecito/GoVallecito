@@ -198,7 +198,7 @@
     }
 
     if (d.road) {
-      setText('roadMsg2', d.road.msg || '');
+      setText('roadMsg2', (d.road.msg || '') + (d.road.note ? ' ' + d.road.note : ''));
       badge('roadBig2', d.road.level, d.road.title);
     }
 

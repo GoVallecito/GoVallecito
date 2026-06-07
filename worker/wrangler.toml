@@ -30,17 +30,21 @@ id = "e98b1300cb02405cb6da4f417c51b80c"
 # URL of the committed restrictions.json on the live site; the worker reads it
 # every cron to fold the editor's Stage 1/2 fire-ban toggle into the Alert tile.
 RESTRICTIONS_URL = "https://govallecito-web.pages.dev/data/restrictions.json"
-# CDOT/COtrip feed endpoint for US-160 + CR 501 (confirm on their dev portal).
-# Leave unset to keep Roads on a safe "Clear" default until the endpoint is known.
-# CDOT_ENDPOINT = ""
+# Roads come from the COtrip v1 API (https://data.cotrip.org/api/v1/) using the
+# COTRIP_KEY secret (set below). getRoads() reads incidents + roadConditions and
+# filters to the Durango access corridor (US 550 / US 160). NOTE: the feed is capped
+# at ~100 statewide segments with broken pagination, and Vallecito's true access road
+# (US 160 Durango-Bayfield, then CR 501) is NOT a CDOT segment — so the roads tile is
+# honestly scoped to "Durango-area highways," with cameras/511 for the final leg.
+# (Legacy CDOT_ENDPOINT/CDOT_KEY vars are no longer used.)
 # WU_STATION_ID (non-secret) — KCOBAYFI57 "Vallecito Reservoir", right at the lake.
 # WU_API_KEY (the free PWS key) is still needed as a SECRET before the WU path
 # activates; until then getWeather stays on the NWS fallback.
 WU_STATION_ID = "KCOBAYFI57"
 
-# Secrets (set with `npx wrangler secret put NAME`, never commit them):
+# Secrets (set with `npx wrangler secret put NAME` from this worker/ folder, never commit them):
+#   COTRIP_KEY       CDOT/COtrip API key — POWERS getRoads() (set ✓, June 2026)
 #   WU_API_KEY       free Weather Underground PWS key (from marina's WU member settings)
 #   WU_STATION_ID    e.g. KCOBAYFI12  (or set as a [vars] entry above)
 #   ACCUWEATHER_KEY  optional backup
-#   CDOT_KEY         optional, for CDOT/COtrip feed
 #   AIRNOW_KEY       optional, air quality
