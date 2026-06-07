@@ -90,7 +90,17 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   + Florida Rd alt, "≈7,665 ft at full pool", Missionary Ridge in firewise; B5 living-here cards delinked
   w/ "Guide coming soon"; B6 home "Talk to Julie" quick-action removed. **FLAG for David:** confirm Julie's
   exact years/lake-residency; Bayfield clinic name/phone not verified (listed Mercy + 911 only).
-  **Round 19 (parked):** camping/RV section + next map-pin batch (swim area, PRID ramp, Grimes inlet,
+  **DONE — Round 19 (free photos placed; built, verified, deployed + pushed):** 12 freely-licensed photos
+  fetched (`scripts/fetch-free-images.sh`; originals in gitignored `assets-originals/`), optimized via
+  `scripts/optimize_images.py` (heroes ≤349 KB @1920/auto-width, inline ≤150 KB; EXIF stripped) → web
+  copies in `public/assets/img/`. Placed: home hero (lake panorama) + 5 pageheros (things-to-do/conditions/
+  living/fishing/first-visit) + 6 inline figures (about aerial+1911, things-to-do stargazing+trails,
+  first-visit campsite+aspen). Attribution: required `#photo-credits` table on sources.html (author→source,
+  license→deed) + inline figcaptions + footer "Photo credits" link site-wide. Aspen captioned honestly as
+  Weminuche (not the reservoir). **Note:** pre-existing `coronado-ops.jpg` (2.8 MB) + `blue-spruce.jpg`
+  (0.66 MB) are oversized — flag for a future optimize pass (out of R19 scope). Flickr originals (fireworks,
+  three-relics) not placed (need manual Flickr download).
+  **Round 20 (parked):** camping/RV section + next map-pin batch (swim area, PRID ramp, Grimes inlet,
   eateries) + perch section.
 - **Insider Q&A:** `docs/DAVID-QA-INSIDER.md` — 20 questions David answers inline async. When he says
   "Q&A has answers," turn them into fishing insider notes, seasonal pages, and Insider-tips content

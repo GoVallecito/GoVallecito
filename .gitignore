@@ -9,6 +9,10 @@ node_modules/
 # Claude Code personal/local settings (not shared)
 .claude/settings.local.json
 
+# Free-image ORIGINALS (8–22 MB each) — reproducible via scripts/fetch-free-images.sh;
+# never deploy or commit. Only the optimized web copies in public/assets/img/ ship.
+assets-originals/
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db

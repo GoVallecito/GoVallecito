@@ -426,6 +426,13 @@ footer.site .copy{border-top:1px solid #2c5142;margin-top:24px;padding-top:16px;
 .stat .src{display:block;font-size:.62rem;color:#aab2a8;margin-top:3px;text-transform:none;letter-spacing:0;font-weight:600}
 .section-img{width:100%;max-height:300px;object-fit:cover;display:block;border-radius:var(--radius);margin:0 0 18px}
 
+/* inline photo figures (R19 free images) — image + small credit caption */
+figure.imgfig{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+figure.imgfig img{width:100%;height:auto;display:block}
+figure.imgfig figcaption{font-size:.76rem;color:var(--ink-soft);padding:7px 12px}
+figure.imgfig figcaption a{color:var(--ink-soft);text-decoration:underline}
+figure.imgfig figcaption a:hover{color:var(--pine)}
+
 /* compact home contacts strip + mobile table scroll */
 .contacts-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;background:#fff;border:1px solid var(--line);
   border-left:5px solid var(--danger);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow);font-size:.95rem}
