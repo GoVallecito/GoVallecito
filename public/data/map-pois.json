@@ -5,6 +5,7 @@
     { "key": "campground", "label": "Campgrounds", "emoji": "🏕️", "defaultOn": true },
     { "key": "boat", "label": "Boat launch / marina", "emoji": "🚤", "defaultOn": true },
     { "key": "access", "label": "Public lake access", "emoji": "🎣", "defaultOn": true },
+    { "key": "trailhead", "label": "Trailheads", "emoji": "🥾", "defaultOn": true },
     { "key": "viewpoint", "label": "Landmarks", "emoji": "📷", "defaultOn": true }
   ],
   "pois": [
@@ -46,6 +47,19 @@
     { "id": "dam", "name": "Vallecito Dam", "category": "viewpoint", "lat": 37.37884, "lng": -107.57353,
       "blurb": "The dam at the south end of the reservoir (USBR; on the Pine River).",
       "link": "https://water.usace.army.mil/overview/spk/locations/vallecito",
-      "src": "Wikipedia/USBR — Vallecito Dam coordinates" }
+      "src": "Wikipedia/USBR — Vallecito Dam coordinates" },
+
+    { "id": "prid-ramp", "name": "PRID public boat ramp", "category": "boat", "lat": 37.3958, "lng": -107.5628,
+      "blurb": "Public boat ramp & courtesy dock at the marina. Open May 1–Nov 1; PRID permit required ($6/day per vehicle, $12/day boat combo).",
+      "link": "https://pineriverirrigationdistrict.com",
+      "src": "PRID — states the public ramp & courtesy dock are at Vallecito Marina (co-located with the marina pin)" },
+    { "id": "grimes-inlet", "name": "Grimes Creek inlet", "category": "access", "lat": 37.4356, "lng": -107.5467,
+      "blurb": "Where Grimes Creek meets the reservoir. Fishing is closed here Sep 1–Nov 14, then snagging is allowed Nov 15–Dec 31 (this stretch only; boundary per CPW Ch. W-1).",
+      "link": "fishing.html#regs",
+      "src": "USGS GNIS — Grimes Creek feature, Vallecito Reservoir quad" },
+    { "id": "th-vallecito-creek", "name": "Vallecito Creek Trailhead", "category": "trailhead", "lat": 37.4776, "lng": -107.5466,
+      "blurb": "Start of the Vallecito Creek Trail into the Weminuche Wilderness — at the north-end Vallecito Campground. Lot fills by 9 a.m. on summer weekends.",
+      "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/trails/vallecito-trail",
+      "src": "fs.usda.gov San Juan NF — Vallecito Trail page (trail begins at Vallecito Campground; coord = campground)" }
   ]
 }

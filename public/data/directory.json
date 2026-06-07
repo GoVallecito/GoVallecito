@@ -35,6 +35,7 @@
       "instagram": "https://instagram.com/funstaysllc", "youtube": "https://youtube.com/@BlueSpruceRVPark",
       "booking": "https://bookingsus.newbook.cloud/bluesprucervpark", "address": "1875 CR 500, Bayfield, CO",
       "image": "/assets/img/featured/blue-spruce.jpg", "imageAlt": "Blue Spruce RV Park & Cabins — wooded sites near Vallecito Lake", "imageFit": "cover", "badge": "GoVallecito Partner",
+      "rv": "Full hookups — water, sewer, 30 & 50 amp electric. RV sites ≈May 1–Nov 1; cabins year-round.",
       "cta": { "label": "Book a site →", "href": "https://bookingsus.newbook.cloud/bluesprucervpark" }
     },
     {
@@ -115,7 +116,7 @@
       "phone": "(970) 884-9517", "website": "https://bayfieldrealty.com", "address": "823 CR 501, Bayfield, CO"
     },
 
-    { "slug": "5-branches", "name": "5 Branches Camper Park & Cabins", "category": "Lodging", "tier": "basic", "blurb": "Camper park and cabins.", "website": "https://5branches.com" },
+    { "slug": "5-branches", "name": "5 Branches Camper Park & Cabins", "category": "Lodging", "tier": "basic", "blurb": "Lakeshore camper park with RV & tent sites, cabins, and cottages.", "phone": "(970) 884-2582", "website": "https://5branches.com", "address": "4677 CR 501A, Bayfield, CO", "rv": "Lakeshore RV & tent sites with 30-amp hookups; cabins & cottages. (Open ~Apr–Oct; call for site specifics.)" },
     { "slug": "bear-paw", "name": "Bear Paw Lodge", "category": "Lodging", "tier": "basic", "phone": "(970) 884-2508", "website": "https://bearpawlodge.com" },
     { "slug": "cabins-on-vallecito", "name": "Cabins on Vallecito Lake", "category": "Lodging", "tier": "basic", "blurb": "Lakeside cabins.", "website": "https://cabinsonvallecitolake.com" },
     { "slug": "croll-cabins", "name": "Croll Cabins", "category": "Lodging", "tier": "basic", "blurb": "Cabins near the lake.", "website": "https://crollcabins.com" },

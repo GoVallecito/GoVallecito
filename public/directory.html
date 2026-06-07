@@ -155,6 +155,7 @@
       (b.highlight ? '<p><span class="badge badge-verified">⛽ '+esc(b.highlight)+'</span></p>' : '')+
       contactRow(b)+
       (b.hours ? '<div class="hours">🕑 '+esc(b.hours)+'</div>' : '')+
+      (b.rv ? '<div class="hours">🚐 '+esc(b.rv)+'</div>' : '')+
       '</div>';
   }
 
@@ -172,6 +173,7 @@
       '<h3>'+esc(b.name)+'</h3>'+
       (b.blurb ? '<p class="muted">'+esc(b.blurb)+'</p>' : '')+
       (b.hours ? '<div class="hours">🕑 '+esc(b.hours)+'</div>' : '')+
+      (b.rv ? '<div class="hours">🚐 '+esc(b.rv)+'</div>' : '')+
       (b.highlight ? '<p><span class="badge badge-verified">⛽ '+esc(b.highlight)+'</span></p>' : '')+
       contactRow(b)+
       photos+

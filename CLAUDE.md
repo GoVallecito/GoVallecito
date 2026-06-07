@@ -100,8 +100,17 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   Weminuche (not the reservoir). **Note:** pre-existing `coronado-ops.jpg` (2.8 MB) + `blue-spruce.jpg`
   (0.66 MB) are oversized — flag for a future optimize pass (out of R19 scope). Flickr originals (fireworks,
   three-relics) not placed (need manual Flickr download).
-  **Round 20 (parked):** camping/RV section + next map-pin batch (swim area, PRID ramp, Grimes inlet,
-  eateries) + perch section.
+  **DONE — Round 20 (camping/RV + map pins + perch; built, verified, deployed + pushed):** things-to-do
+  🏕️ Camping section (5 USFS CGs w/ counts + fs.usda.gov links + rec.gov reserve link; amenities = vault
+  toilets/water, mostly no-hookup; Old Timers = day-use; private RV parks two-hop; dispersed → Columbine
+  RD). first-visit "camping on a budget" line. directory.json: new `rv` field rendered (🚐) on Blue Spruce
+  (30 & 50 amp, water/sewer — own site) + 5 Branches (**phone (970) 884-2582 ADDED** + 30-amp lakeshore,
+  addr 4677 CR 501A). Map +3 pins (12 total): PRID ramp (at marina, src PRID), Grimes Creek inlet (GNIS
+  37.4356,-107.5467), Vallecito Creek TH (=Vallecito CG, src FS trail page) + new 🥾 Trailheads category.
+  fishing #perch section + at-a-glance row + Jan calendar link. **VERIFY-OR-EXCLUDE outcomes:** rec.gov
+  per-CG nightly fees/dates NOT machine-readable → softened to rec.gov links; 5 Branches sewer/40-ft NOT
+  on their site → omitted; JW Vallecito RV unverified → left as-is. **EXCLUDED pins (no authoritative
+  coord — Nominatim empty):** Country Market + Weminuche Grill eateries, north-end swim area → David-asks.
 - **Insider Q&A:** `docs/DAVID-QA-INSIDER.md` — 20 questions David answers inline async. When he says
   "Q&A has answers," turn them into fishing insider notes, seasonal pages, and Insider-tips content
   (verify anything he marks "verify"). Skipped for now: community submissions.
