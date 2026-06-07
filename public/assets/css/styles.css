@@ -63,6 +63,16 @@ nav.main>a:focus-visible,.navgroup-btn:focus-visible,.navmenu a:focus-visible{ou
 .condbar b{color:var(--pine)}
 .condbar-dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;box-shadow:0 0 0 3px rgba(46,139,87,.18)}
 .condbar-more{color:var(--lake)}
+/* R23: site-wide DANGER banner — when alert.level === "danger" (Red Flag Warning,
+   Stage 2) the slim "Live now" strip becomes a loud, full-width, solid-red warning
+   banner on every page. Life-safety: it must read as a WARNING, not a status line. */
+.condbar-danger{background:#c0261c;border-top:0;font-size:1rem}
+.condbar-danger>.wrap{padding-top:11px;padding-bottom:11px}
+.condbar-danger a,.condbar-danger a b,.condbar-danger .condbar-more{color:#fff}
+.condbar-danger a{font-weight:800;justify-content:center;text-align:center;flex-wrap:wrap;gap:6px}
+.condbar-danger a:hover{color:#fff}
+.condbar-danger .condbar-more{text-decoration:underline}
+@media (max-width:560px){.condbar-danger{font-size:.9rem}}
 
 @media(max-width:820px){
   .navtoggle{display:flex}

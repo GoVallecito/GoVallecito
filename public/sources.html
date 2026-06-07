@@ -88,7 +88,7 @@
       <thead><tr><th>What you see</th><th>Source</th><th>Cadence</th></tr></thead>
       <tbody>
         <tr><td><b>Marina / lake weather + 5-day forecast</b></td><td>Weather Underground PWS (Vallecito Reservoir station, when live) → National Weather Service (api.weather.gov) fallback</td><td>Auto · 15 min</td></tr>
-        <tr><td><b>Weather alerts &amp; Red Flag warnings</b></td><td>National Weather Service active alerts</td><td>Auto · 15 min</td></tr>
+        <tr><td><b>Weather alerts &amp; Red Flag warnings</b></td><td>National Weather Service active alerts. <span class="muted">Alerts are checked for Vallecito's exact coordinates (37.336, −107.562) — not a nearby city's zone — every 15 minutes; a Red Flag Warning takes priority over everything else on the site and shows as a red banner on every page.</span></td><td>Auto · 15 min</td></tr>
         <tr><td><b>Lake level (storage, % full, elevation)</b></td><td>USACE CWMS (USBR water-operations data) → USBR RISE fallback. <span class="muted">Note: the older USGS reservoir gauge 09353000 is stale and not used.</span></td><td>Auto · 15 min (source updates daily)</td></tr>
         <tr><td><b>Streamflow in (Vallecito Creek + Pine River)</b></td><td>USGS instantaneous-values (gauges 09352900 &amp; 09352800)</td><td>Auto · 15 min</td></tr>
         <tr><td><b>Wildfires within 50 mi</b></td><td>NIFC WFIGS incident locations; write-ups via InciWeb</td><td>Auto · 15 min</td></tr>

@@ -15,8 +15,8 @@
       "phone": "(970) 884-7000", "website": "https://vallecitolakemarina.net", "email": "vallecitomarina@yahoo.com",
       "facebook": "https://facebook.com/vallecitomarina", "booking": "https://fareharbor.com/embeds/book/vallecitolakemarina/",
       "address": "14772 CR 501, Bayfield, CO", "hours": "Fri & Sat 8 a.m.–6 p.m. · Sun–Thu 8 a.m.–5 p.m. (May–Sep)",
-      "image": "/assets/img/featured/marina-logo.png",
-      "photos": ["/assets/img/featured/marina-1.jpg", "/assets/img/featured/marina-2.jpg"],
+      "image": "/assets/img/featured/marina-1.jpg", "imageAlt": "Boats docked at Vallecito Marina on the lake", "imageFit": "cover",
+      "photos": ["/assets/img/featured/marina-logo.png", "/assets/img/featured/marina-2.jpg"],
       "badge": "GoVallecito Partner", "cta": { "label": "Book online →", "href": "https://fareharbor.com/embeds/book/vallecitolakemarina/" }
     },
     {

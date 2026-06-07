@@ -42,6 +42,13 @@ A rebuild of GoVallecito.com — a community/conditions hub for Vallecito Lake, 
 
 ## Workflow convention
 Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code, deployed, pushed. Keep doing this.
+- **FULL AUTOPILOT (David-approved June 7 2026):** David has granted Claude Code blanket permission for
+  coding work — file edits, bash/PowerShell, web fetches, deploys, commits, pushes. Don't ask
+  per-action permission; he reviews results visually + via Cowork project review after each run. (To
+  make the prompts stop entirely: launch with `claude --dangerously-skip-permissions`, or add
+  `"defaultMode": "bypassPermissions"` inside the `permissions` block of `.claude/settings.local.json`.)
+  Standing exceptions that STILL require explicit David sign-off: the go-live domain cutover, anything
+  touching money/accounts, and deleting data.
 
 ## Gotchas (learned the hard way)
 - **Cloudflare edge-caches** HTML/CSS/JS — hard-refresh or add `?cb=` when verifying; "old content" is
@@ -149,11 +156,26 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   block w/ honest "Auto-generated from live data, updated Sundays" label — **NO invented data** (real
   lake %/ft, inflow cfs, NWS outlook, seasonal bite, regs reminder). Sitemap re-run (21 URLs incl.
   /trails). **FLAG for David:** verify JW Vallecito RV details; rec.gov per-CG fees still link-only.
-- **Round 23 (queued, approved June 7 2026):** spec in `docs/REVIEW-UPDATES-23.md` — red-flag SITE-WIDE
-  visibility (condbar danger mode on every page + visibilitychange refetch; pipeline itself VERIFIED
-  correct: point-precise NWS query, 15-min cron, RFW=danger — confirmed live against the real June 7–9
-  RFW covering Vallecito) + marina directory image → dock photo (not logo) + church image from their
-  own site (rendered fetch; NOT Facebook; else David-ask).
+- **DONE — Round 23 (built, verified against the live RFW, deployed Pages, pushed):** spec in
+  `docs/REVIEW-UPDATES-23.md`. **A (life-safety, front-end only):** when `alert.level === "danger"`
+  (RFW / Stage 2) the slim condbar strip becomes a **full-width solid-red warning banner on EVERY page**
+  — `🔴 {TITLE} — extreme fire danger · no open fires · details →` (uppercased `alert.title` so Stage-2
+  reads right; RFW uses `redFlag` tagline), white bold centered, `aria-live="polite"`, links
+  `conditions.html#alerts` (href derived from existing strip link so `../` subdir pages resolve). Logic
+  in `conditions.js` `paintStrip()` (captures normal strip markup/href once, restores verbatim when the
+  alert clears; runs before the temp/lake writes); CSS `.condbar-danger` in styles.css. Added a
+  `visibilitychange` refetch (returns-to-stale-tab case) on top of the existing 15-min interval. Home
+  alert tile already names the hazard ("Red Flag Warning") — verified, not generic. sources.html
+  #how-we-verify alerts row now documents the exact-coordinate (37.336,−107.562, not a city zone) +
+  RFW-priority protocol. **VERIFIED live** against the real June 7–9 RFW: banner red + correct text on
+  home/conditions/directory, `../conditions.html#alerts` on business subdir, no JS errors. **B:** marina
+  directory image → `marina-1.jpg` (boats at the dock; optimized 310KB→139KB, `imageAlt`+`imageFit:cover`;
+  logo kept in `photos`). gen-schema re-run (doesn't consume `image`, schema unchanged). **C:** Vallecito
+  Church — site is Constant Contact (redirect from vallecitochurch.org); rendered-source sweep found only
+  stock graphics (Stronger Together / Give Online / Illumination Station / Join us for Worship), a generic
+  mountain-lake landscape (stock, not the building), and their circular logo — **no photo of the actual
+  building.** Per spec: church entry LEFT AS-IS, NOT pulled from Facebook. **FLAG for David:** ask the
+  church directly for an exterior building photo (easy partner ask).
 - **Phase 2 remaining:** seasonal guides + Living-in-Vallecito content (blocked on David's insider Q&A),
   weekly fishing report feed (needs marina/guide source), species deep-pages, photo gallery,
   AI-search Q&A pages. Positioning: "the most complete independent guide to Vallecito Lake."

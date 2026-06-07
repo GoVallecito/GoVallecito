@@ -52,6 +52,38 @@
     if (el) el.classList.toggle('is-stale', !!isStale);
   }
 
+  // ----- site-wide alert banner (the condbar strip) -----
+  // The slim "Live now" strip exists on EVERY page. When alert.level is "danger"
+  // (Red Flag Warning, Stage 2 fire restrictions) we transform that strip in
+  // place into a loud, full-width, solid-red warning banner — impossible to miss.
+  // We capture the original markup + href once so the normal strip can be
+  // restored verbatim when the alert clears.
+  var _bar = document.querySelector('.condbar');
+  var _barLink = _bar ? _bar.querySelector('a') : null;
+  var _barHTML = _barLink ? _barLink.innerHTML : null;   // normal strip (has #stripTemp/#stripLake)
+  var _barHref = _barLink ? _barLink.getAttribute('href') : null;
+
+  function paintStrip(d) {
+    if (!_bar || !_barLink) return;
+    var danger = !!(d && d.alert && d.alert.level === 'danger');
+    if (danger) {
+      var title = (d.alert.title || 'Warning').toUpperCase();
+      var tag = d.alert.redFlag ? 'extreme fire danger · no open fires'
+                                : 'extreme conditions — see details';
+      var base = (_barHref || 'conditions.html').split('#')[0];   // respects ../ on subdir pages
+      _barLink.setAttribute('href', base + '#alerts');
+      _barLink.innerHTML = '🔴 <b>' + escapeHtml(title) + '</b> — ' + escapeHtml(tag) +
+        ' <span class="condbar-more">details →</span>';
+      _bar.classList.add('condbar-danger');
+      _bar.setAttribute('aria-live', 'polite');   // screen readers announce the warning
+    } else {
+      _bar.classList.remove('condbar-danger');
+      _bar.removeAttribute('aria-live');
+      if (_barHref) _barLink.setAttribute('href', _barHref);
+      if (_barHTML != null && _barLink.innerHTML !== _barHTML) _barLink.innerHTML = _barHTML;
+    }
+  }
+
   function paint(d) {
     if (!d) return;
 
@@ -122,7 +154,12 @@
       setText('roadMsg', d.road.msg || '');
     }
 
-    // ----- optional header conditions strip (sub-pages) -----
+    // ----- header conditions strip / site-wide danger banner -----
+    // paintStrip() runs FIRST so it can restore the normal strip markup (which
+    // contains #stripTemp / #stripLake) when an alert has cleared, before we
+    // repopulate those values below. When danger, the strip becomes a banner and
+    // those ids no longer exist — the guarded setText calls simply no-op.
+    paintStrip(d);
     if (d.weather && $('stripTemp')) {
       setText('stripTemp', (d.weather.tempF != null ? d.weather.tempF : '--') + '°');
     }
@@ -381,4 +418,11 @@
 
   // 3) Auto-refresh every 15 min to match the worker cadence.
   setInterval(load, 15 * 60 * 1000);
+
+  // 4) Refetch when the user returns to a tab that's been backgrounded/open a
+  //    while (the realistic "left it open overnight" case): a slim strip could be
+  //    showing yesterday's all-clear while a Red Flag Warning is now in effect.
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') load();
+  });
 })();
