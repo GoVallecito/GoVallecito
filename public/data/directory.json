@@ -86,11 +86,6 @@
       "email": "packtrips@vallecitolakeoutfitters.com", "facebook": "https://facebook.com/Vallecitolakeoutfitter"
     },
     {
-      "slug": "charter-vallecito", "name": "Charter Vallecito", "category": "Outfitters & Guides", "tier": "verified", "featuredReady": true,
-      "blurb": "Capt. Barney Miller — 33+ years guiding charter fishing on the lake.",
-      "phone": "(970) 769-3300", "website": "https://chartervallecito.com", "email": "CharterVallecito@gmail.com"
-    },
-    {
       "slug": "go-fish-durango", "name": "Go Fish Durango", "category": "Outfitters & Guides", "tier": "verified", "featuredReady": true,
       "blurb": "Fly and pontoon guided trips around Durango and Vallecito.",
       "website": "https://gofishdurango.com"
@@ -129,7 +124,6 @@
     { "slug": "jw-vallecito", "name": "JW Vallecito Resort", "category": "Lodging", "tier": "basic", "phone": "(888) 258-9458", "website": "https://jwvallecito.com" },
     { "slug": "lone-wolf", "name": "Lone Wolf Cabins & Getaway", "category": "Lodging", "tier": "basic", "phone": "(970) 884-0414", "website": "https://lonewolfcabins.com" },
     { "slug": "elk-point-stables", "name": "Elk Point Lodge Stables", "category": "Outfitters & Guides", "tier": "basic", "blurb": "Guided horseback rides at Elk Point Lodge, Thu–Mon (seasonal).", "phone": "(970) 884-2482", "website": "https://elkpointlodge.com" },
-    { "slug": "rocky-mountain-store", "name": "Rocky Mountain General Store & Custom Meats", "category": "Dining & Markets", "tier": "basic", "blurb": "Groceries, custom meats with elk brats, deli, and liquor.", "phone": "(970) 884-0999", "address": "17454 CR 501, Bayfield, CO", "hours": "Open Wed, Fri, Sat, Sun" },
     { "slug": "coldwell-banker", "name": "Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "basic", "phone": "(970) 259-3333", "website": "https://cbmp.com" },
     { "slug": "wells-group", "name": "Wells Group / RE/MAX / NextHome", "category": "Real Estate", "tier": "basic", "website": "https://durangohomesforsale.com" }
   ]
