@@ -490,7 +490,7 @@ footer.site .copy{border-top:1px solid #2c5142;margin-top:24px;padding-top:16px;
 
 /* ---------- Round 6: data note, start-here, glance, CTAs, gallery, images ---------- */
 .data-note{display:block;color:var(--warn);font-size:.8rem;font-weight:700;margin-top:4px}
-.starthere{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:rgba(255,255,255,.14);
+.starthere{display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:6px;margin-top:14px;background:rgba(255,255,255,.14);
   border:1px solid rgba(255,255,255,.4);color:#fff;padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem}
 .starthere:hover{background:rgba(255,255,255,.24);text-decoration:none}
 .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
