@@ -306,6 +306,11 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 @media(max-width:720px){.sources{grid-template-columns:1fr}}
 
 /* ---------- directory ---------- */
+/* R31: Middle Mountain map layer legend */
+#mmLegend{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 12px;font-size:.8rem;color:var(--ink-soft)}
+.mm-leg{display:inline-flex;align-items:center;gap:6px}
+.mm-leg i{width:18px;height:4px;border-radius:2px;display:inline-block}
+
 /* R29: "Old-timer's rule of thumb" callout aside (Living Here guides) */
 .oldtimer{border:1px solid var(--line);border-left:4px solid var(--pine);background:var(--sand-2);
   border-radius:10px;padding:13px 16px;margin:18px 0}

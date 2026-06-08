@@ -85,6 +85,7 @@
 <section class="band">
   <div class="wrap">
     <div class="map-chips" id="mapChips" role="group" aria-label="Toggle map layers"></div>
+    <div id="mmLegend" hidden aria-label="Middle Mountain route legend"></div>
     <div style="position:relative">
       <div id="map" role="application" aria-label="Interactive map of Vallecito Lake"></div>
       <div id="mapFallback" class="map-fallback" hidden>
@@ -211,6 +212,69 @@
         chips.appendChild(b);
       }
     });
+
+    // ----- Round 31: Middle Mountain trails/road (USFS EDW geometry), toggle default OFF -----
+    (function () {
+      var MM_USE = {
+        'ohv50':      { color: '#e0762a', label: 'OHV ≤50″ + motorcycle' },
+        'moto':       { color: '#8a4fc0', label: 'Motorcycle single-track' },
+        'foot-horse': { color: '#2f7d4a', label: 'Foot & horse only (Wilderness)' },
+        'road':       { color: '#6b4f3a', label: 'Forest road (FR 724)', dash: '6,6' }
+      };
+      var mmGroup = null, mmPromise = null, mmBounds = null;
+      function getMM(){ return mmPromise || (mmPromise = fetch('/data/middle-mountain-trails.geojson', { cache: 'no-store' }).then(function (r) { return r.json(); })); }
+      function anchorFor(f){ return f.properties.anchor || (f.properties.use === 'road' ? 'know' : 'routes'); }
+      function lenLabel(pr){ return pr.miles != null ? ' · ' + pr.miles + ' mi' : (pr.use === 'road' ? ' · ~11 mi' : ''); }
+      function build(geo){
+        var grp = L.layerGroup(), pts = [];
+        geo.features.forEach(function (f) {
+          var pr = f.properties || {};
+          if (f.geometry.type === 'Point') {
+            var c = f.geometry.coordinates; pts.push([c[1], c[0]]);
+            var ic = L.divIcon({ className: '', html: '<div class="map-emoji-icon">🥾</div>', iconSize: [26,26], iconAnchor: [13,13], popupAnchor: [0,-12] });
+            L.marker([c[1], c[0]], { icon: ic, title: pr.name })
+              .bindPopup('<b>' + esc(pr.name) + '</b><br>Trailhead · <a href="middle-mountain.html#' + esc(pr.anchor || 'routes') + '">guide →</a>')
+              .addTo(grp);
+            return;
+          }
+          var u = MM_USE[pr.use] || MM_USE.ohv50;
+          var lines = f.geometry.type === 'MultiLineString' ? f.geometry.coordinates : [f.geometry.coordinates];
+          lines.forEach(function (line) {
+            var latlngs = line.map(function (c) { pts.push([c[1], c[0]]); return [c[1], c[0]]; });
+            L.polyline(latlngs, { color: u.color, weight: 4, opacity: 0.9, dashArray: u.dash || null })
+              .bindPopup('<b>' + esc(pr.name) + '</b><br>' + esc(u.label) + lenLabel(pr) + '<br><a href="middle-mountain.html#' + esc(anchorFor(f)) + '">guide →</a>')
+              .addTo(grp);
+          });
+        });
+        mmBounds = pts.length ? L.latLngBounds(pts) : null;
+        return grp;
+      }
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'map-chip'; btn.setAttribute('aria-pressed', 'false');
+      btn.innerHTML = '🏔️ Middle Mountain';
+      btn.addEventListener('click', function () {
+        var nowOn = btn.getAttribute('aria-pressed') !== 'true';
+        btn.setAttribute('aria-pressed', nowOn ? 'true' : 'false');
+        var lg = document.getElementById('mmLegend'); if (lg) lg.hidden = !nowOn;
+        if (nowOn) {
+          getMM().then(function (geo) { if (!mmGroup) mmGroup = build(geo); mmGroup.addTo(map); if (mmBounds) map.fitBounds(mmBounds, { padding: [30,30] }); });
+        } else if (mmGroup) { map.removeLayer(mmGroup); }
+      });
+      if (chips) chips.appendChild(btn);
+      var lg = document.getElementById('mmLegend');
+      if (lg) lg.innerHTML = Object.keys(MM_USE).map(function (k) { var u = MM_USE[k]; return '<span class="mm-leg"><i style="background:' + u.color + '"></i>' + esc(u.label) + '</span>'; }).join('');
+      // Text list section (same data, rendered as text) — appended after renderList runs.
+      getMM().then(function (geo) {
+        var body = document.getElementById('poiListBody'); if (!body) return;
+        var lines = geo.features.filter(function (f) { return f.geometry.type !== 'Point'; });
+        var pins = geo.features.filter(function (f) { return f.geometry.type === 'Point'; });
+        var h = '<h3>🏔️ Middle Mountain (FR 724)</h3><p class="muted" style="font-size:.85rem">Authoritative trail/road geometry from the USFS EDW service — toggle the layer on the map above. Full guide: <a href="middle-mountain.html">Middle Mountain</a>.</p><ul>';
+        lines.forEach(function (f) { var pr = f.properties, u = MM_USE[pr.use] || {}; h += '<li><a href="middle-mountain.html#' + esc(anchorFor(f)) + '"><b>' + esc(pr.name) + '</b></a> — ' + esc(u.label || '') + lenLabel(pr) + '</li>'; });
+        pins.forEach(function (f) { var pr = f.properties; h += '<li>🥾 <a href="middle-mountain.html#' + esc(pr.anchor || 'routes') + '"><b>' + esc(pr.name) + '</b></a> — trailhead</li>'; });
+        h += '</ul>';
+        body.insertAdjacentHTML('beforeend', h);
+      }).catch(function(){});
+    })();
 
     if (bounds.length) map.fitBounds(bounds, { padding: [40, 40] });
     setTimeout(function () { map.invalidateSize(); }, 200);
