@@ -107,6 +107,7 @@ async function generateWeeklyWater(env) {
   }
   // Inflows.
   if (stream.combinedCfs != null) bullets.push(`Inflow about ${stream.combinedCfs} cfs (Vallecito Creek + Pine River)`);
+  if (stream.outflow && stream.outflow.cfs != null) bullets.push(`Dam outflow about ${stream.outflow.cfs} cfs to the Pine River valley` + (stream.outflow.stale ? " (reading may be a few days old)" : ""));
   // Weather outlook (next forecast day from NWS).
   if (Array.isArray(weather.forecast5) && weather.forecast5[0]) {
     const f = weather.forecast5[0];
@@ -149,6 +150,13 @@ async function refresh(env) {
     const dlt = weather.pressureInHg - prev.weather.pressureInHg;
     weather.pressureTrend = Math.abs(dlt) < 0.02 ? "steady" : (dlt > 0 ? "rising" : "falling");
     weather.pressureTrendDelta = Math.round(dlt * 100) / 100;
+  }
+
+  // Dam outflow (CWMS daily series, cms→cfs) — its own last-good so a daily-series
+  // gap never blanks the streamflow tile. Attaches under stream.outflow.
+  if (stream && stream.status !== "error") {
+    const outflow = await safe(() => getOutflow(), prev.stream && prev.stream.outflow);
+    if (outflow && outflow.cfs != null) stream.outflow = outflow;
   }
 
   const alert = mergeRestrictionStage(alertsRaw, restrictions);
@@ -279,6 +287,30 @@ async function getStreams() {
   const times = gauges.map(g => g.asOf).filter(Boolean).map(s => Date.parse(s)).filter(n => !isNaN(n));
   const asOf = times.length ? new Date(Math.max.apply(null, times)).toISOString() : null;
   return { combinedCfs, gauges, asOf, status: "ok", stale: false };
+}
+
+/* ---------- DAM OUTFLOW: USACE CWMS daily release (USBR SLC) ----------
+ * Series = Vallecito.Flow-Res Out.Ave.~1Day.1Day.Raw-USBRSLC (daily dam release,
+ * 2–3 day lag like the lake storage series). The catalog lists the stored unit as
+ * SI (cms), but the data API returns English by default for office SPK — it comes
+ * back already in cfs (the lake path likewise reads ac-ft/ft un-converted). So we
+ * read the response's `units` and convert cms→cfs (×35.3147) ONLY if it's SI.
+ * Sanity band 0–5,000 cfs; flag stale past 72h (LAKE_STALE_MS). */
+async function getOutflow() {
+  const begin = new Date(Date.now() - 40 * 864e5).toISOString();
+  const end   = new Date(Date.now() + 864e5).toISOString();
+  const name  = "Vallecito.Flow-Res Out.Ave.~1Day.1Day.Raw-USBRSLC";
+  const u = `https://cwms-data.usace.army.mil/cwms-data/timeseries?name=${encodeURIComponent(name)}&office=SPK&begin=${begin}&end=${end}`;
+  const j = await getJson(u, { "Accept": "application/json;version=2" });
+  const vals = (j.values || []).filter(v => v[1] != null);
+  if (!vals.length) throw new Error("no CWMS outflow (Flow-Res Out) data");
+  const last = vals[vals.length - 1];
+  const units = String(j.units || "").toLowerCase();
+  const isSI = units === "cms" || units === "m3/s" || units === "cumecs";
+  const cfs = Math.round(isSI ? last[1] * 35.3147 : last[1]);
+  if (!(cfs >= 0 && cfs <= 5000)) throw new Error("outflow out of sane band: " + cfs + " (units=" + units + ")");
+  const stale = (Date.now() - last[0]) > LAKE_STALE_MS;
+  return { cfs, asOf: new Date(last[0]).toISOString(), source: "USACE CWMS (USBR SLC)", stale };
 }
 
 /* ---------- ALERTS + RED FLAG: NWS (keyless) ---------- */

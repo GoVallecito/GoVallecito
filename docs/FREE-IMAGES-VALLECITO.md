@@ -107,3 +107,16 @@ These are owned by the businesses and used courtesy of the partnership (not free
 
 **Still to get from partners (flagged for David):** Vallecito Church building EXTERIOR photo (the supplied image is
 their logo/banner, no building); Country Market storefront/food photo. Excel Excavation still unpublished (no data).
+
+## R28 — fish plates, fishing hero, guide logos
+**Fish species plates** (`public/assets/img/fish/`, ~560px, ≤60KB) — all PUBLIC DOMAIN (no attribution required):
+rainbow-trout, pike, smallmouth, perch = clean Duane Raver USFWS illustrations (Commons); brown-trout, walleye =
+Raver/PD color paintings (Commons "Walleye painting" = real *Sander vitreus*, NOT the sauger plate the doc warned
+about — verified by eye); kokanee = PD color photo (no clean Raver plate found; B&W engraving rejected for
+consistency). Credited as a courtesy on sources.html#photo-credits.
+**Fishing hero** `hero-fishing.jpg` (≤350KB) — Pexels free stock (photo 8852169, "Man Fishing in a Lake," Chris F);
+no attribution required; captioned as a generic angler, NOT Vallecito. (cogdog/Levine Flickr route skipped — needs
+manual set scan; generic fallback used per FISH-SPECIES-IMAGES.md.) Old hero-los-pinos.jpg kept (still the OG fallback elsewhere).
+**Guide logos** (`public/assets/img/guides/`, ≤80KB, courtesy-of-business basis, two-hop cards):
+fisher-guide, vallecito-outfitters, charter-vallecito = logos from each guide's own site. Go Fish Durango = clean
+text card (🎣) — no clean logo isolated.

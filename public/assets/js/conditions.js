@@ -143,8 +143,14 @@
     // ----- streamflow -----
     if (d.stream) {
       var cfs = d.stream.combinedCfs;
-      setText('streamVal', (cfs != null ? cfs : '—') + ' cfs');
-      setText('streamMsg', '🌊 Vallecito Creek + Pine River' + (d.stream.asOf ? ' · updated ' + rel(d.stream.asOf) : ', combined'));
+      var sof = d.stream.outflow;
+      if (sof && sof.cfs != null) {
+        setText('streamVal', 'In ' + (cfs != null ? cfs : '—') + ' · Out ' + sof.cfs + ' cfs');
+        setText('streamMsg', '🏞️ Inflow (Vallecito Creek + Pine River) · outflow at the dam' + (d.stream.asOf ? ' · updated ' + rel(d.stream.asOf) : ''));
+      } else {
+        setText('streamVal', (cfs != null ? cfs : '—') + ' cfs');
+        setText('streamMsg', '🌊 Vallecito Creek + Pine River' + (d.stream.asOf ? ' · updated ' + rel(d.stream.asOf) : ', combined'));
+      }
       markStale('tile-stream', d.stream.stale);
     }
 
@@ -266,11 +272,19 @@
     if (d.stream && Array.isArray(d.stream.gauges)) {
       var gEl = $('streamGauges');
       if (gEl) {
-        gEl.innerHTML = d.stream.gauges.map(function (g) {
+        var rows = d.stream.gauges.map(function (g) {
           return '<li><span>🌊 ' + escapeHtml(g.name) + ' <span class="muted">(USGS ' + escapeHtml(g.id) +
             (g.asOf ? ' · ' + escapeHtml(rel(g.asOf)) : '') + ')</span></span><b>💧 ' +
             (g.cfs != null ? g.cfs + ' cfs' : '—') + '</b></li>';
-        }).join('');
+        });
+        var so = d.stream.outflow;
+        if (so && so.cfs != null) {
+          rows.push('<li><span>🏞️ Outflow — Vallecito Dam → Pine River <span class="muted">(' +
+            escapeHtml(so.source || 'USACE CWMS') + (so.asOf ? ' · ' + escapeHtml(rel(so.asOf)) : '') + ')</span>' +
+            (so.stale ? ' <span class="stale-badge">· may be a few days old</span>' : '') +
+            '</span><b>💧 ' + so.cfs + ' cfs</b></li>');
+        }
+        gEl.innerHTML = rows.join('');
       }
     }
 
