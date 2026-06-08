@@ -18,7 +18,7 @@ A rebuild of GoVallecito.com — a community/conditions hub for Vallecito Lake, 
 - **Front-end data:** `public/assets/js/conditions.js` fetches the conditions JSON (currently the Worker's
   CORS endpoint via a `DATA_URL` constant; switch to same-origin `/data/conditions.json` at domain cutover)
   and paints the dashboard; calm "Checking…" first paint; localStorage last-good cache.
-- **Data sources:** weather = NWS (marina PWS `KCOBAYFI57` staged, needs `WU_API_KEY`); lake = USACE CWMS →
+- **Data sources:** weather = **marina PWS LIVE** (`KCOBAYFI100`, Weather Underground; `WU_API_KEY` set Jun 8 2026) with NWS auto-fallback + 5-day; ⚠️ the station isn't reporting barometric pressure yet so `pressureInHg` is null and the anglers' barometer-trend is pending (ask marina to enable pressure on the console); lake = USACE CWMS →
   USBR RISE (USGS 09353000 is DEAD/2012 — never use); streams = USGS 09352900+09352800; alerts/Red Flag =
   NWS; fires = NIFC within 50 mi; fire restrictions = editor toggle `public/data/restrictions.json`
   (currently Stage 1); roads = CDOT/COtrip (LIVE, Durango corridor; final CR-501 leg via cameras/511).
@@ -38,7 +38,12 @@ A rebuild of GoVallecito.com — a community/conditions hub for Vallecito Lake, 
   camera deep-links + 511 for the final CR-501 leg. **Cameras = separate COtrip subscription (NOT active)**
   → camera tiles stay link-only (Path A). To rotate the key: regenerate in `manage-api.cotrip.org`, then
   `npx wrangler secret put COTRIP_KEY` from the `worker/` folder. (David has waived secrecy on this key.)
-- `WU_API_KEY` — NOT set yet (marina weather stays on NWS until it is). `WU_STATION_ID=KCOBAYFI57` (var).
+- `WU_API_KEY` — **SET and WORKING (Jun 8 2026)** on `govallecito-conditions`; weather now reads the marina
+  PWS **`KCOBAYFI100`** (verified: `sourceType:"pws"`, source "Vallecito Reservoir station (KCOBAYFI100)",
+  real lakeside temp/wind/humidity). `WU_STATION_ID=KCOBAYFI100` (var). **Caveat:** the station's `pressure`
+  field returns null, so `pressureInHg`/`pressureTrend` don't populate yet — the barometer is pending the
+  marina enabling barometric (sea-level) pressure on the station console. NWS fallback still auto-engages if
+  the PWS goes stale (>90 min).
 
 ## Workflow convention
 Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code, deployed, pushed. Keep doing this.
@@ -200,7 +205,52 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   (styles.css), verify + ship; (B) contacts accessibility: "🚨 Emergency & lake contacts" FIRST in the
   footer linklist on every page → conditions.html#contacts, + a compact tap-to-call contacts card pinned
   atop directory.html (use only the already-verified numbers from conditions). Build with Round 24.
-- **Phase 2 remaining:** seasonal guides + Living-in-Vallecito content (blocked on David's insider Q&A),
+- **Round 26 (queued, approved June 7 2026):** "Respect Vallecito" stewardship page — spec
+  `docs/REVIEW-UPDATES-26.md`, verified content + binding accuracy flags in
+  `docs/RESPECT-VALLECITO-CONTENT.md` (wow-facts: Weminuche 499,771 ac/Divide/14ers, 1868 Ute water +
+  SUIT one-sixth interest, New Deal/CCC build, native Tier-1 bighorns, lynx return, CPW record fishery;
+  rules each grounded in statute: OHV C.R.S. 33-14.5-108 — NO La Plata roads designated open, litter
+  18-4-511, quiet hours, fireworks always illegal on NF, no drones in Wilderness, feeding wildlife $100,
+  county Good Neighbor Policy for STR hosts). Tone: celebrate first, cooperative "we," never scolding.
+  Inspired by a neighbor's ask; addressed to visitors AND full-timers.
+- **Round 27 (queued, approved June 7 2026):** dam OUTFLOW — spec `docs/REVIEW-UPDATES-27.md`. CWMS
+  series VERIFIED: `Vallecito.Flow-Res Out.Ave.~1Day.1Day.Raw-USBRSLC` (cms → cfs ×35.3147, daily,
+  72h-stale like the lake). Adds `stream.outflow` to conditions JSON; shown on conditions #streamflow
+  ("Outflow — dam → Pine River" + irrigation-release context), home tile ("In X · Out Y cfs"), weekly
+  water bullet, sources row. FUTURE: same catalog has Vallecito SNOTEL SWE (`Depth-SWE...NRCS`) — a
+  ready-made winter snowpack tile.
+- **Round 28 (queued, approved June 7 2026):** fishing visuals + wildlife page — spec
+  `docs/REVIEW-UPDATES-28.md`. (A) fish species BUTTONS w/ PD USFWS illustrations (`FISH-SPECIES-IMAGES.md`
+  — Duane Raver matched set, public domain; use correct walleye NOT sauger); (B) fishing pagehero →
+  person fishing (cogdog CC BY 2.0 Vallecito frame if usable, else generic captioned honestly); (C)
+  guides `#guides` → two-hop logo/thumb card grid (logos from guides' own sites, text fallback); (D) new
+  `wildlife.html` anchored on **Bear Smart Durango** (content `WILDLIFE-CONTENT.md`) — bears/moose/lions/
+  elk-deer/eagles/rattlesnakes/scavengers/cattle, one behavior-change each, binding accuracy flags
+  (rattlesnakes=lower-elevation, non-lead=best-practice-not-rule, "local nonprofit" not a tax class,
+  fight-back=black-bear-specific). Nav "Wildlife" under Plan Your Visit.
+- **Round 29 (queued, approved June 7 2026):** Living Here guides ×6 — spec `docs/REVIEW-UPDATES-29.md`,
+  verified content + tone rules ("the old way" lens, helpful-local, never smug) in
+  `docs/LIVING-HERE-CONTENT.md`. SITE-WIDE CORRECTIONS bundled: CodeRED→**LPC Alerts!** sweep, SJBPH→
+  **La Plata County Public Health**, Bayfield clinic VERIFIED = **CommonSpirit Primary Care Bayfield
+  (970) 764-9150** (resolves R18 flag; add to contacts ×3), CenturyLink-not-Brightspeed, AlignTec.
+  Headlines: CR 501 = Level 1 plow priority; real snowfall ~85 in/yr at the dam (NOT 200+); Clearnetworx
+  fiber building up CR 501 NOW (~summer 2026); school bus Route 23 from "Top of Vallecito"; FAIR Plan
+  April 2025; wells <35 ac = household-use-only; septic $110 acceptance doc at sale.
+- **Round 29 content UPDATED (June 2026):** `LIVING-HERE-CONTENT.md` now carries David's confirmations
+  (USPS/FedEx/UPS/Amazon deliver; NO July-4 fireworks for years — fireworks photo = historic only;
+  Winterfest active; WM Wednesday trash + biweekly recycling at the lake; Basin Co-op + Ferrellgas =
+  reliable propane, no negative supplier claims; Clearnetworx wires visibly going up at the lake, not
+  live) + the UPRFPD deep-dive (3 of 8 stations staffed 24h incl. Station 4 North Vallecito; ALS ≤8-min
+  goal; CAAS perfect score; 2026 slash days May 15–16 + June 19–20 at McCarty's gravel pit 14015 CR 502
+  — published name, NOT "Ferris"; vallecitorecovery.com flood sponsorship; DON'T publish ISO/mill rate).
+- **Round 30 (queued, approved June 2026):** Middle Mountain page — spec `docs/REVIEW-UPDATES-30.md`,
+  content `docs/MIDDLE-MOUNTAIN-CONTENT.md`. David: OHVs ARE allowed up there (FS routes). Key finds:
+  **Beri ATV Trail #812** (3.4 mi ≤50" loop off FR 724 — new, wasn't in trails research), Vallecito View
+  #808, Runlett two-track, Dark Canyon #814 single-track (no ATVs, 1-src), Cave Basin = Wilderness
+  foot/horse only; Tuckerville is in HINSDALE County; theisite world type locality; NO "First/Second
+  Notch" anywhere; Middle Mountain CG correction (reservable rec.gov $28–32, no horses). Nav under
+  Explore. Build with/after Round 29.
+- **Phase 2 remaining:** seasonal guides (blocked on David's insider Q&A),
   weekly fishing report feed (needs marina/guide source), species deep-pages, photo gallery,
   AI-search Q&A pages. Positioning: "the most complete independent guide to Vallecito Lake."
 
