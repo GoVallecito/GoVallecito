@@ -306,6 +306,14 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 @media(max-width:720px){.sources{grid-template-columns:1fr}}
 
 /* ---------- directory ---------- */
+/* R26: "Respect Vallecito" stewardship asks — 2-up cards that reuse .ecard */
+.asks{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:6px}
+.asks .ecard h3{font-size:1.05rem}
+.asks .ecard .src{margin-top:auto;font-size:.78rem;color:var(--ink-soft)}
+.asks .ecard .src a{color:var(--ink-soft);text-decoration:underline}
+.asks .ecard .src a:hover{color:var(--pine)}
+@media(max-width:760px){.asks{grid-template-columns:1fr}}
+
 /* R25: tap-to-call local-contacts card pinned atop the directory */
 .loc-contacts{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;
   box-shadow:var(--shadow);margin-bottom:22px}
