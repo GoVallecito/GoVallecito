@@ -183,19 +183,35 @@
     });
     var note = document.getElementById('mapNote');
     var noteX = document.getElementById('mapNoteX');
-    var loadedAny = false, noteDismissed = false;
+    var loadedAny = false, noteDismissed = false, t1 = null, t2 = null;
+
+    // ONE shared handler for BOTH providers: the first successful tile from either
+    // OSM or Esri cancels ALL pending timers (so the fallback swap + note can never
+    // fire once the map is working), records success, and hides the note for good.
+    // This fixes the "map loads fine but the note still appears" race: a slow-but-
+    // working OSM used to get removed at the 10s mark, briefly exposing the note.
+    function onAnyTileLoad() {
+      loadedAny = true;
+      if (t1) { clearTimeout(t1); t1 = null; }
+      if (t2) { clearTimeout(t2); t2 = null; }
+      if (note) note.hidden = true;
+      osm.off('tileload', onAnyTileLoad);
+      esri.off('tileload', onAnyTileLoad);
+    }
+    osm.on('tileload', onAnyTileLoad);
+    esri.on('tileload', onAnyTileLoad);
     if (noteX) noteX.addEventListener('click', function () { noteDismissed = true; if (note) note.hidden = true; });
-    function onTile() { loadedAny = true; if (note) note.hidden = true; }
-    osm.on('tileload', onTile);
-    esri.on('tileload', onTile);
 
     osm.addTo(map);
-    setTimeout(function () {
-      if (loadedAny) return;                 // OSM is working — done
-      map.removeLayer(osm);                  // OSM gave nothing → fall back to Esri
+    t1 = setTimeout(function () {
+      t1 = null;
+      if (loadedAny) return;                 // OSM already working — handler cleared this anyway
+      map.removeLayer(osm);                  // OSM produced ZERO tiles → fall back to Esri
       esri.addTo(map);
-      setTimeout(function () {
-        if (!loadedAny && !noteDismissed && note) note.hidden = false;  // both failed → small note
+      t2 = setTimeout(function () {
+        t2 = null;
+        // Show the note ONLY if, at this moment, still no tile from either provider.
+        if (!loadedAny && !noteDismissed && note) note.hidden = false;
       }, TILE_TIMEOUT);
     }, TILE_TIMEOUT);
 
