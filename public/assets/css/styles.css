@@ -306,6 +306,14 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 @media(max-width:720px){.sources{grid-template-columns:1fr}}
 
 /* ---------- directory ---------- */
+/* R32: small dismissible map-tiles note (above the map, not a takeover) */
+.map-note-warn{display:flex;align-items:center;gap:10px;justify-content:space-between;
+  background:#fcefda;border:1px solid #e7cf86;border-radius:10px;padding:8px 13px;margin:0 0 12px;
+  font-size:.85rem;color:var(--ink)}
+.map-note-warn button{flex:none;background:none;border:0;font-size:1.25rem;line-height:1;cursor:pointer;
+  color:var(--ink-soft);padding:0 4px}
+.map-note-warn button:hover{color:var(--pine)}
+
 /* R31: Middle Mountain map layer legend */
 #mmLegend{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 12px;font-size:.8rem;color:var(--ink-soft)}
 .mm-leg{display:inline-flex;align-items:center;gap:6px}

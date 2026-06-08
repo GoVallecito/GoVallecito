@@ -86,11 +86,12 @@
   <div class="wrap">
     <div class="map-chips" id="mapChips" role="group" aria-label="Toggle map layers"></div>
     <div id="mmLegend" hidden aria-label="Middle Mountain route legend"></div>
+    <div id="mapNote" class="map-note-warn" hidden role="status">
+      <span><b>Map tiles couldn't load.</b> You may be offline or on a very slow connection — the full list of locations is below.</span>
+      <button type="button" id="mapNoteX" aria-label="Dismiss this message">×</button>
+    </div>
     <div style="position:relative">
       <div id="map" role="application" aria-label="Interactive map of Vallecito Lake"></div>
-      <div id="mapFallback" class="map-fallback" hidden>
-        <p><b>Map tiles couldn't load.</b> You may be offline. The full list of locations is below.</p>
-      </div>
     </div>
     <p class="map-note">📍 Live weather, lake level, fire, and road status are on the <a href="conditions.html">conditions page</a> — this map shows places, not live data. Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors.</p>
 
@@ -166,16 +167,37 @@
     var c = data.center || { lat: 37.42, lng: -107.548, zoom: 12 };
     var map = L.map('map', { scrollWheelZoom: false }).setView([c.lat, c.lng], c.zoom);
 
-    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Tile loading with an automatic provider fallback for slow/blocked connections:
+    // primary OpenStreetMap → if ZERO tiles after 10s, swap to Esri World Topo and give
+    // it another 10s → only if BOTH yield nothing do we show the dismissible note.
+    // (A stray 404 on one tile is normal; the first successful tile from either provider
+    // clears the note and cancels the fallback chain.)
+    var TILE_TIMEOUT = 10000;
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
-    // Only show the offline fallback if NO tiles load at all (a stray 404 on one
-    // tile is normal and shouldn't hide a working map).
-    var loadedAny = false;
-    tiles.on('tileload', function () { loadedAny = true; var f = document.getElementById('mapFallback'); if (f) f.hidden = true; });
-    tiles.addTo(map);
-    setTimeout(function () { if (!loadedAny) { var f = document.getElementById('mapFallback'); if (f) f.hidden = false; } }, 5000);
+    var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      attribution: 'Tiles &copy; Esri'
+    });
+    var note = document.getElementById('mapNote');
+    var noteX = document.getElementById('mapNoteX');
+    var loadedAny = false, noteDismissed = false;
+    if (noteX) noteX.addEventListener('click', function () { noteDismissed = true; if (note) note.hidden = true; });
+    function onTile() { loadedAny = true; if (note) note.hidden = true; }
+    osm.on('tileload', onTile);
+    esri.on('tileload', onTile);
+
+    osm.addTo(map);
+    setTimeout(function () {
+      if (loadedAny) return;                 // OSM is working — done
+      map.removeLayer(osm);                  // OSM gave nothing → fall back to Esri
+      esri.addTo(map);
+      setTimeout(function () {
+        if (!loadedAny && !noteDismissed && note) note.hidden = false;  // both failed → small note
+      }, TILE_TIMEOUT);
+    }, TILE_TIMEOUT);
 
     // one layer group per category
     var groups = {}, counts = {}, bounds = [];
