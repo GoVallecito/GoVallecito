@@ -94,7 +94,7 @@
     if (d.weather) {
       var w = d.weather;
       // Label the source plainly: marina PWS only when the live PWS feed is used.
-      setText('wxLabel', w.sourceType === 'pws' ? 'at the marina (Vallecito Reservoir station)' : 'near the lake — NWS');
+      setText('wxLabel', w.sourceType === 'pws' ? 'at the marina' : 'near the lake — NWS');
       setText('wxTemp', (w.tempF != null ? w.tempF : '—') + '°');
       var desc = w.desc || '';
       if (w.windMph != null) {
@@ -182,7 +182,7 @@
 
   // Short, honest source label per feed (derived from the feed when it varies).
   function srcLabel(kind, feed) {
-    if (kind === 'weather') return feed && feed.sourceType === 'pws' ? 'Marina station' : 'NWS';
+    if (kind === 'weather') return feed && feed.sourceType === 'pws' ? 'Marina weather station' : 'NWS';
     if (kind === 'lake') {
       var s = (feed && feed.source || '').toLowerCase();
       if (s.indexOf('cwms') >= 0 || s.indexOf('usace') >= 0) return 'USACE';

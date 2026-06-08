@@ -366,7 +366,7 @@ async function getWeather(env) {
           uv: o.uv, solarWm2: o.solarRadiation, stationElevFt: round(im.elev),
           obsTime: o.obsTimeUtc || o.obsTimeLocal, desc: ""
         };
-        source = "Vallecito Reservoir station (" + env.WU_STATION_ID + ")";
+        source = "Marina weather station";
         sourceType = "pws";
       }
       // else: stale/offline → leave cur null so the NWS fallback runs.
