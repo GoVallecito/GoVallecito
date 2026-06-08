@@ -185,6 +185,7 @@
     if (kind === 'weather') return feed && feed.sourceType === 'pws' ? 'Marina weather station' : 'NWS';
     if (kind === 'lake') {
       var s = (feed && feed.source || '').toLowerCase();
+      if (s.indexOf('hydrodata') >= 0) return 'USBR Hydrodata';
       if (s.indexOf('cwms') >= 0 || s.indexOf('usace') >= 0) return 'USACE';
       if (s.indexOf('rise') >= 0 || s.indexOf('usbr') >= 0) return 'USBR';
       return 'USACE/USBR';

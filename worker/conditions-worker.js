@@ -193,9 +193,10 @@ const ELEV_MIN = 7500, ELEV_MAX = 7700; // sane Vallecito pool-elevation band (f
 
 async function getLake() {
   let r = null, source = null;
-  try { const c = await lakeFromCwms(); if (lakeOk(c)) { r = c; source = "USACE CWMS (USBR SPK)"; } } catch (e) { console.error("CWMS lake:", e.message); }
+  try { const h = await lakeFromHydrodata(); if (lakeOk(h)) { r = h; source = "USBR Hydrodata"; } } catch (e) { console.error("Hydrodata lake:", e.message); }
+  if (!r) { try { const c = await lakeFromCwms(); if (lakeOk(c)) { r = c; source = "USACE CWMS (USBR SPK)"; } } catch (e) { console.error("CWMS lake:", e.message); } }
   if (!r) { try { const u = await lakeFromRise(); if (lakeOk(u)) { r = u; source = "USBR RISE"; } } catch (e) { console.error("RISE lake:", e.message); } }
-  if (!r) throw new Error("no current lake source (USGS 09353000 is stale 2012; CWMS+RISE unavailable)");
+  if (!r) throw new Error("no current lake source (USGS 09353000 is stale 2012; Hydrodata+CWMS+RISE unavailable)");
 
   const storageAf  = r.storageAf  != null ? Math.round(r.storageAf)  : null;
   const elevationFt = r.elevationFt != null ? Math.round(r.elevationFt) : null;
@@ -220,6 +221,32 @@ function lakeOk(r) {
   if (r.elevationFt != null && (r.elevationFt < ELEV_MIN || r.elevationFt > ELEV_MAX)) return false; // not another reservoir
   if (r.storageAf != null && (r.storageAf < 0 || r.storageAf > CAPACITY_AF * 1.1)) return false;
   return r.storageAf != null || r.elevationFt != null;
+}
+
+/* USBR UC Hydrodata (PRIMARY) — the agency's own daily reservoir series for
+ * Vallecito (site_id 933): storage dt 17 (ac-ft), pool elevation dt 49 (ft),
+ * total release dt 42 (cfs). Typically 1–2 days fresher than the CWMS mirror.
+ * We fetch the CSV and read ONLY the last line (the file is ~31k rows; tail-only
+ * keeps Worker CPU trivial). Returns null on header/garbage so callers fall back. */
+async function hydrodataLatest(dt) {
+  const u = `https://www.usbr.gov/uc/water/hydrodata/reservoir_data/933/csv/${dt}.csv`;
+  const r = await fetch(u, { headers: { "User-Agent": UA }, cf: { cacheTtl: 300 } });
+  if (!r.ok) throw new Error("Hydrodata HTTP " + r.status + " dt" + dt);
+  const text = await r.text();
+  let end = text.length;
+  while (end > 0 && /\s/.test(text[end - 1])) end--;       // trim trailing newlines
+  let start = end;
+  while (start > 0 && text[start - 1] !== "\n") start--;    // back up to the last line
+  const parts = text.slice(start, end).split(",");
+  if (parts.length < 2) return null;
+  const date = parts[0].trim(), val = parseFloat(parts[1]);
+  if (!/^\d{4}-\d{2}-\d{2}/.test(date) || isNaN(val)) return null;  // skip header/blank
+  return { value: val, t: Date.parse(date + "T00:00:00Z") };
+}
+async function lakeFromHydrodata() {
+  const [s, e] = await Promise.all([ hydrodataLatest(17), hydrodataLatest(49) ]);  // storage af, pool elev ft
+  const t = Math.max(s ? s.t : 0, e ? e.t : 0) || null;
+  return { storageAf: s ? s.value : null, elevationFt: e ? e.value : null, t };
 }
 
 // USACE CWMS Data API, district SPK — daily pool storage (ac-ft) + elevation (ft).
@@ -289,14 +316,29 @@ async function getStreams() {
   return { combinedCfs, gauges, asOf, status: "ok", stale: false };
 }
 
-/* ---------- DAM OUTFLOW: USACE CWMS daily release (USBR SLC) ----------
- * Series = Vallecito.Flow-Res Out.Ave.~1Day.1Day.Raw-USBRSLC (daily dam release,
- * 2–3 day lag like the lake storage series). The catalog lists the stored unit as
- * SI (cms), but the data API returns English by default for office SPK — it comes
- * back already in cfs (the lake path likewise reads ac-ft/ft un-converted). So we
- * read the response's `units` and convert cms→cfs (×35.3147) ONLY if it's SI.
+/* ---------- DAM OUTFLOW ----------
+ * PRIMARY = USBR Hydrodata "total release" (site 933, dt 42, cfs) — the agency's
+ * authoritative dam release (sum of all release methods), usually 1–2 days fresher
+ * than the CWMS mirror. NOTE: we do NOT use the CWMS "Vallecito-nr Bayfield" gauge —
+ * it sits BELOW the PRID irrigation diversions and reads far less than the dam
+ * release (e.g. 218 cfs vs 677 cfs on the same day), so it's river flow below the
+ * ditches, not dam outflow.
+ * FALLBACK = CWMS Flow-Res Out (Vallecito.Flow-Res Out...Raw-USBRSLC) — the API
+ * returns it in cfs for office SPK; convert cms→cfs ONLY if the response unit is SI.
  * Sanity band 0–5,000 cfs; flag stale past 72h (LAKE_STALE_MS). */
 async function getOutflow() {
+  // PRIMARY: USBR Hydrodata total release (dt 42).
+  try {
+    const r = await hydrodataLatest(42);
+    if (r) {
+      const cfs = Math.round(r.value);
+      if (cfs >= 0 && cfs <= 5000 && (Date.now() - r.t) <= LAKE_MAX_AGE_MS) {
+        return { cfs, asOf: new Date(r.t).toISOString(), source: "USBR Hydrodata", stale: (Date.now() - r.t) > LAKE_STALE_MS };
+      }
+    }
+  } catch (e) { console.error("Hydrodata outflow:", e.message); }
+
+  // FALLBACK: USACE CWMS Flow-Res Out.
   const begin = new Date(Date.now() - 40 * 864e5).toISOString();
   const end   = new Date(Date.now() + 864e5).toISOString();
   const name  = "Vallecito.Flow-Res Out.Ave.~1Day.1Day.Raw-USBRSLC";
