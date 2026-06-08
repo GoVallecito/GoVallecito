@@ -306,6 +306,15 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 @media(max-width:720px){.sources{grid-template-columns:1fr}}
 
 /* ---------- directory ---------- */
+/* R29: "Old-timer's rule of thumb" callout aside (Living Here guides) */
+.oldtimer{border:1px solid var(--line);border-left:4px solid var(--pine);background:var(--sand-2);
+  border-radius:10px;padding:13px 16px;margin:18px 0}
+.oldtimer .ot-h{font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--pine);margin-bottom:3px}
+.oldtimer p{margin:0;color:var(--ink)}
+
+/* R30: Middle Mountain route table — vehicle-class clarity */
+.route-tbl td .who{font-weight:700;white-space:nowrap}
+
 /* R28: guide cards (two-hop to the directory) */
 .guide-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
 .guide-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 12px;

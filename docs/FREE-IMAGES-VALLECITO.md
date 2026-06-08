@@ -114,9 +114,11 @@ rainbow-trout, pike, smallmouth, perch = clean Duane Raver USFWS illustrations (
 Raver/PD color paintings (Commons "Walleye painting" = real *Sander vitreus*, NOT the sauger plate the doc warned
 about — verified by eye); kokanee = PD color photo (no clean Raver plate found; B&W engraving rejected for
 consistency). Credited as a courtesy on sources.html#photo-credits.
-**Fishing hero** `hero-fishing.jpg` (≤350KB) — Pexels free stock (photo 8852169, "Man Fishing in a Lake," Chris F);
-no attribution required; captioned as a generic angler, NOT Vallecito. (cogdog/Levine Flickr route skipped — needs
-manual set scan; generic fallback used per FISH-SPECIES-IMAGES.md.) Old hero-los-pinos.jpg kept (still the OG fallback elsewhere).
+**Fishing hero** — REVERTED (R29/30 cleanup). The R28 Pexels angler (`hero-fishing.jpg`) was pulled: the photo
+read as non-local (cattails, no San Juan peaks). Cowork reverted the fishing pagehero + og:image to
+`hero-los-pinos.jpg` (Jeffrey Beall, CC BY 4.0 — already credited above); `hero-fishing.jpg` deleted from the
+repo and its Pexels credit removed from sources.html. A real person-fishing-AT-Vallecito photo is still wanted
+(David's own, or a confirmed cogdog/Levine CC frame) before changing the fishing hero again.
 **Guide logos** (`public/assets/img/guides/`, ≤80KB, courtesy-of-business basis, two-hop cards):
 fisher-guide, vallecito-outfitters, charter-vallecito = logos from each guide's own site. Go Fish Durango = clean
 text card (🎣) — no clean logo isolated.
