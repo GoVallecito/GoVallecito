@@ -227,6 +227,12 @@
       var html = nameLink(p);                       // name itself is the link (no trailing "info")
       if (p.blurb) html += '<br>' + esc(p.blurb);
       if (p.phone) html += '<br><a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>';
+      if (p.partner) {                              // tasteful featured-partner credit (e.g. fishing partner)
+        var pn = p.partner, pext = /^https?:/.test(pn.link) ? ' target="_blank" rel="noopener"' : '';
+        html += '<a class="map-partner" href="' + esc(pn.link) + '"' + pext + '>'
+          + (pn.logo ? '<img src="' + esc(pn.logo) + '" alt="' + esc(pn.name) + ' logo">' : '')
+          + '<span>' + esc(pn.label || ('Partner: ' + pn.name)) + '</span></a>';
+      }
       m.bindPopup(html);
       m.addTo(groups[p.category]);
       counts[p.category]++;

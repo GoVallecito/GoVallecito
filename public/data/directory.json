@@ -74,10 +74,14 @@
       "facebook": "https://facebook.com/Pineriverlodgevallecito", "address": "Vallecito Lake, Bayfield, CO"
     },
     {
-      "slug": "fisher-guide", "name": "Fisher Guide Service", "category": "Outfitters & Guides", "tier": "verified", "featuredReady": true,
-      "blurb": "Trolling and spin for all species; also fishes Navajo Reservoir, plus winter ice-fishing.",
-      "phone": "(970) 769-0669", "website": "https://fisherguideservicevallecito.com",
-      "facebook": "https://facebook.com/fisherguideservicevallecito"
+      "slug": "fisher-guide", "name": "Fisher Guide Service", "category": "Outfitters & Guides", "tier": "featured",
+      "blurb": "Phil Fisher — open-water and ice-fishing charters on Vallecito and Navajo; the marina's go-to guide. Gear provided, trips tailored to your group.",
+      "phone": "(970) 769-0669", "website": "https://fisherguideservicevallecito.com", "email": "fisherguideservices@gmail.com",
+      "facebook": "https://facebook.com/fisherguideservicevallecito", "instagram": "https://instagram.com/fisherguideservice",
+      "address": "17252 CR 501, Bayfield, CO",
+      "image": "/assets/img/featured/fisher-guide.jpg", "imageAlt": "A northern pike caught with Fisher Guide Service on Vallecito", "imageFit": "cover",
+      "badge": "GoVallecito Partner", "profile": "partner-fisher-guide.html",
+      "cta": { "label": "Book with Phil →", "href": "https://fisherguideservicevallecito.com/fishing-guide/rates/contact" }
     },
     {
       "slug": "vallecito-outfitters", "name": "Vallecito Lake Outfitters", "category": "Outfitters & Guides", "tier": "verified", "featuredReady": true,

@@ -132,3 +132,23 @@ FB facebook.com/vallecito.church · YouTube channel
   easy ways to connect (FB, YouTube livestream).
 - **Could NOT verify (omit):** exterior building photo; current denominational affiliation label beyond
   the Southern Baptist heritage in the name/history; attendance numbers.
+
+## Fisher Guide Service (Round 32 — featured fishing partner)
+Source of truth: **fisherguideservicevallecito.com** (Squarespace), verified June 2026. Phil Fisher is the
+marina's David-sourced recommended guide. Editorial recommendation only — NO invented ratings/reviews.
+- **Owner/guide:** Phil Fisher (name per directory/David; the site itself doesn't print the owner name).
+- **Services:** open-water fishing charters + ice-fishing charters; "uniquely tailored" trips.
+- **Waters:** Vallecito Reservoir + Navajo Reservoir; additional ice-fishing in the Durango/Pagosa area.
+- **Capacity:** boat fishes "up to 4 individuals." **Gear:** "all the equipment and gear for your adventure
+  is provided."
+- **Species (site's own lists):** Vallecito = walleye, northern pike, smallmouth bass, brown trout, rainbow
+  trout, kokanee salmon. Ice/Navajo adds perch, crappie, bluegill, largemouth, channel catfish.
+- **Tagline (their words):** "Open Water and Ice Fishing Charters" · "Join us for a unique, fun-filled
+  fishing adventure."
+- **Contact:** (970) 769-0669 · fisherguideservices@gmail.com · 17252 CR 501, Bayfield CO 81122 ·
+  FB facebook.com/fisherguideservicevallecito · IG instagram.com/fisherguideservice.
+- **Booking/CTA link (from site nav):** Rates/Contact = `/fishing-guide/rates/contact` (Book Now button →
+  `/fishing-guide/rates/contact/vallecito-lake`). We point "Book with Phil →" at `/fishing-guide/rates/contact`.
+- **Images:** see FREE-IMAGES-VALLECITO.md R32 (pike catch photo + logo, courtesy basis).
+- **Could NOT verify (omit):** published rates/prices (none on site); exact owner name on-site; trip
+  durations/exact season dates. The page states seasons generically (open-water spring–fall, ice in winter).

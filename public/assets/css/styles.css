@@ -342,6 +342,20 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 @media(max-width:820px){.guide-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:460px){.guide-grid{grid-template-columns:1fr}}
 
+/* R32: featured guide partner card (enlarged, badged) */
+.guide-card.is-featured{position:relative;grid-column:span 2;border:2px solid var(--pine);
+  background:linear-gradient(180deg,#fff,var(--sand-2));padding-top:24px}
+.guide-card .gbadge{position:absolute;top:10px;right:10px;background:var(--pine);color:#fff;
+  font-size:.68rem;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px}
+@media(max-width:460px){.guide-card.is-featured{grid-column:span 1}}
+
+/* R32: "Your guide" lead band (fishing.html) */
+.guide-lead{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:22px;align-items:center}
+.guide-lead-img{display:block;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);line-height:0}
+.guide-lead-img img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+.guide-lead-body{min-width:0}
+@media(max-width:760px){.guide-lead{grid-template-columns:1fr}}
+
 /* R28: fishing — species selector buttons + inline PD illustration plates */
 .fish-select{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin:6px 0 22px}
 .fish-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border:1px solid var(--line);
@@ -533,6 +547,11 @@ figure.imgfig figcaption a:hover{color:var(--pine)}
 .map-chip .ct{opacity:.7;font-weight:600}
 .map-emoji-icon{font-size:20px;line-height:26px;text-align:center;width:26px;height:26px;
   filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+/* R32: featured-partner credit chip inside a map popup */
+.map-partner{display:flex;align-items:center;gap:7px;margin-top:8px;padding:5px 7px;border:1px solid var(--line);
+  border-radius:8px;background:var(--sand-2);text-decoration:none;color:var(--pine);font-weight:700;font-size:.74rem}
+.map-partner:hover{border-color:var(--pine)}
+.map-partner img{height:24px;width:auto;flex:none}
 .map-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
   background:rgba(247,245,240,.95);border-radius:var(--radius);padding:20px;z-index:2}
 .map-note{font-size:.8rem;color:var(--ink-soft);margin-top:8px}

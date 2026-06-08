@@ -120,5 +120,19 @@ read as non-local (cattails, no San Juan peaks). Cowork reverted the fishing pag
 repo and its Pexels credit removed from sources.html. A real person-fishing-AT-Vallecito photo is still wanted
 (David's own, or a confirmed cogdog/Levine CC frame) before changing the fishing hero again.
 **Guide logos** (`public/assets/img/guides/`, ≤80KB, courtesy-of-business basis, two-hop cards):
-fisher-guide, vallecito-outfitters, charter-vallecito = logos from each guide's own site. Go Fish Durango = clean
-text card (🎣) — no clean logo isolated.
+fisher-guide, vallecito-outfitters = logos from each guide's own site. Go Fish Durango = clean
+text card (🎣) — no clean logo isolated. (charter-vallecito logo REMOVED in R32 — business closed.)
+
+## R32 — Fisher Guide Service (featured partner, courtesy basis)
+Phil Fisher promoted to featured fishing partner. Images pulled from his own site
+(fisherguideservicevallecito.com, a Squarespace site) on the partnership courtesy basis — they remain Fisher
+Guide Service's property:
+- `public/assets/img/featured/fisher-guide.jpg` — catch photo (northern pike), hero/OG on `partner-fisher-guide.html`
+  + the fishing "Your guide" band. Source: squarespace-cdn `.../1565730063248-...65745238_553219645213377_...o.jpg`.
+  Optimized 1280w JPEG, ~202 KB.
+- `public/assets/img/featured/fisher-logo.png` — "Fish Guide Service" logo, used as the map marina-popup partner
+  chip. Source: squarespace-cdn `.../1583968188511-...Fish+Guide+Service+Logo+resized.png`. 300×164 PNG, ~19 KB.
+- Existing `public/assets/img/guides/fisher-guide.jpg` (R28 logo) reused on the fishing-page featured guide card.
+Originals saved (gitignored) under `assets-originals/fisher/`. Credited on sources.html#photo-credits.
+**Flag for David:** these are courtesy-basis pulls from Phil's site — once he's a paying partner, ask him for
+preferred photos/headshot to swap in.
