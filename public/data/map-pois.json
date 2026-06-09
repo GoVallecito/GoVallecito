@@ -3,6 +3,7 @@
   "center": { "lat": 37.42, "lng": -107.548, "zoom": 12 },
   "categories": [
     { "key": "campground", "label": "Campgrounds", "emoji": "🏕️", "defaultOn": true },
+    { "key": "rv", "label": "RV parks (private)", "emoji": "🚐", "defaultOn": true },
     { "key": "boat", "label": "Boat launch / marina", "emoji": "🚤", "defaultOn": true },
     { "key": "access", "label": "Public lake access", "emoji": "🎣", "defaultOn": true },
     { "key": "trailhead", "label": "Trailheads", "emoji": "🥾", "defaultOn": true },
@@ -34,7 +35,7 @@
       "blurb": "San Juan NF campground on the east side of the reservoir.",
       "link": "https://www.fs.usda.gov/r02/sanjuan/recreation/north-canyon-campground",
       "src": "fs.usda.gov San Juan NF — North Canyon Campground page (Lat/Long field)" },
-    { "id": "blue-spruce", "name": "Blue Spruce RV Park & Cabins", "category": "campground", "lat": 37.4661, "lng": -107.5539,
+    { "id": "blue-spruce", "name": "Blue Spruce RV Park & Cabins", "category": "rv", "lat": 37.4661, "lng": -107.5539,
       "blurb": "Private RV park + cabins near the lake (a GoVallecito partner).",
       "link": "directory.html#biz-blue-spruce",
       "src": "Blue Spruce site Google Maps link (1875 CR 500), per build spec" },

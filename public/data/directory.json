@@ -1,12 +1,12 @@
 {
   "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
-  "categoryOrder": ["Real Estate", "Lodging", "Dining & Markets", "Marina & Water", "Local Services", "Community", "Outfitters & Guides"],
+  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Local Services", "Community", "Outfitters & Guides"],
   "businesses": [
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
       "blurb": "Vallecito local broker — more than 25 years in the Four Corners. Honest, year-round guidance from a neighbor who's here to stay.",
       "phone": "(970) 769-5373", "email": "julie.coffelt@cbmp.com", "website": "http://www.julie-coffelt.cbmp.com/",
-      "image": "/assets/img/Julie_Coffelt.png", "badge": "GoVallecito Partner", "profile": "real-estate-partner.html",
+      "image": "/assets/img/Julie_Coffelt.jpg", "badge": "GoVallecito Partner", "profile": "real-estate-partner.html",
       "cta": { "label": "Meet Julie & see listings →", "href": "real-estate-partner.html" }
     },
     {

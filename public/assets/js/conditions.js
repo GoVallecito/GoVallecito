@@ -72,8 +72,12 @@
                                 : 'extreme conditions — see details';
       var base = (_barHref || 'conditions.html').split('#')[0];   // respects ../ on subdir pages
       _barLink.setAttribute('href', base + '#alerts');
-      _barLink.innerHTML = '🔴 <b>' + escapeHtml(title) + '</b> — ' + escapeHtml(tag) +
-        ' <span class="condbar-more">details →</span>';
+      // B3: the "— tagline" lives in its own span so phones can hide it (one-line
+      // banner: "🔴 RED FLAG WARNING · details →") with no dangling dash, while
+      // desktop keeps the full "RED FLAG WARNING — extreme fire danger · … · details →".
+      _barLink.innerHTML = '🔴 <b>' + escapeHtml(title) + '</b>' +
+        '<span class="condbar-tagline"> — ' + escapeHtml(tag) + '</span>' +
+        ' <span class="condbar-more">· details →</span>';
       _bar.classList.add('condbar-danger');
       _bar.setAttribute('aria-live', 'polite');   // screen readers announce the warning
     } else {
@@ -305,10 +309,31 @@
       var aEl = $('alertItems');
       if (aEl) {
         var its = d.alert.items || [];
-        aEl.innerHTML = its.length
-          ? its.map(function (i) { return '<li><b>' + escapeHtml(i.event) + '</b>' +
-              (i.headline ? ' — ' + escapeHtml(i.headline) : '') + '</li>'; }).join('')
-          : '<li class="muted">No active NWS alerts for the lake area.</li>';
+        if (its.length) {
+          // B1: NWS often lists the SAME event several times as its end time is
+          // extended (e.g. three Red Flag Warning rows, June 9/10/11). Collapse to
+          // ONE row per event, keeping the instance with the latest end time, and
+          // flag "(extended)" when more than one was merged. Render-side only.
+          var byEvent = {};
+          its.forEach(function (i) {
+            var key = (i.event || '').toLowerCase().trim() || '(alert)';
+            var endT = Date.parse(i.ends); if (isNaN(endT)) endT = -Infinity;
+            if (!byEvent[key]) { byEvent[key] = { item: i, endT: endT, count: 1 }; }
+            else {
+              byEvent[key].count++;
+              if (endT >= byEvent[key].endT) { byEvent[key].item = i; byEvent[key].endT = endT; }
+            }
+          });
+          aEl.innerHTML = Object.keys(byEvent).map(function (k) {
+            var g = byEvent[k], i = g.item, ev = i.event || 'Alert';
+            var body = trimEventPrefix(i.headline, ev);   // row label already shows the event — don't restate it
+            return '<li><b>' + escapeHtml(ev) + '</b>' +
+              (g.count > 1 ? ' <span class="muted">(extended)</span>' : '') +
+              (body ? ' — ' + escapeHtml(body) : '') + '</li>';
+          }).join('');
+        } else {
+          aEl.innerHTML = '<li class="muted">No active NWS alerts for the lake area.</li>';
+        }
       }
       // Fire-restriction banner (shown only when a stage is in effect).
       var banner = $('fireBanner');
@@ -389,6 +414,18 @@
         }
       }
     }
+  }
+
+  // B1: strip a leading restatement of the event name from an NWS headline, so a
+  // row labeled "Red Flag Warning" reads "— issued June 8…" not "— Red Flag Warning
+  // issued June 8…". Case-insensitive; trims any dash/space left behind.
+  function trimEventPrefix(headline, event) {
+    var h = (headline || '').trim(); if (!h) return '';
+    var e = (event || '').trim();
+    if (e && h.toLowerCase().indexOf(e.toLowerCase()) === 0) {
+      h = h.slice(e.length).replace(/^[\s—–-]+/, '').trim();
+    }
+    return h;
   }
 
   // Latest end time among active Red Flag Warning items, formatted in lake-local

@@ -68,6 +68,12 @@ edits + redeploys). Order matters. Reversible — see Rollback.
    `/data/conditions.json` is served by the worker (check response headers / `cf-ray`); all clean URLs
    return 200 (`curl -I https://govallecito.com/conditions` etc.); `robots.txt` + `sitemap.xml` reachable;
    hard-refresh / `?cb=` for edge cache. Then announce.
+   - **Freshness assertion (do NOT skip):** `curl -s https://govallecito.com/data/conditions.json | jq .updated`
+     must be within ~20 min of now. If it isn't — or the path 404s — the Worker route is NOT serving
+     `/data/conditions.json`; the cutover is incomplete. Re-check the routes (step 2) / roll back (step 1)
+     before announcing. (Round 33 deleted the stale committed `public/data/conditions.json`, so if the
+     Worker route ever detaches, Pages now **404s** the path — fail-loud by design, not a frozen 200 — and
+     `conditions.js` falls back to its localStorage last-good cache with stale badges.)
 5. **[DAVID] Post-launch:** create the Google Search Console property and submit
    `https://govallecito.com/sitemap.xml`; **delete the stray `govallecito-site`** Worker project the
    importer made; **rotate `COTRIP_KEY`** (regenerate in manage-api.cotrip.org → `npx wrangler secret put
