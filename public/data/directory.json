@@ -71,12 +71,6 @@
       "cta": { "label": "Service times & info →", "href": "https://vallecitochurch.org" }
     },
     {
-      "slug": "excel-excavation", "name": "Excel Excavation", "category": "Local Services", "tier": "featured", "unpublished": true,
-      "_note": "Featured slot reserved — UNPUBLISHED pending verified data. The link David provided was a Facebook community-group member profile (a person), not a business Page; do NOT attach another excavator's info. Need: the business Facebook Page/logo, or the owner's OK + name/phone.",
-      "blurb": ""
-    },
-
-    {
       "slug": "pine-river-lodge", "name": "Pine River Lodge", "category": "Lodging", "tier": "verified",
       "blurb": "27 cabins overlooking the lake since 1960 — heated indoor pool, a Vallecito mainstay for families and anglers.",
       "phone": "(970) 884-2563", "website": "https://pineriverlodge.com",
