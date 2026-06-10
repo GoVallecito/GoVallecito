@@ -1,6 +1,6 @@
 {
   "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
-  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Fire Mitigation & Tree Service", "Trash & Junk Removal", "Local Services", "Community", "Outfitters & Guides"],
+  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Fire Mitigation & Tree Service", "Trash & Junk Removal", "Cleaning Services", "Local Services", "Community", "Outfitters & Guides"],
   "businesses": [
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
@@ -21,7 +21,7 @@
       "cta": { "label": "Book online →", "href": "https://fareharbor.com/embeds/book/vallecitolakemarina/" }
     },
     {
-      "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "category": "Dining & Markets", "tier": "featured",
+      "slug": "country-market", "name": "Vallecito Lake Country Market & La Comida Ranchera", "shortName": "Country Market", "category": "Dining & Markets", "tier": "featured",
       "blurb": "Groceries, the La Comida Ranchera kitchen, and liquor — plus gas and propane. The lake's one-stop shop, open year-round.",
       "phone": "(970) 884-0844", "facebook": "https://facebook.com/VallecitoLakeCountryMarket",
       "address": "18071 CR 501, Bayfield, CO", "hours": "Mon 7–7 · Thu–Sat 7–7 · Sun 7–3 · Tue–Wed closed",
@@ -60,6 +60,15 @@
       "photos": ["/assets/img/featured/junk-genies-team.jpg", "/assets/img/featured/junk-genies-property.jpg"],
       "badge": "GoVallecito Partner", "profile": "partner-junk-genies.html",
       "cta": { "label": "Free estimate → call/text", "href": "tel:+15058707792" }
+    },
+    {
+      "slug": "rubber-duck-cleaning", "name": "Rubber Duck Cleaning", "category": "Cleaning Services", "tier": "featured",
+      "blurb": "Local, licensed & insured cleaning — kitchens, baths, deep cleans, move-in/move-out, offices, RVs, vacation rentals, and new-construction cleanups. Serving Bayfield, Durango & Ignacio. Free estimates.",
+      "phone": "(623) 398-5279", "email": "rubberduckcleaning22@gmail.com",
+      "image": "/assets/img/featured/rubber-duck-logo.jpg", "imageAlt": "Rubber Duck Cleaning logo",
+      "photos": ["/assets/img/featured/rubber-duck-ba-apartment.jpg", "/assets/img/featured/rubber-duck-ba-stove.jpg", "/assets/img/featured/rubber-duck-ba-toilet.jpg"],
+      "badge": "GoVallecito Partner", "profile": "partner-rubber-duck-cleaning.html",
+      "cta": { "label": "Free estimate → call/text", "href": "tel:+16233985279" }
     },
     {
       "slug": "vallecito-church", "name": "Vallecito Church", "category": "Community", "tier": "featured",
