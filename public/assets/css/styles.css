@@ -18,10 +18,6 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Hel
   background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:var(--lake);text-decoration:none}
 a:hover{text-decoration:underline}
-/* B6: skip-to-content link — visually hidden until keyboard focus */
-.skip-link{position:absolute;left:8px;top:-48px;z-index:1200;background:var(--pine);color:#fff;
-  padding:9px 14px;border-radius:0 0 8px 8px;font-weight:700;text-decoration:none;transition:top .15s ease}
-.skip-link:focus{top:0;outline:3px solid var(--lake);outline-offset:2px}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:0}
 .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:700;color:var(--lake)}
