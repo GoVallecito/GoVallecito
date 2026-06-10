@@ -122,3 +122,21 @@ repo and its Pexels credit removed from sources.html. A real person-fishing-AT-V
 **Guide logos** (`public/assets/img/guides/`, ≤80KB, courtesy-of-business basis, two-hop cards):
 fisher-guide, vallecito-outfitters, charter-vallecito = logos from each guide's own site. Go Fish Durango = clean
 text card (🎣) — no clean logo isolated.
+
+## R35 — Junk Genies (featured paid partner, courtesy basis)
+David supplied the photos in the connected "Junk Genies" desktop folder; used on a courtesy/partner basis
+(paid partner) — they remain Junk Genies' property. NO CC-license claim. Credited "courtesy of Junk Genies
+(paid partner)" on sources.html#photo-credits. Optimized into `public/assets/img/featured/` (originals stay
+on the desktop, NOT copied into the repo):
+- `junk-genies-hero.jpg` — branded dump trailer (logo + services + phone). **HERO/lead + OG + directory card.**
+  Source: `junk genie trailer.jpg`. ~54 KB.
+- `junk-genies-team.jpg` — branded family-crew graphic (illustration). Gallery + directory `photos`.
+  Source: `716842563_…n.jpg`. ~149 KB.
+- `junk-genies-property.jpg` — branded wooded-lot before/after ("WE CLEAN IT OUT, YOU ENJOY IT"). Gallery +
+  directory `photos`. Source: `1.jpg`. ~119 KB.
+- `junk-genies-cleanout.jpg` — front-yard property cleanout before/after. Gallery. Source: `before after.jpg`. ~129 KB.
+- `junk-genies-garage.jpg` — garage clean-out before/after collage (pines + their truck). Gallery.
+  Source: `605802466_…n.jpg`. ~147 KB.
+**NOT used:** `605116340_…n.jpg` (near-duplicate of the hero trailer at a different angle — redundant).
+Captions are honest and generic ("a SW Colorado property cleanup"), no addresses; no customer names
+(the "Katelyn" thank-you in their posts is NOT published) and no invented ratings.

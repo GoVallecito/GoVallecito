@@ -53,6 +53,15 @@
       "cta": { "label": "Visit ccfmllc.com →", "href": "https://ccfmllc.com" }
     },
     {
+      "slug": "junk-genies", "name": "Junk Genies", "category": "Local Services", "tier": "featured",
+      "blurb": "Family-run junk removal, demolition & property cleanup — the jobs most people won't touch. Serving Bayfield, Vallecito, Durango & Southwest Colorado. Free estimates.",
+      "phone": "(505) 870-7792", "facebook": "https://www.facebook.com/profile.php?id=61585702680288",
+      "image": "/assets/img/featured/junk-genies-hero.jpg", "imageAlt": "Junk Genies branded dump trailer — junk removal, demolition, clean outs", "imageFit": "cover",
+      "photos": ["/assets/img/featured/junk-genies-team.jpg", "/assets/img/featured/junk-genies-property.jpg"],
+      "badge": "GoVallecito Partner", "profile": "partner-junk-genies.html",
+      "cta": { "label": "Free estimate → call/text", "href": "tel:+15058707792" }
+    },
+    {
       "slug": "vallecito-church", "name": "Vallecito Church", "category": "Community", "tier": "featured",
       "blurb": "A community church at the lake with Southern Baptist roots, here since 1951. Sunday School 9:00 AM · Worship 10:30 AM — visitors welcome.",
       "phone": "(970) 884-2901", "website": "https://vallecitochurch.org", "facebook": "https://facebook.com/vallecito.church",
