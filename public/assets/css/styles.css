@@ -162,8 +162,8 @@ a.tile:hover .small.is-link{text-decoration:underline}
 .tile.is-stale .stale-flag{display:inline}
 a.tile,a.tile:hover{text-decoration:none;color:var(--ink)}
 .c-weather{grid-column:span 4} .c-lake{grid-column:span 4} .c-alert{grid-column:span 4}
-.c-fire{grid-column:span 4} .c-stream{grid-column:span 4} .c-road{grid-column:span 4}
-@media(max-width:860px){.c-weather,.c-lake,.c-alert,.c-fire,.c-stream,.c-road{grid-column:span 6}}
+.c-fire{grid-column:span 4} .c-stream{grid-column:span 4} .c-road{grid-column:span 4} .c-power{grid-column:span 4}
+@media(max-width:860px){.c-weather,.c-lake,.c-alert,.c-fire,.c-stream,.c-road,.c-power{grid-column:span 6}}
 @media(max-width:560px){.tile{grid-column:span 12 !important}}
 
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;padding:3px 9px;border-radius:999px}

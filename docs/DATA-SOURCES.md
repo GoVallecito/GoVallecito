@@ -96,6 +96,30 @@ Instantaneous values (discharge cfs + gage height):
 
 ---
 
+## 7b. Power outages — La Plata Electric Association (Round 34)
+
+Vallecito is served by **La Plata Electric Association (LPEA)**. Their public outage map is a
+self-hosted **Milsoft "Web Outage Viewer"** that serves static JSON (no KUBRA). **CORS is closed**, so
+the Worker (`getPower()`) must fetch it server-side; the browser cannot.
+
+- **System summary:** `https://outage.lpea.coop/data/outageSummary.json` →
+  `{ customersAffected, customersRestored, customersOutNow, customersServed, updateTime, hourlyCustomersOut[] }`.
+  **`updateTime`** is the freshness field (ISO with a `-06:00` offset).
+- **Per-outage detail:** `https://outage.lpea.coop/data/outages.json` → array of
+  `{ outageRecID, outageName, outagePoint:{lat,lng}, customersOutNow, customersOutInitially,
+  estimatedTimeOfRestoral, crewAssigned, isPlanned, outageStartTime, ... }`.
+- **Lake filter:** Worker keeps only outages whose `outagePoint` is within **~8 mi** of the lake
+  (LAT 37.3361, LON −107.5617) via Haversine; sums `customersOutNow` over that set = `nearbyAffected`,
+  count = `nearbyCount`. System totals come from the summary. Polled every 15 min (feed `max-age=60`,
+  but hourly/by-event is plenty); `stale` flagged if `updateTime` is older than ~2h.
+- **conditions.json block:** `power: { nearbyCount, nearbyAffected, systemOutNow, systemServed, crews,
+  asOf:updateTime, source:"La Plata Electric Association", status, stale }`.
+- **Honesty:** the outage point is a reporting **rollup anchor** (not every meter) and counts can lag —
+  link `https://outage.lpea.coop/` as the authority. No reuse license is posted; data is public and we
+  attribute + link LPEA. Courtesy note to LPEA flagged for David; pull instantly if they ever object.
+
+---
+
 ## 8. (Optional, high engagement) extras worth adding
 
 - **Air quality (free):** AirNow API (`https://www.airnowapi.org/`) — wildfire smoke is a real planning factor for this audience.

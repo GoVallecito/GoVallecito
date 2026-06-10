@@ -164,6 +164,28 @@
       setText('roadMsg', d.road.msg || '');
     }
 
+    // ----- power (LPEA outages near the lake) -----
+    // Hide the tile entirely if the feed never produced a good reading (status
+    // "error" and no cached value) — never show an empty/guessed power state.
+    var pw = d.power, pTile = $('tile-power');
+    if (pw && pw.status !== 'error' && (pw.asOf || pw.nearbyCount != null)) {
+      if (pTile) pTile.hidden = false;
+      if (pw.nearbyCount > 0) {
+        setText('powerBig', pw.nearbyCount + ' nearby');
+        var pl = '~' + pw.nearbyAffected + ' home' + (pw.nearbyAffected === 1 ? '' : 's') +
+                 ' affected near the lake · crews ' + (pw.crews === 'assigned' ? 'assigned' : '—');
+        setText('powerMsg', pl);
+      } else {
+        setText('powerBig', 'On');
+        var pc = 'No outages reported near Vallecito';
+        if (pw.systemOutNow != null && pw.systemOutNow > 0) pc += ' · LPEA system: ' + pw.systemOutNow.toLocaleString() + ' out';
+        setText('powerMsg', pc);
+      }
+      markStale('tile-power', pw.stale);
+    } else if (pTile) {
+      pTile.hidden = true;
+    }
+
     // ----- header conditions strip / site-wide danger banner -----
     // paintStrip() runs FIRST so it can restore the normal strip markup (which
     // contains #stripTemp / #stripLake) when an alert has cleared, before we
@@ -218,6 +240,7 @@
     if (d.fires)   tileMeta('tile-fire', srcLabel('fire'), g, d.fires.stale);
     if (d.stream)  tileMeta('tile-stream', srcLabel('stream'), fmtClock(d.stream.asOf) || g, d.stream.stale);
     if (d.road)    tileMeta('tile-road', srcLabel('road'), fmtClock(d.road.asOf) || g, d.road.stale);
+    if (d.power && d.power.status !== 'error') tileMeta('tile-power', 'La Plata Electric Association', fmtClock(d.power.asOf) || g, d.power.stale);
   }
 
   // Fills the richer elements on conditions.html. Every write is guarded, so
@@ -303,6 +326,34 @@
     if (d.road) {
       setText('roadMsg2', (d.road.msg || '') + (d.road.note ? ' ' + d.road.note : ''));
       badge('roadBig2', d.road.level, d.road.title);
+    }
+
+    // Power detail (conditions.html #power) — dynamic status line; honesty caveat
+    // is static in the markup. Hidden section if the feed never produced data.
+    var pwd = d.power, pSec = $('power');
+    if (pwd && pwd.status !== 'error' && (pwd.asOf || pwd.nearbyCount != null)) {
+      if (pSec) pSec.hidden = false;
+      var pEl = $('powerDetailLine');
+      if (pEl) {
+        var ps;
+        if (pwd.nearbyCount > 0) {
+          ps = '<b>' + pwd.nearbyCount + ' outage' + (pwd.nearbyCount === 1 ? '' : 's') +
+               '</b> reported within ~8 miles of the lake' +
+               (pwd.nearbyAffected ? ' · about ' + pwd.nearbyAffected + ' home' + (pwd.nearbyAffected === 1 ? '' : 's') + ' affected' : '') +
+               ' · crews ' + (pwd.crews === 'assigned' ? 'assigned' : 'not yet assigned') + '.';
+        } else {
+          ps = 'No outages currently reported within ~8 miles of the lake.';
+        }
+        if (pwd.systemOutNow != null) {
+          ps += ' LPEA system-wide: <b>' + pwd.systemOutNow.toLocaleString() + '</b>' +
+                (pwd.systemServed != null ? ' of ' + pwd.systemServed.toLocaleString() + ' served' : '') + ' out now.';
+        }
+        if (pwd.asOf) ps += ' <span class="muted">Updated ' + escapeHtml(rel(pwd.asOf) || pwd.asOf) + '.</span>';
+        if (pwd.stale) ps += ' <span class="stale-badge">(reading may be delayed)</span>';
+        pEl.innerHTML = ps;
+      }
+    } else if (pSec) {
+      pSec.hidden = true;
     }
 
     if (d.alert) {

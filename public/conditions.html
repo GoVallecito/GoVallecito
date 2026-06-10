@@ -127,6 +127,13 @@
         <div class="small" id="roadMsg" style="margin-top:8px">Loading road status…</div>
         <div class="src">CDOT · COtrip</div>
       </a>
+      <a class="tile c-power" id="tile-power" href="#power" hidden>
+        <h3>⚡ Power · near the lake</h3>
+        <span class="stale-flag">⚠ delayed</span>
+        <div class="big" id="powerBig">—</div>
+        <div class="small" id="powerMsg">Checking…</div>
+        <div class="src">La Plata Electric</div>
+      </a>
     </div>
   </div>
 </section>
@@ -269,6 +276,26 @@
     <div class="databand">
       <div class="panel"><h3>🛣️ Status</h3><div id="roadBig2" style="font-size:1.2rem"><span class="pill pill-info"><span class="dot"></span> Checking…</span></div><p class="muted" id="roadMsg2" style="margin-top:8px">—</p></div>
       <div class="panel"><h3>Winter note</h3><p class="muted">CR 501 climbs and can ice over before US-160 does. In storms, carry chains or run good snow tires — and check before an early-morning fishing run.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Power (LPEA outages) ===== -->
+<section class="band alt anchor-offset" id="power" hidden>
+  <div class="wrap">
+    <div class="eyebrow">Power · La Plata Electric Association</div>
+    <h2 class="sec-title">Outages near the lake</h2>
+    <p class="sec-lead" id="powerDetailLine">Checking the LPEA outage feed…</p>
+    <div class="databand">
+      <div class="panel">
+        <h3>⚡ Live status</h3>
+        <p class="muted">We poll LPEA's public outage feed every 15 minutes and count outages within about <b>8 miles</b> of the lake. Vallecito is served by <b>La Plata Electric Association</b>.</p>
+        <p style="margin-top:8px"><a class="btn btn-primary" style="background:var(--pine);color:#fff" href="https://outage.lpea.coop/" rel="noopener">LPEA outage map →</a> <a class="btn btn-ghost" style="border-color:var(--line);color:var(--pine)" href="tel:+19702475786">LPEA: (970) 247-5786</a></p>
+      </div>
+      <div class="panel">
+        <h3>How to read this</h3>
+        <p class="muted">An outage's location is a <b>reporting rollup anchor</b> — the point LPEA uses for the event, not every affected meter — and customer counts can lag or be estimated. For the authoritative, real-time picture always check the <a href="https://outage.lpea.coop/" rel="noopener">LPEA map</a>. More on power, providers, and backup at <a href="utilities-services.html">Utilities &amp; services</a>.</p>
+      </div>
     </div>
   </div>
 </section>

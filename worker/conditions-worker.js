@@ -135,7 +135,7 @@ async function refresh(env) {
   let prev = {};
   try { prev = JSON.parse(await env.CONDITIONS.get(KV_KEY)) || {}; } catch {}
 
-  const [weather, lake, stream, alertsRaw, fires, road, restrictions] = await Promise.all([
+  const [weather, lake, stream, alertsRaw, fires, road, restrictions, power] = await Promise.all([
     safe(() => getWeather(env), prev.weather),
     safe(() => getLake(env),    prev.lake),
     safe(() => getStreams(env), prev.stream),
@@ -143,6 +143,7 @@ async function refresh(env) {
     safe(() => getFires(env),   prev.fires),
     safe(() => getRoads(env),   prev.road),
     getRestrictions(env).catch(() => ({ stage: "none" })),
+    safe(() => getPower(),      prev.power),
   ]);
 
   // Barometric trend (for anglers): compare to the prior cached pressure reading.
@@ -165,7 +166,7 @@ async function refresh(env) {
   const out = {
     updated: now.toISOString(),
     updatedFriendly: friendly(now),
-    weather, lake, stream, alert, fires, road,
+    weather, lake, stream, alert, fires, road, power,
     restriction: restrictions
   };
   await env.CONDITIONS.put(KV_KEY, JSON.stringify(out));
@@ -606,6 +607,51 @@ async function getRoads(env) {
   };
 }
 
+/* ---------- POWER: LPEA outage feed (Milsoft "Web Outage Viewer") ----------
+ * Two self-hosted JSON files (CORS-closed → Worker-only): a system summary and a
+ * per-outage array with coordinates. We filter outages to ~8 mi of the lake via
+ * Haversine and surface a compact nearby + system count. `updateTime` is the
+ * freshness field. No invented data: if the feed is unreachable, safe() keeps the
+ * last-good value flagged stale (and the tile hides if there's never been one) —
+ * we never fabricate "all on". The outage point is a reporting rollup anchor (not
+ * every affected meter); LPEA's own map is the authority, linked from the tile.
+ * See docs/REVIEW-UPDATES-34.md + DATA-SOURCES.md. */
+const POWER_RADIUS_MI = 8;
+const POWER_STALE_MS = 2 * 3600 * 1000;   // flag stale if updateTime older than ~2h (feed updates ~hourly/by-event)
+
+async function getPower() {
+  const [summary, outages] = await Promise.all([
+    getJson("https://outage.lpea.coop/data/outageSummary.json"),
+    getJson("https://outage.lpea.coop/data/outages.json")
+  ]);
+  const arr = Array.isArray(outages) ? outages : (outages.outages || outages.data || []);
+  let nearbyCount = 0, nearbyAffected = 0, crews = false;
+  for (const o of arr) {
+    const pt = o.outagePoint || o.outagepoint || null;
+    if (!pt) continue;
+    const lat = pt.lat != null ? pt.lat : pt.latitude;
+    const lon = pt.lng != null ? pt.lng : (pt.lon != null ? pt.lon : pt.longitude);
+    if (lat == null || lon == null || isNaN(lat) || isNaN(lon)) continue;
+    if (haversineMiles(LAT, LON, +lat, +lon) > POWER_RADIUS_MI) continue;
+    nearbyCount++;
+    const n = parseInt(o.customersOutNow, 10);
+    if (!isNaN(n) && n > 0) nearbyAffected += n;
+    if (o.crewAssigned) crews = true;
+  }
+  const systemOutNow = numOrNull(summary.customersOutNow);
+  const systemServed = numOrNull(summary.customersServed);
+  const asOf = summary.updateTime || null;
+  const asOfMs = asOf ? Date.parse(asOf) : NaN;
+  const stale = isNaN(asOfMs) ? true : (Date.now() - asOfMs) > POWER_STALE_MS;
+  return {
+    nearbyCount, nearbyAffected: Math.max(0, nearbyAffected),
+    systemOutNow, systemServed,
+    crews: nearbyCount > 0 ? (crews ? "assigned" : "—") : null,
+    asOf, source: "La Plata Electric Association",
+    status: "ok", stale
+  };
+}
+
 /* ---------- FIRE RESTRICTIONS: editor-controlled restrictions.json ---------- */
 async function getRestrictions(env) {
   if (!env.RESTRICTIONS_URL) return { stage: "none" };
@@ -652,6 +698,7 @@ async function getJson(url, headers) {
 function headlineFor(items, re) { return (items.find(i => re.test(i.event || "")) || {}).headline; }
 function shorten(s, n) { s = (s || "").trim(); return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s; }
 function round(n) { return n == null || isNaN(n) ? null : Math.round(n); }
+function numOrNull(n) { const v = typeof n === "number" ? n : parseInt(n, 10); return isNaN(v) ? null : v; }
 function r2(n) { return n == null || isNaN(n) ? null : Math.round(n * 100) / 100; }
 function cToF(c) { return c == null ? null : Math.round(c * 9 / 5 + 32); }
 function msToMph(ms) { return ms == null ? null : Math.round(ms * 2.236936); }
