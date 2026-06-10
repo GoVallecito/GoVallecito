@@ -104,7 +104,10 @@
       <p style="margin:0"><a href="conditions.html#contacts">Full list incl. fire stations, Poison Control, and Forest Service →</a></p>
     </div>
     <div class="featured-strip" id="featuredStrip" hidden></div>
-    <div class="filters" id="filters" role="group" aria-label="Filter listings by category"></div>
+    <div class="filterbar">
+      <span class="filter-lead">Browse by category</span>
+      <div class="filters" id="filters" role="group" aria-label="Filter listings by category"></div>
+    </div>
     <div id="directory" aria-live="polite"></div>
     <p class="muted" id="noresults" style="margin-top:16px;display:none">No listings in that category yet.</p>
     <p class="muted" style="margin-top:24px">Own a business at the lake or spot something out of date? <a href="contact.html">Tell us</a> — we read everything. Want a <b>Featured Partner</b> profile like the Vallecito Marina or Julie Coffelt (photo, longer write-up, booking button, pinned to the top of your category)? <a href="contact.html">Get in touch</a>.</p>
@@ -207,7 +210,7 @@
     var ctas = profileBtn + cta;
     return '<div class="pcard" id="biz-'+esc(b.slug)+'" data-cat="'+esc(b.category)+'">'+img+
       '<div><span class="badge badge-partner">★ '+esc(b.badge||'Featured Partner')+'</span> <span class="cat">'+esc(b.category)+'</span>'+
-      '<h3>'+esc(b.name)+'</h3>'+
+      '<h3>'+(b.profile ? '<a href="'+esc(b.profile)+'" style="color:inherit;text-decoration:none">'+esc(b.name)+'</a>' : esc(b.name))+'</h3>'+
       (b.blurb ? '<p class="muted">'+esc(b.blurb)+'</p>' : '')+
       (b.hours ? '<div class="hours">🕑 '+esc(b.hours)+'</div>' : '')+
       (b.rv ? '<div class="hours">🚐 '+esc(b.rv)+'</div>' : '')+
@@ -253,9 +256,10 @@
     var feat = DATA.businesses.filter(function(b){return b.tier==='featured' && !b.unpublished;});
     if(!feat.length) return;
     elStrip.hidden = false;
-    elStrip.innerHTML = '⭐ Featured partners: ' + feat.map(function(b){
-      return '<a href="'+esc(b.cta?b.cta.href:'#')+'">'+esc(b.name.split(' — ')[0])+'</a>';
-    }).join('&nbsp;·&nbsp;');
+    elStrip.innerHTML = '<span class="feat-lead">★ Featured partners</span>' + feat.map(function(b){
+      var href = b.profile ? esc(b.profile) : ('#biz-'+esc(b.slug));
+      return '<a class="feat-chip" href="'+href+'">'+esc(b.name.split(' — ')[0])+'</a>';
+    }).join('');
   }
 
   // Deep-link support: Things-To-Do / fishing link to directory.html#biz-<slug>.

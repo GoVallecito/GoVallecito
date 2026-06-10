@@ -1,6 +1,6 @@
 {
   "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
-  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Local Services", "Community", "Outfitters & Guides"],
+  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Fire Mitigation & Tree Service", "Trash & Junk Removal", "Local Services", "Community", "Outfitters & Guides"],
   "businesses": [
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
@@ -41,7 +41,7 @@
       "cta": { "label": "Book a site →", "href": "https://bookingsus.newbook.cloud/bluesprucervpark" }
     },
     {
-      "slug": "coronado", "name": "Coronado Consulting & Fire Mitigation", "category": "Local Services", "tier": "featured",
+      "slug": "coronado", "name": "Coronado Consulting & Fire Mitigation", "category": "Fire Mitigation & Tree Service", "tier": "featured",
       "blurb": "Wildfire mitigation, defensible-space work, hazard-tree and tree care — serving Bayfield, La Plata County, and Durango. Established 2019; insured, certified sawyers.",
       "phones": [ { "name": "Robert", "number": "(970) 903-7907" }, { "name": "Danielle", "number": "(575) 202-1642" } ],
       "email": "coronadocfm@gmail.com", "website": "https://ccfmllc.com",
@@ -53,7 +53,7 @@
       "cta": { "label": "Visit ccfmllc.com →", "href": "https://ccfmllc.com" }
     },
     {
-      "slug": "junk-genies", "name": "Junk Genies", "category": "Local Services", "tier": "featured",
+      "slug": "junk-genies", "name": "Junk Genies", "category": "Trash & Junk Removal", "tier": "featured",
       "blurb": "Family-run junk removal, demolition & property cleanup — the jobs most people won't touch. Serving Bayfield, Vallecito, Durango & Southwest Colorado. Free estimates.",
       "phone": "(505) 870-7792", "facebook": "https://www.facebook.com/profile.php?id=61585702680288",
       "image": "/assets/img/featured/junk-genies-hero.jpg", "imageAlt": "Junk Genies branded dump trailer — junk removal, demolition, clean outs", "imageFit": "cover",

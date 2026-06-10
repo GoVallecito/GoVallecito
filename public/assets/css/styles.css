@@ -383,7 +383,7 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 .loc-contacts .grid-call a:hover{border-color:var(--pine)}
 @media(max-width:640px){.loc-contacts .grid-call{grid-template-columns:repeat(2,1fr)}}
 
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0}
 .filters button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:600;
   font-size:.88rem;cursor:pointer;color:var(--ink-soft)}
 .filters button.active,.filters button:hover{background:var(--pine);color:#fff;border-color:var(--pine)}
@@ -455,8 +455,15 @@ footer.site .copy{border-top:1px solid #2c5142;margin-top:24px;padding-top:16px;
 .map-embed .map-ph{height:100%;padding:20px;line-height:1.6;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--ink-soft)}
 
 /* ---------- directory tiers ---------- */
-.featured-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 16px;font-size:.8rem;
-  text-transform:uppercase;letter-spacing:.06em;color:var(--lake);font-weight:700}
+.featured-strip{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;margin:0 0 14px;
+  background:var(--sand-2);border:1px solid var(--sand);border-radius:12px;padding:11px 14px}
+.feat-lead{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--pine);font-weight:800;margin-right:2px}
+.feat-chip{display:inline-flex;align-items:center;padding:5px 12px;border:1px solid var(--lake);border-radius:999px;
+  color:#fff;background:var(--lake);font-weight:600;font-size:.82rem;text-decoration:none;transition:background .15s}
+.feat-chip:hover{background:var(--lake-2);border-color:var(--lake-2);text-decoration:none}
+.filterbar{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.filter-lead{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:800;padding:3px 8px;border-radius:999px;
   text-transform:uppercase;letter-spacing:.04em}
 .badge-partner{background:#1d3b2f;color:#9fe6d6}
