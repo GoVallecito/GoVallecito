@@ -56,6 +56,10 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://govallecito.com/launch-your-boat</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://govallecito.com/living-here-year-round</loc>
     <lastmod>2026-06-09</lastmod>
     <priority>0.7</priority>
@@ -92,6 +96,7 @@
   </url>
   <url>
     <loc>https://govallecito.com/partner-junk-genies</loc>
+    <lastmod>2026-06-09</lastmod>
     <priority>0.7</priority>
   </url>
   <url>

@@ -7,7 +7,7 @@
       "blurb": "Vallecito local broker — more than 25 years in the Four Corners. Honest, year-round guidance from a neighbor who's here to stay.",
       "phone": "(970) 769-5373", "email": "julie.coffelt@cbmp.com", "website": "http://www.julie-coffelt.cbmp.com/",
       "image": "/assets/img/Julie_Coffelt.jpg", "badge": "GoVallecito Partner", "profile": "real-estate-partner.html",
-      "cta": { "label": "Meet Julie & see listings →", "href": "real-estate-partner.html" }
+      "cta": { "label": "See current listings →", "href": "real-estate-partner.html#listings" }
     },
     {
       "slug": "vallecito-marina", "name": "Vallecito Marina & Yacht Club", "category": "Marina & Water", "tier": "featured",
