@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>GoVallecito — Audience &amp; Performance</title>
+<style>
+  :root{
+    --pine:#1d3b2f;--pine2:#244c3c;--lake:#2f7d8a;--lake2:#3a98a8;--sand:#f4efe4;--bg:#f7f5f0;
+    --ink:#1c241f;--ink-soft:#54605a;--line:#e2ddcf;--card:#fff;--good:#2f7d8a;--warn:#a4710f;
+    --shadow:0 1px 3px rgba(20,40,30,.06),0 6px 22px rgba(20,40,30,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+  a{color:var(--lake);text-decoration:none}
+  .topbar{background:var(--pine);color:#fff;padding:16px 0}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .brand{font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+  .brand span{color:#7fdcc9}
+  .topbar .role{font-size:.82rem;color:#bfe9df;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+  .period{font-size:.82rem;color:#cfeee6}
+  .ribbon{background:#fbf0d8;border-bottom:1px solid #ecd9a6;color:#6b4e12;font-size:.86rem;padding:9px 0;text-align:center}
+  .ribbon b{color:#4a3608}
+  main{padding:26px 0 50px}
+  section{margin:0 0 30px}
+  .ey{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--lake);margin:0 0 4px}
+  h2{font-size:1.28rem;margin:0 0 4px;color:var(--pine)}
+  .lead{color:var(--ink-soft);margin:0 0 16px;max-width:70ch}
+  .grid{display:grid;gap:14px}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(165px,1fr))}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);position:relative}
+  .kpi .v{font-size:2rem;font-weight:800;color:var(--pine);line-height:1.1}
+  .kpi .l{font-size:.82rem;color:var(--ink-soft);margin-top:3px}
+  .kpi .s{font-size:.72rem;color:var(--lake);margin-top:6px;font-weight:600}
+  .kpi.hero{background:linear-gradient(150deg,var(--pine),var(--pine2));border:none}
+  .kpi.hero .v,.kpi.hero .l,.kpi.hero .s{color:#fff}
+  .kpi.hero .l{color:#cfeee6}
+  .kpi.hero .s{color:#7fdcc9}
+  .cols{display:grid;gap:18px;grid-template-columns:1fr 1fr}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .card h3{margin:0 0 12px;font-size:1.02rem;color:var(--pine)}
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+  th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{height:9px;border-radius:999px;background:#e7efe9;overflow:hidden}
+  .bar>span{display:block;height:100%;background:var(--lake);border-radius:999px}
+  .barrow{display:flex;align-items:center;gap:10px;margin:9px 0}
+  .barrow .nm{flex:0 0 42%;font-size:.86rem}
+  .barrow .bar{flex:1}
+  .barrow .vv{flex:0 0 46px;text-align:right;font-size:.82rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+    background:#fbf0d8;color:#6b4e12;border:1px solid #ecd9a6;border-radius:999px;padding:2px 8px;vertical-align:middle}
+  .trend{display:flex;align-items:flex-end;gap:7px;height:120px;padding-top:6px}
+  .trend .t{flex:1;background:linear-gradient(to top,var(--lake),var(--lake2));border-radius:6px 6px 0 0;min-height:4px;position:relative}
+  .trend .t b{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:.7rem;color:var(--ink-soft);font-weight:600}
+  .trend-x{display:flex;gap:7px;margin-top:6px}
+  .trend-x span{flex:1;text-align:center;font-size:.68rem;color:var(--ink-soft)}
+  .note{font-size:.8rem;color:var(--ink-soft)}
+  .why{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .why .w{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+  .why .w h4{margin:0 0 5px;color:var(--pine);font-size:1rem}
+  .why .w p{margin:0;font-size:.88rem;color:var(--ink-soft)}
+  details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 18px;box-shadow:var(--shadow);margin-bottom:12px}
+  details summary{cursor:pointer;font-weight:700;color:var(--pine);padding:13px 0;font-size:.98rem}
+  details[open] summary{border-bottom:1px solid var(--line);margin-bottom:10px}
+  details p,details li{font-size:.9rem;color:var(--ink-soft)}
+  footer{border-top:1px solid var(--line);padding:18px 0;color:var(--ink-soft);font-size:.82rem}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}.kpi .v{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <div><span class="brand">GoVallecito<span>.com</span></span> &nbsp;<span class="role">Audience &amp; Performance</span></div>
+  <div class="period" id="period">—</div>
+</div></div>
+<div class="ribbon" id="ribbon" hidden></div>
+
+<main class="wrap">
+
+  <!-- 1. REACH AT A GLANCE -->
+  <section>
+    <p class="ey">Reach at a glance</p>
+    <h2>The headline numbers</h2>
+    <p class="lead">The independent guide to Vallecito Lake — the conditions hub locals and visitors check, and where a featured listing gets seen in context. Most-pertinent metrics first.</p>
+    <div class="grid kpis" id="kpis"></div>
+  </section>
+
+  <!-- 2. WHAT YOUR LISTING DELIVERS (sales centerpiece) -->
+  <section>
+    <p class="ey">For partners</p>
+    <h2>What your listing delivers</h2>
+    <p class="lead">Each featured listing has its own profile page. This is the part that matters to a business owner: how many people saw their listing, and how many took action — a call, a booking, a website tap.</p>
+    <div class="card">
+      <table id="partnerTable">
+        <thead><tr><th>Featured partner</th><th class="n">Profile views</th><th class="n">Actions sent</th><th>Top action</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="note" style="margin-top:12px" id="partnerNote"></p>
+    </div>
+  </section>
+
+  <!-- 3. CONTENT + DISCOVERY -->
+  <section>
+    <p class="ey">Audience behaviour</p>
+    <h2>What they read &amp; how they find us</h2>
+    <div class="cols">
+      <div class="card"><h3>Top content</h3><div id="topPages"></div></div>
+      <div class="card"><h3>How people find us</h3><div id="referrers"></div>
+        <h3 style="margin-top:16px">Search intent <span class="pill" id="scPill">Search Console</span></h3>
+        <table id="queries"><thead><tr><th>Search term</th><th class="n">Clicks</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. AUDIENCE -->
+  <section>
+    <p class="ey">Audience</p>
+    <h2>Who's visiting</h2>
+    <div class="cols">
+      <div class="card"><h3>Devices</h3><div id="devices"></div>
+        <p class="note" style="margin-top:10px">Most lake visitors are on a phone — listings and the conditions dashboard are built mobile-first.</p>
+      </div>
+      <div class="card"><h3>Traffic by country <span class="pill">requests</span></h3><div id="geo"></div>
+        <p class="note" style="margin-top:10px" id="geoNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TREND -->
+  <section>
+    <p class="ey">Momentum</p>
+    <h2>Reach over time</h2>
+    <p class="lead">Weekly visits since launch — the story a new, growing local site can show advertisers.</p>
+    <div class="card">
+      <div class="trend" id="trend"></div>
+      <div class="trend-x" id="trendX"></div>
+    </div>
+  </section>
+
+  <!-- 6. WHY ADVERTISE (sales) -->
+  <section>
+    <p class="ey">The pitch</p>
+    <h2>Why advertise on GoVallecito</h2>
+    <div class="why">
+      <div class="w"><h4>🎯 The right audience</h4><p>Not a national directory — people actively planning a Vallecito trip or living at the lake, captured at the moment of intent.</p></div>
+      <div class="w"><h4>🛰️ The daily habit</h4><p>The live conditions dashboard brings locals and visitors back again and again — your listing rides along.</p></div>
+      <div class="w"><h4>📞 Measurable results</h4><p>We report exactly how many views and calls/clicks your listing produced — not vanity metrics.</p></div>
+      <div class="w"><h4>🤝 Independent &amp; trusted</h4><p>A neutral, verified local guide. Being a Featured Partner here is an endorsement, not a banner ad.</p></div>
+      <div class="w"><h4>🔒 Privacy-first</h4><p>Cookie-free analytics — no consent banners, no selling data. Clean and professional.</p></div>
+      <div class="w"><h4>📈 Growing</h4><p>A brand-new site climbing week over week — early partners grow with it.</p></div>
+    </div>
+  </section>
+
+  <!-- 7. METHODOLOGY (secondary) -->
+  <section>
+    <p class="ey">How this works</p>
+    <h2>Measurement &amp; reporting</h2>
+    <details>
+      <summary>What we measure &amp; why</summary>
+      <p><b>Visits &amp; pageviews</b> — overall reach. <b>Top pages</b> — what pulls people in (the conditions dashboard and fishing lead). <b>Referrers &amp; search terms</b> — how people discover us, and the intent behind it. <b>Partner profile views &amp; actions</b> — the value each listing delivers. <b>Devices &amp; geography</b> — who and how.</p>
+    </details>
+    <details>
+      <summary>The tools (free, privacy-first)</summary>
+      <p><b>Cloudflare Web Analytics</b> — cookie-free human visits, pageviews, referrers, countries, devices (no consent banner needed). <b>Google Search Console</b> — the actual search terms surfacing the site and their clicks/impressions. <b>First-party action tracking</b> — a lightweight, no-cookie counter that records taps on partner call/website/booking buttons so we can report "actions sent" per listing.</p>
+    </details>
+    <details>
+      <summary>Reporting cadence</summary>
+      <p>A <b>monthly one-page report per Featured Partner</b> (views, actions, top days), plus this live dashboard for the whole-site picture. Quarterly, a short trend summary for renewals and outreach.</p>
+    </details>
+    <details>
+      <summary>Definitions &amp; honesty notes</summary>
+      <p>A <b>visit</b> is a real person arriving from outside the site — not the same as a <b>request</b> (every image, script, and the 15-minute conditions refresh is a request, and crawlers/bots add many more). The "traffic by country" panel above is request data and <i>includes bots</i>, which is why it shows heavy datacenter countries; human visits are tracked separately and are overwhelmingly U.S./local. We never invent numbers or reviews.</p>
+    </details>
+    <details>
+      <summary>Setup status &amp; data sources</summary>
+      <p id="setupStatus"></p>
+    </details>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div>GoVallecito.com · Audience &amp; Performance · internal &amp; partner-facing. Figures update from <code>/data/analytics.json</code>.</div>
+</footer>
+
+<script>
+(function(){
+  var SEED = {"meta":{"live":false,"period":"Last 30 days","updated":"2026-06-12","note":"Sample report — illustrative figures shown until Cloudflare Web Analytics is connected. Request totals are real."},"headline":{"visits":420,"pageviews":1180,"partnerProfileViews":246,"partnerClicks":38,"usSharePct":92,"mobileSharePct":68},"partners":[{"name":"Vallecito Marina","views":71,"clicks":14,"topAction":"Book online"},{"name":"Julie Coffelt (Real Estate)","views":44,"clicks":7,"topAction":"Call / listings"},{"name":"VR Solutions","views":33,"clicks":6,"topAction":"Call / text"},{"name":"Country Market","views":28,"clicks":4,"topAction":"Message on FB"},{"name":"Rubber Duck Cleaning","views":26,"clicks":4,"topAction":"Free estimate call"},{"name":"Junk Genies","views":24,"clicks":3,"topAction":"Free estimate call"},{"name":"Coronado Fire Mitigation","views":20,"clicks":0,"topAction":"Visit site"}],"topPages":[{"label":"Conditions dashboard","views":312},{"label":"Home","views":268},{"label":"Fishing","views":154},{"label":"Local Guide (directory)","views":121},{"label":"Things To Do","views":88},{"label":"Plan Your Visit","views":61},{"label":"Lake Map","views":49},{"label":"Launch Your Boat","views":33}],"referrers":[{"source":"Google search","visits":188},{"source":"Direct / bookmarked","visits":121},{"source":"Facebook","visits":78},{"source":"Bing","visits":19},{"source":"Other","visits":14}],"searchQueries":[{"query":"vallecito lake conditions","clicks":41},{"query":"vallecito reservoir level","clicks":22},{"query":"vallecito lake fishing report","clicks":18},{"query":"vallecito lake marina","clicks":12},{"query":"is vallecito lake open","clicks":9}],"devices":{"mobile":286,"desktop":121,"tablet":13},"trend":[{"week":"Apr 21","visits":41},{"week":"Apr 28","visits":58},{"week":"May 5","visits":73},{"week":"May 12","visits":86},{"week":"May 19","visits":95},{"week":"May 26","visits":112},{"week":"Jun 2","visits":134},{"week":"Jun 9","visits":151}],"ops":{"requests":29919,"requestsByCountry":[{"code":"US","requests":16607},{"code":"NL","requests":5390},{"code":"FR","requests":3175},{"code":"QA","requests":769},{"code":"BR","requests":740},{"code":"FI","requests":494},{"code":"GB","requests":445},{"code":"Other","requests":2299}],"estimatedBotSharePct":40,"uptimePct":100}};
+
+  function n(x){return (x==null?0:x).toLocaleString('en-US');}
+  function el(id){return document.getElementById(id);}
+  function bars(host, rows, key, color){
+    var max = Math.max.apply(null, rows.map(function(r){return r[key]||0;}).concat([1]));
+    host.innerHTML = rows.map(function(r){
+      var w = Math.round((r[key]||0)/max*100);
+      return '<div class="barrow"><div class="nm">'+(r.label||r.source||r.name||r.code)+'</div>'+
+        '<div class="bar"><span style="width:'+w+'%'+(color?';background:'+color:'')+'"></span></div>'+
+        '<div class="vv">'+n(r[key])+'</div></div>';
+    }).join('');
+  }
+  function render(d){
+    var m=d.meta||{}, h=d.headline||{}, ops=d.ops||{};
+    el('period').textContent = (m.period||'')+(m.updated?' · updated '+m.updated:'');
+    // ribbon
+    var rb=el('ribbon');
+    if(!m.live){ rb.hidden=false; rb.innerHTML='<b>Sample report.</b> Illustrative figures shown until Cloudflare Web Analytics is connected — request totals are real. Numbers marked <span class="pill">sample</span> are placeholders.'; }
+    // KPIs
+    var s = m.live?'':' <span class="pill">sample</span>';
+    el('kpis').innerHTML =
+      kpi('hero', n(h.visits), 'Visits'+s, 'real people, last 30 days') +
+      kpi('', n(h.pageviews), 'Pageviews'+s, '') +
+      kpi('', n(h.partnerProfileViews), 'Partner profile views'+s, 'across featured listings') +
+      kpi('', n(h.partnerClicks), 'Actions sent to partners'+s, 'calls · bookings · site taps') +
+      kpi('', (h.usSharePct!=null?h.usSharePct+'%':'—'), 'U.S. audience'+s, 'mostly local / Four Corners') +
+      kpi('', (h.mobileSharePct!=null?h.mobileSharePct+'%':'—'), 'On mobile'+s, '');
+    // partners
+    var pt=el('partnerTable').querySelector('tbody');
+    pt.innerHTML=(d.partners||[]).map(function(p){
+      return '<tr><td>'+p.name+'</td><td class="n">'+n(p.views)+'</td><td class="n">'+n(p.clicks)+'</td><td>'+(p.topAction||'')+'</td></tr>';
+    }).join('');
+    el('partnerNote').innerHTML = (m.live?'':'<span class="pill">sample</span> ') + '“Actions sent” counts taps on a listing’s call, booking, website, or message buttons — the closest thing to leads delivered.';
+    // content
+    bars(el('topPages'), d.topPages||[], 'views');
+    bars(el('referrers'), d.referrers||[], 'visits', 'var(--pine)');
+    el('queries').querySelector('tbody').innerHTML=(d.searchQueries||[]).map(function(q){
+      return '<tr><td>'+q.query+'</td><td class="n">'+n(q.clicks)+'</td></tr>';
+    }).join('');
+    // devices
+    var dev=d.devices||{}; var devRows=[{label:'Mobile',v:dev.mobile||0},{label:'Desktop',v:dev.desktop||0},{label:'Tablet',v:dev.tablet||0}];
+    bars(el('devices'), devRows, 'v');
+    // geo (requests)
+    bars(el('geo'), ops.requestsByCountry||[], 'requests', 'var(--warn)');
+    el('geoNote').innerHTML='Total <b>'+n(ops.requests)+'</b> requests (account-wide, real). This <i>includes bots/crawlers</i> (the Netherlands/France/datacenter share) and the 15-min conditions refresh — which is why it differs from human visits above.';
+    // trend
+    var tr=d.trend||[]; var tmax=Math.max.apply(null,tr.map(function(t){return t.visits;}).concat([1]));
+    el('trend').innerHTML=tr.map(function(t){return '<div class="t" style="height:'+Math.round(t.visits/tmax*100)+'%"><b>'+t.visits+'</b></div>';}).join('');
+    el('trendX').innerHTML=tr.map(function(t){return '<span>'+t.week+'</span>';}).join('');
+    // setup status
+    el('setupStatus').innerHTML = (m.live
+      ? 'Live data is connected from Cloudflare Web Analytics, Google Search Console, and first-party action tracking.'
+      : 'Not yet live. To populate: (1) enable <b>Cloudflare Web Analytics</b> on govallecito.com, (2) verify the site in <b>Google Search Console</b> (sitemap already submitted), (3) wire the Worker + first-party action counter to write live values into <code>/data/analytics.json</code>. See <code>docs/REVIEW-UPDATES-ANALYTICS.md</code>.');
+  }
+  function kpi(cls,v,l,s){return '<div class="kpi'+(cls?' '+cls:'')+'"><div class="v">'+v+'</div><div class="l">'+l+'</div>'+(s?'<div class="s">'+s+'</div>':'')+'</div>';}
+
+  fetch('/data/analytics.json',{cache:'no-store'}).then(function(r){return r.json();})
+    .then(render).catch(function(){ render(SEED); });
+})();
+</script>
+</body>
+</html>
