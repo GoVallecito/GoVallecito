@@ -34,6 +34,7 @@ export default {
     // Two crons (see wrangler.toml): the 15-min one refreshes conditions; the
     // Sunday one regenerates the weekly "This week on the water" summary.
     if (event.cron === "0 13 * * SUN") ctx.waitUntil(generateWeeklyWater(env));
+    else if (event.cron === "0 9 * * *") ctx.waitUntil(refreshAnalytics(env));
     else ctx.waitUntil(refresh(env));
   },
   async fetch(request, env) {
@@ -52,6 +53,10 @@ export default {
     }
     if (url.pathname === "/__weekly") {             // manual trigger to seed/test the weekly summary
       const out = await generateWeeklyWater(env);
+      return new Response(JSON.stringify(out, null, 2), { headers: { "content-type": "application/json" } });
+    }
+    if (url.pathname === "/__analytics") {          // manual trigger to refresh the analytics rollup
+      const out = await refreshAnalytics(env);
       return new Response(JSON.stringify(out, null, 2), { headers: { "content-type": "application/json" } });
     }
     return new Response("Not found", { status: 404 });
@@ -684,6 +689,235 @@ function mergeRestrictionStage(alert, restrictions) {
     (restrictions.note ? " " + restrictions.note : "");
   alert.msg = alert.level === "ok" || /no red-flag/i.test(alert.msg) ? extra : `${alert.msg} ${extra}`;
   return alert;
+}
+
+/* ================= ANALYTICS (daily cron + /__analytics) =================
+ * Builds the Audience & Performance rollup for analytics.html:
+ *   - Cloudflare Web Analytics (RUM) via the GraphQL API → visits, pageviews,
+ *     top pages, referrers, devices, country split, an 8-week trend.
+ *   - First-party action counters from KV (`ev:<slug>:<action>`, incremented by
+ *     the Pages Function /__ev) → per-partner clicks + top action.
+ *   - Featured-partner list + names pulled from the live directory.json.
+ * Manual + GSC blocks (searchQueries, ops) are carried from the previous rollup /
+ * committed seed — they come from a paste-in source, not the RUM API.
+ * The merged object is written to KV `analytics`; the Pages Function at
+ * /data/analytics.json serves it same-origin (behind Cloudflare Access).
+ * PRIVACY: only aggregate RUM groups are read — no per-visitor rows, no PII. */
+const ANALYTICS_KEY = "analytics";
+const SEED_URL = "https://govallecito-web.pages.dev/data/analytics.sample.json";
+const DIRECTORY_URL = "https://govallecito-web.pages.dev/data/directory.json";
+const PAGE_LABELS = {
+  "/": "Home", "/conditions": "Conditions dashboard", "/fishing": "Fishing",
+  "/directory": "Local Guide (directory)", "/things-to-do": "Things To Do",
+  "/plan-your-visit": "Plan Your Visit", "/map": "Lake Map", "/launch-your-boat": "Launch Your Boat",
+  "/first-visit": "First Visit", "/trails": "Trails", "/wildlife": "Wildlife",
+  "/respect-vallecito": "Respect Vallecito", "/real-estate-partner": "Real Estate",
+  "/middle-mountain": "Middle Mountain", "/living-in-vallecito": "Living Here",
+  "/sources": "How We Verify", "/about": "About", "/contact": "Contact"
+};
+const ACTION_LABELS = {
+  call: "Call / text", text: "Call / text", book: "Book online", booking: "Book online",
+  website: "Visit site", site: "Visit site", email: "Email", facebook: "Message on FB",
+  instagram: "Instagram", directions: "Directions", estimate: "Free estimate call"
+};
+
+// Normalize a RUM requestPath to our clean-URL form (drop query, .html, trailing /).
+function normPath(p) {
+  let s = String(p || "/").split("?")[0].split("#")[0];
+  s = s.replace(/index\.html$/i, "").replace(/\.html$/i, "");
+  if (s.length > 1) s = s.replace(/\/+$/, "");
+  return s || "/";
+}
+function pageLabel(path) { return PAGE_LABELS[path] || (path === "/" ? "Home" : path.replace(/^\//, "").replace(/-/g, " ")); }
+function actionLabel(a) { return ACTION_LABELS[(a || "").toLowerCase()] || (a ? a[0].toUpperCase() + a.slice(1) : "Tap"); }
+function referrerLabel(host) {
+  const h = String(host || "").toLowerCase().replace(/^www\./, "");
+  if (!h || h === "(direct)" || h === "direct" || h === "none") return "Direct / bookmarked";
+  if (h.includes("google")) return "Google search";
+  if (h.includes("bing")) return "Bing";
+  if (h.includes("duckduckgo")) return "DuckDuckGo";
+  if (h.includes("facebook") || h.startsWith("fb.") || h === "lm.facebook.com") return "Facebook";
+  if (h.includes("instagram")) return "Instagram";
+  if (h.includes("yahoo")) return "Yahoo";
+  return h;
+}
+
+// One GraphQL POST → normalized RUM aggregates. Throws on missing config / API error.
+async function getAnalytics(env) {
+  if (!env.CF_ANALYTICS_TOKEN) throw new Error("CF_ANALYTICS_TOKEN not set");
+  if (!env.CF_ACCOUNT_ID || !env.WA_SITE_TAG) throw new Error("CF_ACCOUNT_ID / WA_SITE_TAG not set");
+  const now = Date.now();
+  const d = (ms) => new Date(now - ms).toISOString().slice(0, 10);
+  const end = d(0), start = d(29 * 864e5), trendStart = d(55 * 864e5);
+  const acct = env.CF_ACCOUNT_ID, site = env.WA_SITE_TAG;
+  const filt = `siteTag: "${site}", date_geq: "${start}", date_leq: "${end}"`;
+  // NOTE: field names follow the Cloudflare Web Analytics RUM schema
+  // (rumPageloadEventsAdaptiveGroups). Verify via introspection if the API changes.
+  const query = `{
+    viewer { accounts(filter: { accountTag: "${acct}" }) {
+      totals: rumPageloadEventsAdaptiveGroups(filter: { ${filt} }, limit: 1) { count sum { visits } }
+      pages: rumPageloadEventsAdaptiveGroups(filter: { ${filt} }, limit: 100, orderBy: [count_DESC]) { count dimensions { requestPath } }
+      referrers: rumPageloadEventsAdaptiveGroups(filter: { ${filt} }, limit: 25, orderBy: [sum_visits_DESC]) { sum { visits } dimensions { refererHost } }
+      countries: rumPageloadEventsAdaptiveGroups(filter: { ${filt} }, limit: 40, orderBy: [sum_visits_DESC]) { sum { visits } dimensions { countryName } }
+      devices: rumPageloadEventsAdaptiveGroups(filter: { ${filt} }, limit: 10, orderBy: [count_DESC]) { count sum { visits } dimensions { deviceType } }
+      daily: rumPageloadEventsAdaptiveGroups(filter: { siteTag: "${site}", date_geq: "${trendStart}", date_leq: "${end}" }, limit: 70, orderBy: [date_ASC]) { sum { visits } dimensions { date } }
+    } }
+  }`;
+  const r = await fetch("https://api.cloudflare.com/client/v4/graphql", {
+    method: "POST",
+    headers: { "Authorization": "Bearer " + env.CF_ANALYTICS_TOKEN, "Content-Type": "application/json" },
+    body: JSON.stringify({ query })
+  });
+  const j = JSON.parse(new TextDecoder("utf-8").decode(await r.arrayBuffer()));
+  if (j.errors && j.errors.length) throw new Error("GraphQL: " + j.errors.map(e => e.message).join("; "));
+  const acc = j.data?.viewer?.accounts?.[0];
+  if (!acc) throw new Error("no account in GraphQL response (check CF_ACCOUNT_ID / token scope)");
+
+  const visits = acc.totals?.[0]?.sum?.visits || 0;
+  const pageviews = acc.totals?.[0]?.count || 0;
+
+  const pagesByPath = {};
+  for (const g of acc.pages || []) {
+    const p = normPath(g.dimensions?.requestPath);
+    pagesByPath[p] = (pagesByPath[p] || 0) + (g.count || 0);
+  }
+  const topPages = Object.keys(pagesByPath)
+    .map(p => ({ label: pageLabel(p), path: p, views: pagesByPath[p] }))
+    .sort((a, b) => b.views - a.views).slice(0, 8);
+
+  const refAgg = {};
+  for (const g of acc.referrers || []) {
+    const lbl = referrerLabel(g.dimensions?.refererHost);
+    refAgg[lbl] = (refAgg[lbl] || 0) + (g.sum?.visits || 0);
+  }
+  const referrers = Object.keys(refAgg).map(s => ({ source: s, visits: refAgg[s] }))
+    .sort((a, b) => b.visits - a.visits).slice(0, 6);
+
+  let usVisits = 0;
+  for (const g of acc.countries || []) {
+    if (/united states|^us$|^usa$/i.test(g.dimensions?.countryName || "")) usVisits += (g.sum?.visits || 0);
+  }
+  const usSharePct = visits ? Math.round((usVisits / visits) * 100) : null;
+
+  const devices = { mobile: 0, desktop: 0, tablet: 0 };
+  for (const g of acc.devices || []) {
+    const t = String(g.dimensions?.deviceType || "").toLowerCase();
+    if (t in devices) devices[t] += (g.count || 0);
+  }
+  const devTotal = devices.mobile + devices.desktop + devices.tablet;
+  const mobileSharePct = devTotal ? Math.round((devices.mobile / devTotal) * 100) : null;
+
+  // 8-week trend: bucket daily visits into ISO weeks (label = bucket's Monday-ish).
+  const weeks = [];
+  for (const g of acc.daily || []) {
+    const date = g.dimensions?.date; if (!date) continue;
+    const t = Date.parse(date + "T00:00:00Z"); if (isNaN(t)) continue;
+    const wk = Math.floor(t / (7 * 864e5));
+    let e = weeks.find(w => w.wk === wk);
+    if (!e) { e = { wk, t, visits: 0 }; weeks.push(e); }
+    e.visits += (g.sum?.visits || 0);
+  }
+  weeks.sort((a, b) => a.t - b.t);
+  const trend = weeks.slice(-8).map(w => ({
+    week: new Date(w.t).toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric" }),
+    visits: w.visits
+  }));
+
+  return { visits, pageviews, topPages, pagesByPath, referrers, usSharePct, devices, mobileSharePct, trend, window: { start, end } };
+}
+
+// Sum the first-party action counters from KV: ev:<slug>:<action> -> count.
+async function readEventCounts(env) {
+  const out = {};
+  let cursor;
+  do {
+    const res = await env.CONDITIONS.list({ prefix: "ev:", cursor });
+    for (const k of res.keys || []) {
+      const parts = k.name.split(":");            // ["ev", slug, action...]
+      if (parts.length < 3) continue;
+      const slug = parts[1], action = parts.slice(2).join(":");
+      const v = parseInt(await env.CONDITIONS.get(k.name), 10) || 0;
+      const c = out[slug] || (out[slug] = { total: 0, byAction: {} });
+      c.total += v; c.byAction[action] = (c.byAction[action] || 0) + v;
+    }
+    cursor = res.list_complete ? null : res.cursor;
+  } while (cursor);
+  return out;
+}
+
+async function refreshAnalytics(env) {
+  // The editor-maintained seed (analytics.sample.json) is the source for the MANUAL
+  // blocks — `ops` (periodic request/country export) and the illustrative
+  // searchQueries shown only in sample mode. We re-read it every run (NOT the prior
+  // machine rollup) so David can refresh those by editing the committed seed.
+  let base = {};
+  try { base = await getJson(SEED_URL); } catch (e) { console.error("analytics seed:", e.message); }
+
+  let cf = null, cfError = null;
+  try { cf = await getAnalytics(env); } catch (e) { cfError = e.message; console.error("getAnalytics:", cfError); }
+  const events = await readEventCounts(env).catch(() => ({}));
+
+  let featured = [];
+  try {
+    const dir = await getJson(DIRECTORY_URL);
+    featured = (dir.businesses || []).filter(b => b.tier === "featured" && !b.unpublished)
+      .map(b => ({ slug: b.slug, name: b.shortName || (b.name || "").split(" — ")[0], profile: b.profile }));
+  } catch (e) { console.error("directory for analytics:", e.message); }
+
+  // Per-partner: views from RUM (/partner-<slug>), clicks + top action from KV events.
+  const partners = featured.map(p => {
+    const path = "/partner-" + p.slug;
+    const views = cf ? (cf.pagesByPath[path] || cf.pagesByPath[path + "/"] || 0) : null;
+    const ev = events[p.slug];
+    const clicks = ev ? ev.total : 0;
+    let topAction = null;
+    if (ev) {
+      const best = Object.keys(ev.byAction).sort((a, b) => ev.byAction[b] - ev.byAction[a])[0];
+      topAction = best ? actionLabel(best) : null;
+    }
+    return { name: p.name, slug: p.slug, views: views, clicks, topAction };
+  }).sort((a, b) => (b.clicks - a.clicks) || ((b.views || 0) - (a.views || 0)));
+
+  const partnerProfileViews = cf
+    ? Object.keys(cf.pagesByPath).filter(p => p.startsWith("/partner-")).reduce((s, p) => s + cf.pagesByPath[p], 0)
+    : (base.headline ? base.headline.partnerProfileViews : null);
+  const partnerClicks = partners.reduce((s, p) => s + (p.clicks || 0), 0);
+
+  const today = new Date();
+  const live = !!cf;
+  const out = {
+    _comment: "Generated by the conditions Worker (getAnalytics, daily 09:00 UTC). meta.live=true means reach/pages/referrers/devices/trend are live from Cloudflare Web Analytics and partner clicks from first-party events. searchQueries (Search Console) + ops (request export) are carried from the editor seed until wired.",
+    meta: {
+      live,
+      period: "Last 30 days",
+      updated: today.toISOString().slice(0, 10),
+      site: "govallecito.com",
+      note: live
+        ? "Live from Cloudflare Web Analytics (cookie-free) + first-party action events. Search queries need Google Search Console; the request/country snapshot is a periodic export."
+        : ("Sample report — Cloudflare Web Analytics not yet readable" + (cfError ? " (" + cfError + ")" : "") + "."),
+      source: cfError ? "events+seed (CF error)" : "cloudflare-web-analytics"
+    },
+    headline: {
+      visits: cf ? cf.visits : (base.headline ? base.headline.visits : null),
+      pageviews: cf ? cf.pageviews : (base.headline ? base.headline.pageviews : null),
+      partnerProfileViews,
+      partnerClicks,
+      usSharePct: cf ? cf.usSharePct : (base.headline ? base.headline.usSharePct : null),
+      mobileSharePct: cf ? cf.mobileSharePct : (base.headline ? base.headline.mobileSharePct : null)
+    },
+    partners: partners.length ? partners : (base.partners || []),
+    topPages: cf && cf.topPages.length ? cf.topPages : (base.topPages || []),
+    referrers: cf && cf.referrers.length ? cf.referrers : (base.referrers || []),
+    // Search Console isn't wired yet: show nothing when live (never sample queries as
+    // if real); in sample mode the seed's illustrative queries are fine.
+    searchQueries: live ? [] : (base.searchQueries || []),
+    devices: cf ? cf.devices : (base.devices || { mobile: 0, desktop: 0, tablet: 0 }),
+    trend: cf && cf.trend.length ? cf.trend : (base.trend || []),
+    ops: base.ops || null                              // periodic request export — manual
+  };
+
+  await env.CONDITIONS.put(ANALYTICS_KEY, JSON.stringify(out));
+  return out;
 }
 
 /* ---------- helpers ---------- */

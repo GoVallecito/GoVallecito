@@ -2,11 +2,14 @@ name = "govallecito-conditions"
 main = "conditions-worker.js"
 compatibility_date = "2026-01-01"
 
-# 15-minute conditions refresh + a weekly "This week on the water" summary.
+# 15-minute conditions refresh + a weekly "This week on the water" summary +
+# a daily analytics pull (09:00 UTC) that queries Cloudflare Web Analytics (RUM)
+# and merges first-party action counts into KV `analytics` (served same-origin,
+# behind Access, by the Pages Function at /data/analytics.json).
 # 0 13 * * SUN = 13:00 UTC = 6:00 AM MST (note: lands 7:00 AM during daylight time —
 # Cloudflare crons are UTC-fixed; use 12:00 UTC if David prefers 6 AM summer clock).
 [triggers]
-crons = ["*/15 * * * *", "0 13 * * SUN"]
+crons = ["*/15 * * * *", "0 13 * * SUN", "0 9 * * *"]
 
 # Production data route: the Worker owns GET /data/conditions.json on the live
 # domain and serves it from KV (its fetch handler already does this). A Worker
@@ -44,10 +47,17 @@ RESTRICTIONS_URL = "https://govallecito-web.pages.dev/data/restrictions.json"
 # SECRET; with both set, getWeather prefers this station and falls back to NWS if it's
 # stale (>90 min) or the key is rejected.
 WU_STATION_ID = "KCOBAYFI100"
+# Cloudflare Web Analytics (RUM) — non-secret IDs for getAnalytics()'s GraphQL pull.
+# CF_ACCOUNT_ID = the account tag; WA_SITE_TAG = the Web Analytics site token for
+# govallecito.com (Dashboard → Web Analytics → site → token). The API token itself
+# (Account Analytics · Read) is the SECRET CF_ANALYTICS_TOKEN, set ✓ June 12 2026.
+CF_ACCOUNT_ID = "b1ddd8a772df82986e39559ccfe88c46"
+WA_SITE_TAG = "1c8ffabcc37348bda2d3307f6c64c3ec"
 
 # Secrets (set with `npx wrangler secret put NAME` from this worker/ folder, never commit them):
-#   COTRIP_KEY       CDOT/COtrip API key — POWERS getRoads() (set ✓, June 2026)
-#   WU_API_KEY       free Weather Underground PWS key (from marina's WU member settings)
-#   WU_STATION_ID    e.g. KCOBAYFI12  (or set as a [vars] entry above)
-#   ACCUWEATHER_KEY  optional backup
-#   AIRNOW_KEY       optional, air quality
+#   COTRIP_KEY          CDOT/COtrip API key — POWERS getRoads() (set ✓, June 2026)
+#   WU_API_KEY          free Weather Underground PWS key (from marina's WU member settings)
+#   WU_STATION_ID       e.g. KCOBAYFI12  (or set as a [vars] entry above)
+#   CF_ANALYTICS_TOKEN  Cloudflare API token (Account Analytics · Read) for getAnalytics() (set ✓ Jun 12 2026)
+#   ACCUWEATHER_KEY     optional backup
+#   AIRNOW_KEY          optional, air quality
