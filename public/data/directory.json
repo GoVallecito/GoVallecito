@@ -1,6 +1,6 @@
 {
   "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
-  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Fire Mitigation & Tree Service", "Trash & Junk Removal", "Cleaning Services", "Construction & Remodeling", "Local Services", "Community", "Outfitters & Guides"],
+  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Fire Mitigation & Tree Service", "Trash & Junk Removal", "Cleaning Services", "Construction & Remodeling", "Health & Wellness", "Local Services", "Community", "Outfitters & Guides"],
   "businesses": [
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
@@ -79,6 +79,16 @@
       "photos": ["/assets/img/featured/vr-solutions-garage-after.jpg", "/assets/img/featured/vr-solutions-remodel-shower1.jpg", "/assets/img/featured/vr-solutions-deck1.jpg"],
       "badge": "GoVallecito Partner", "profile": "partner-vr-solutions.html",
       "cta": { "label": "Free estimate → call/text", "href": "tel:+13858679121" }
+    },
+    {
+      "slug": "jeree-mead", "name": "Jeree Mead — Strength in Relations Therapy", "shortName": "Jeree Mead, MFTC", "category": "Health & Wellness", "tier": "featured",
+      "blurb": "Marriage & family therapist candidate offering secure virtual therapy to Colorado clients — trauma, depression, grief, anxiety, and relationships. Evenings & weekends; insurance & Medicaid accepted. Free 15-minute consult.",
+      "phone": "(720) 918-3345", "email": "jeree@meadstrength.com", "website": "https://meadstrength.com",
+      "image": "https://meadstrength.com/wp-content/uploads/2025/09/cropped-New-logo.jpg", "imageAlt": "Strength in Relations Therapy — Jeree Mead",
+      "photos": ["https://meadstrength.com/wp-content/uploads/2025/09/thumbnail.jpeg"],
+      "hours": "Telehealth across Colorado · flexible scheduling incl. some evenings & weekends",
+      "badge": "GoVallecito Partner", "profile": "partner-jeree-mead.html",
+      "cta": { "label": "Free 15-min consult → call", "href": "tel:+17209183345" }
     },
     {
       "slug": "vallecito-church", "name": "Vallecito Church", "category": "Community", "tier": "featured",
