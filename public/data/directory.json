@@ -1,6 +1,6 @@
 {
   "_comment": "GoVallecito business + community directory. Tiers: 'featured' (rich expanded card, pinned top of category + Featured strip), 'verified' (Verified Local badge + full contact row), 'basic' (free list row). 'unpublished: true' hides a listing (slot reserved, data pending). 'featuredReady' just flags promotion candidates. Featured images live in /assets/img/featured/. Only verified fields are included; unknowns omitted (no guessing). Facebook is the live source for marina + market hours.",
-  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Fire Mitigation & Tree Service", "Trash & Junk Removal", "Cleaning Services", "Local Services", "Community", "Outfitters & Guides"],
+  "categoryOrder": ["Lodging", "Real Estate", "Dining & Markets", "Marina & Water", "Fire Mitigation & Tree Service", "Trash & Junk Removal", "Cleaning Services", "Construction & Remodeling", "Local Services", "Community", "Outfitters & Guides"],
   "businesses": [
     {
       "slug": "julie-coffelt", "name": "Julie Coffelt — Coldwell Banker Mountain Properties", "category": "Real Estate", "tier": "featured", "featuredReady": true,
@@ -69,6 +69,16 @@
       "photos": ["/assets/img/featured/rubber-duck-ba-apartment.jpg", "/assets/img/featured/rubber-duck-ba-stove.jpg", "/assets/img/featured/rubber-duck-ba-toilet.jpg"],
       "badge": "GoVallecito Partner", "profile": "partner-rubber-duck-cleaning.html",
       "cta": { "label": "Free estimate → call/text", "href": "tel:+16233985279" }
+    },
+    {
+      "slug": "vr-solutions", "name": "VR Solutions", "category": "Construction & Remodeling", "tier": "featured",
+      "blurb": "Construction & remodeling in the Vallecito and Bayfield area — bathroom remodels, tile showers, decks & porches, and full renovations. Owner-run by Aaron VanRiper. Free estimates.",
+      "phone": "(385) 867-9121", "email": "vrsolutions.swco@gmail.com",
+      "facebook": "https://www.facebook.com/profile.php?id=61553695014259",
+      "image": "/assets/img/featured/vr-solutions-logo.jpg", "imageAlt": "VR Solutions logo",
+      "photos": ["/assets/img/featured/vr-solutions-garage-after.jpg", "/assets/img/featured/vr-solutions-remodel-shower1.jpg", "/assets/img/featured/vr-solutions-deck1.jpg"],
+      "badge": "GoVallecito Partner", "profile": "partner-vr-solutions.html",
+      "cta": { "label": "Free estimate → call/text", "href": "tel:+13858679121" }
     },
     {
       "slug": "vallecito-church", "name": "Vallecito Church", "category": "Community", "tier": "featured",
