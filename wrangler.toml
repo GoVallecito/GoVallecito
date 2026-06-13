@@ -1,0 +1,25 @@
+# Cloudflare Pages config for the govallecito-web project.
+#
+# WHY THIS FILE EXISTS: the /data/analytics.json Pages Function
+# (functions/data/analytics.json.js) must read the live "analytics" value from
+# the shared CONDITIONS KV namespace (written by the conditions Worker's daily
+# getAnalytics() cron). Dashboard-added KV bindings were NOT reaching the
+# Functions runtime on this direct-upload project, so the Function kept falling
+# back to the SAMPLE seed (meta.live=false). Declaring the binding here applies
+# it deterministically at deploy time.
+#
+# Deploy with:  npx wrangler pages deploy
+# (pages_build_output_dir below makes wrangler upload public/ — do NOT also pass
+#  a positional directory.)
+#
+# This does NOT collide with worker/wrangler.toml — the Worker is a separate
+# project (govallecito-conditions) deployed from the worker/ folder.
+name = "govallecito-web"
+pages_build_output_dir = "public"
+compatibility_date = "2026-01-01"
+
+# Shared KV namespace (same id as worker/wrangler.toml). The Function reads
+# env.CONDITIONS first, then env.KV_BINDING, then .get("analytics").
+[[kv_namespaces]]
+binding = "CONDITIONS"
+id = "e98b1300cb02405cb6da4f417c51b80c"
