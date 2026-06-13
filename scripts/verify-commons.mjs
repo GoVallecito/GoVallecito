@@ -3,32 +3,14 @@
 // (do not trust hand-built hash-prefix URLs). Prints a table; flags non-reusable
 // licenses. Reuse-OK = public domain / CC0 / CC BY* / CC BY-SA* (NOT NC/ND).
 const TITLES = [
-  // Category 1 — Ute heritage
-  "File:Ute delegation.jpg",
-  "File:Wah-be-git - Ute man, half-length portrait, facing right, wearing earring in right ear, with two braids LCCN94509881.jpg",
-  "File:Chief Sevara and family, ca. 1885 - DPLA - c2cf2de92e89e01f976288b59de4aac0.jpg",
-  "File:Ute braves, of the Kah-poh-teh band - DPLA - 2e5f06d0a53f6bb71eab8550af4b9266 (page 1).jpg",
-  "File:Utes. Group of children LOC ds.10831.jpg",
-  // Category 4 — recreation / hiking / reservoirs
-  "File:Hiking to the Ice Lakes. San Juan National Forest, Colorado.jpg",
-  "File:Continental divide trail in Weminuche Wilderness.jpg",
-  "File:Emerald Lake (San Juan National Forest), CO.jpg",
-  "File:Looking across Williams Creek Reservoir.JPG",
-  "File:The mouth of Weminuche Creek.JPG",
-  "File:Haviland Lake - panoramio (1).jpg",
-  "File:Columbine Lake San Juan National Park - panoramio.jpg",
-  // Category 5 — wild & scenic, wildlife, night sky
-  "File:Weminuche Wilderness hills.JPG",
-  "File:Ice Lake basin, San Juan Mountains, Colorado.jpg",
-  "File:Aspen Gold.jpg",
-  "File:USFWS bald eagle (23770875811).jpg",
-  "File:Rocky Mountain Bull Elk.jpg",
-  "File:Moose superior.jpg",
-  "File:American black bear (26905320846).jpg",
-  "File:Rocky Mountain Bighorn Sheep (Ovis canadensis canadensis), Rocky Mountain National Park.jpg",
-  "File:Milky Way over Rocky Mountain National Park (26367276674).jpg",
-  "File:Sangre de Cristos-after dark (3863509911).jpg",
-  "File:Osprey with fish (49694356538).jpg",
+  // Round B — wildflowers (San Juans), heroes (winter + forest road)
+  "File:Aquilegia coerulea - José Garrido 01.jpg",
+  "File:East of Conejos Peak - Flickr - aspidoscelis.jpg",
+  "File:Pedicularis groenlandica - Zac Peterson 01.jpg",
+  "File:Mertensia bakeri - Flickr - aspidoscelis.jpg",
+  "File:Wildflowers in American Basin.jpg",
+  "File:Snowing - Winter long Wolf Creek Pass in Colorado.jpg",
+  "File:Subaru on the road to Clear Lake. San Juan National Forest, Colorado (27868503841).jpg",
 ];
 
 const OK = /(^|\b)(public domain|cc0|cc by(?!-nc)(-sa)?( \d|\b))/i;

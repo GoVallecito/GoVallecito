@@ -1,42 +1,29 @@
 #!/usr/bin/env python3
-"""Imagery-expansion optimizer (mirrors optimize_images.py). Reads the gallery
-originals from assets-originals/free-images/, writes web copies to
-public/assets/img/gallery/ (strip EXIF, no upscale, progressive JPEG within a
-size budget). These serve as both the grid thumbs and the lightbox full image,
-so ~1100px wide @ <=150KB. Run from repo root: python scripts/optimize_gallery.py"""
+"""Images Round B optimizer (mirrors optimize_images.py). Reads originals from
+assets-originals/free-images/, writes web copies under public/assets/img/.
+Gallery images -> gallery/ (~1100px, <=150KB); page heroes -> img root
+(~1920px, <=350KB). Strip EXIF, no upscale, progressive JPEG within budget.
+Run from repo root: python scripts/optimize_gallery.py
+(Round A's 21 gallery images were produced earlier and are unchanged.)"""
 import os, io
 from PIL import Image
 
 SRC = "assets-originals/free-images"
-OUT = "public/assets/img/gallery"
-os.makedirs(OUT, exist_ok=True)
+OUT = "public/assets/img"
+os.makedirs(os.path.join(OUT, "gallery"), exist_ok=True)
 
-# (source, output, target_width_px, max_kb)
+# (source, output-relative-to-OUT, target_width_px, max_kb)
 JOBS = [
-    # Category 1 — Ute heritage (historic, often portrait)
-    ("ute-delegation-1880.jpg",        "ute-delegation-1880.jpg",      1100, 150),
-    ("ute-wahbegit-1899.jpg",          "ute-wahbegit-1899.jpg",        1000, 150),
-    ("ute-sevara-1885.jpg",            "ute-sevara-1885.jpg",          1100, 150),
-    ("ute-capote-1875.jpg",            "ute-capote-1875.jpg",          1100, 150),
-    ("ute-children-loc.jpg",           "ute-children-loc.jpg",         1100, 150),
-    # Category 4 — recreation
-    ("rec-ice-lakes-hike.jpg",         "rec-ice-lakes-hike.jpg",       1100, 150),
-    ("rec-emerald-lake.jpg",           "rec-emerald-lake.jpg",         1100, 150),
-    ("rec-cdt-weminuche.jpg",          "rec-cdt-weminuche.jpg",        1100, 150),
-    ("rec-williams-creek-reservoir.jpg","rec-williams-creek-reservoir.jpg",1100,150),
-    ("rec-haviland-lake.jpg",          "rec-haviland-lake.jpg",        1100, 150),
-    # Category 5 — wild & scenic, wildlife, night sky
-    ("wild-weminuche-hills.jpg",       "wild-weminuche-hills.jpg",     1100, 150),
-    ("wild-ice-lake-basin.jpg",        "wild-ice-lake-basin.jpg",      1100, 150),
-    ("wild-aspen-gold.jpg",            "wild-aspen-gold.jpg",          1100, 150),
-    ("wild-weminuche-creek-mouth.jpg", "wild-weminuche-creek-mouth.jpg",1100,150),
-    ("wild-bald-eagle.jpg",            "wild-bald-eagle.jpg",          1100, 150),
-    ("wild-elk.jpg",                   "wild-elk.jpg",                 1100, 150),
-    ("wild-moose.jpg",                 "wild-moose.jpg",               1100, 150),
-    ("wild-black-bear.jpg",            "wild-black-bear.jpg",          1100, 150),
-    ("wild-bighorn.jpg",               "wild-bighorn.jpg",             1100, 150),
-    ("wild-osprey-fish.jpg",           "wild-osprey-fish.jpg",         1100, 150),
-    ("wild-milkyway.jpg",              "wild-milkyway.jpg",            1100, 150),
+    # Gallery — San Juan wildflowers + a Vallecito boating shot
+    ("flower-columbine.jpg",       "gallery/flower-columbine.jpg",       1100, 150),
+    ("flower-paintbrush.jpg",      "gallery/flower-paintbrush.jpg",      1100, 150),
+    ("flower-elephantheads.jpg",   "gallery/flower-elephantheads.jpg",   1100, 150),
+    ("flower-bluebells.jpg",       "gallery/flower-bluebells.jpg",       1100, 150),
+    ("flower-american-basin.jpg",  "gallery/flower-american-basin.jpg",  1100, 150),
+    ("today-kayak.jpg",            "gallery/today-kayak.jpg",            1100, 150),
+    # Page heroes (full-bleed banners)
+    ("hero-winter.jpg",            "hero-winter.jpg",                    1920, 350),
+    ("hero-forest-road.jpg",       "hero-forest-road.jpg",               1920, 350),
 ]
 
 def encode(img, q):

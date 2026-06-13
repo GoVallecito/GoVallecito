@@ -61,5 +61,19 @@ get "https://upload.wikimedia.org/wikipedia/commons/d/d8/Milky_Way_over_Rocky_Mo
 # CC BY 2.0, David Kobuszewski) and Three Relics (flickr.com/photos/cogdog/29304303165, CC BY 2.0, Alan Levine) —
 # use Flickr's download button for full size. USBR dam aerial: save from usbr.gov/projects/index.php?id=258 (PD).
 
+# ===== Images Round B (docs/IMAGES-ROUND-B.md) — all licenses verified via the
+# Commons API (scripts/verify-commons.mjs) + the Flickr page for the kayak. San-Juan/
+# Vallecito only. Wildflowers + a boating shot for the gallery; winter + forest-road heroes.
+# --- Gallery: San Juan wildflowers + a Vallecito boating shot ---
+get "https://upload.wikimedia.org/wikipedia/commons/6/6e/Aquilegia_coerulea_-_Jos%C3%A9_Garrido_01.jpg"        "flower-columbine.jpg"        # José Garrido, CC BY 4.0 — San Juan NF, Dolores Co.
+get "https://upload.wikimedia.org/wikipedia/commons/f/f0/East_of_Conejos_Peak_-_Flickr_-_aspidoscelis.jpg"     "flower-paintbrush.jpg"       # Patrick Alexander, CC0 — SE San Juans
+get "https://upload.wikimedia.org/wikipedia/commons/7/7e/Pedicularis_groenlandica_-_Zac_Peterson_01.jpg"       "flower-elephantheads.jpg"    # Zac Peterson, CC BY 4.0 — San Juan NF
+get "https://upload.wikimedia.org/wikipedia/commons/8/8e/Mertensia_bakeri_-_Flickr_-_aspidoscelis.jpg"          "flower-bluebells.jpg"        # Patrick Alexander, CC0 — SE San Juans
+get "https://upload.wikimedia.org/wikipedia/commons/6/67/Wildflowers_in_American_Basin.jpg"                     "flower-american-basin.jpg"   # BLM, CC BY 2.0 — American Basin, San Juans
+get "https://live.staticflickr.com/8536/29263472186_55dd52f95e_b.jpg"                                          "today-kayak.jpg"             # Alan Levine (cogdog), CC BY 2.0 — Vallecito Reservoir
+# --- Heroes (optimize to 1920w/<=350KB into public/assets/img/) ---
+get "https://upload.wikimedia.org/wikipedia/commons/c/cc/Snowing_-_Winter_long_Wolf_Creek_Pass_in_Colorado.jpg" "hero-winter.jpg"            # Corey Leopold, CC BY 2.0 — Wolf Creek Pass, San Juans (winter)
+get "https://upload.wikimedia.org/wikipedia/commons/6/62/Subaru_on_the_road_to_Clear_Lake._San_Juan_National_Forest%2C_Colorado_%2827868503841%29.jpg" "hero-forest-road.jpg" # Paxson Woelber, CC BY 2.0 — SJNF forest road
+
 echo; echo "Done. Files in $DIR:"; ls -la "$DIR"
 echo "Reminder: resize/optimize before copying into public/assets/img/ (originals are 8–22 MB)."

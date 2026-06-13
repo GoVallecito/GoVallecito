@@ -4,24 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vallecito in Pictures — through the years | GoVallecito</title>
-<meta name="description" content="A photo gallery of Vallecito Lake, Colorado through the years: Ute heritage, the 1940s dam, and today's fishing, hiking, wildlife, and dark skies.">
+<meta name="description" content="A photo gallery and short history of Vallecito Lake, Colorado: the Ute homeland, the New Deal dam, old Vallecito, and today's fishing, hiking, wildflowers, wildlife, and dark skies.">
 <link rel="icon" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="canonical" href="https://govallecito.com/gallery">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Vallecito in Pictures — through the years | GoVallecito">
-<meta property="og:description" content="A photo gallery of Vallecito Lake, Colorado through the years: Ute heritage, the 1940s dam, and today's fishing, hiking, wildlife, and dark skies.">
-<meta property="og:image" content="https://govallecito.com/assets/img/og-default.jpg">
+<meta property="og:description" content="A photo gallery and short history of Vallecito Lake: the Ute homeland, the New Deal dam, old Vallecito, and today's fishing, hiking, wildflowers, wildlife, and dark skies.">
+<meta property="og:image" content="https://govallecito.com/assets/img/lake-aerial.jpg">
 <meta property="og:url" content="https://govallecito.com/gallery">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/assets/css/styles.css">
 <style>
-.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:18px}
-.gallery-grid figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(20,40,30,.07);display:flex;flex-direction:column}
-.gallery-grid img{display:block;width:100%;height:200px;object-fit:cover;cursor:zoom-in;background:#e9ece7}
-.gallery-grid figcaption{font-size:.76rem;color:var(--ink-soft);padding:10px 12px;line-height:1.4}
-.gallery-note{font-size:.82rem;color:var(--ink-soft);margin-top:14px}
-@media(max-width:520px){.gallery-grid img{height:170px}}
+/* Gallery — feature image per section + a varied grid; hover-zoom; shared lightbox. */
+.gfeature{position:relative;margin:20px 0 0;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(20,40,30,.14);border:1px solid var(--line)}
+.gfeature img{display:block;width:100%;height:clamp(260px,40vw,440px);object-fit:cover;cursor:zoom-in;transition:transform .6s cubic-bezier(.22,.61,.36,1);background:#e9ece7}
+.gfeature:hover img{transform:scale(1.035)}
+.gfeature figcaption{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 14px;color:#fff;
+  font-size:.85rem;line-height:1.45;background:linear-gradient(to top,rgba(10,26,20,.86),rgba(10,26,20,.15) 70%,transparent)}
+.gfeature figcaption b{color:#fff;font-weight:700}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:16px}
+.gallery-grid figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  box-shadow:0 6px 18px rgba(20,40,30,.07);display:flex;flex-direction:column}
+.gallery-grid .gimg{overflow:hidden}
+.gallery-grid img{display:block;width:100%;height:190px;object-fit:cover;cursor:zoom-in;background:#e9ece7;
+  transition:transform .5s ease}
+.gallery-grid figure:hover img{transform:scale(1.06)}
+.gallery-grid figcaption{font-size:.76rem;color:var(--ink-soft);padding:10px 12px;line-height:1.45}
+.gallery-grid figcaption b{color:var(--pine)}
+.sec-lead{max-width:74ch}
+.gallery-note{font-size:.82rem;color:var(--ink-soft);margin-top:14px;background:var(--sand-2);border:1px solid var(--sand);
+  border-radius:12px;padding:11px 14px}
+.gjump{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.gjump a{font-size:.82rem;font-weight:600;color:var(--pine);background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:6px 13px;text-decoration:none;transition:background .15s,border-color .15s}
+.gjump a:hover{background:var(--bg);border-color:var(--pine)}
+@media(max-width:520px){.gallery-grid img{height:165px}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://govallecito.com/"},{"@type":"ListItem","position":2,"name":"Gallery","item":"https://govallecito.com/gallery"}]}
@@ -83,103 +101,126 @@
   </div>
 </header>
 
-<section id="main" class="pagehero" style="--bg:url('/assets/img/gallery/wild-ice-lake-basin.jpg')">
+<section id="main" class="pagehero" style="--bg:url('/assets/img/lake-aerial.jpg')">
   <div class="wrap">
     <div class="eyebrow">Explore · Gallery</div>
     <h1>Vallecito through the years</h1>
-    <p>From the Ute homeland and the New Deal dam to today's lake — fishing, hiking, wildlife, and some of the darkest skies in Colorado. Every photo is freely licensed (public domain or Creative Commons) and credited; tap any image to enlarge. Honest captions note where a photo was actually taken when it isn't Vallecito itself.</p>
+    <p>One little valley, ten thousand years of story — the Ute homeland, a New Deal dam that drowned the old ranches to build the lake, and the fishing, hiking, wildflowers, wildlife, and dark skies that draw people back today. Every photo here is of Vallecito or its immediate surroundings, freely licensed, and credited; tap any image to enlarge.</p>
+    <div class="gjump">
+      <a href="#utes">Ute homeland</a>
+      <a href="#dam">The dam &amp; the New Deal</a>
+      <a href="#old">Old Vallecito</a>
+      <a href="#today">The lake today</a>
+      <a href="#wild">Wild &amp; scenic</a>
+      <a href="#flowers">Wildflowers</a>
+    </div>
   </div>
 </section>
 
-<!-- ===== 1. Ute heritage ===== -->
-<section class="band">
+<!-- ===== 1. Ute homeland ===== -->
+<section class="band" id="utes">
   <div class="wrap">
     <div class="eyebrow">Vallecito in Pictures</div>
     <h2 class="sec-title">The Ute homeland — the "little valley"</h2>
-    <p class="sec-lead">Vallecito — Spanish for "little valley" — lies in the ancestral homeland of the Ute (Weenuchiu / Weeminuche) people. These archival portraits show Ute and Southern Ute people of the era from federal and library collections; they are honest to that history, not claimed to be at Vallecito specifically.</p>
+    <p class="sec-lead">Long before it was a reservoir, this was <b>Nuche</b> country. <i>Vallecito</i> — Spanish for "little valley" — sits in the ancestral homeland of the <b>Weeminuche</b> band of the Ute people, the same name carried today by the <b>Weminuche Wilderness</b> that rises just above the lake. The Utes wintered in sheltered river valleys like the Pine (Los Piños) and followed the elk and the ripening berries into the high country each summer — a seasonal round they walked for thousands of years.</p>
+    <p class="sec-lead">By treaty in 1868 the Utes held most of western Colorado; the <b>Brunot Agreement of 1873</b> stripped away the mineral-rich San Juans, and the Southern Ute Reservation was drawn along the New Mexico line just south of here. That history still runs through the water: the Southern Ute Tribe holds a major share of the Pine River Project that built Vallecito, and tribal lands downstream are irrigated by its releases. These archival portraits are of Ute and Southern Ute people of that era — honest to the heritage of this place, not claimed to be photographed at the lake.</p>
     <div class="gallery-grid">
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-delegation-1880.jpg" alt="Ute delegation in Washington, D.C., 1880, including Southern Ute leader Ignacio" data-cap="Ute delegation in Washington, D.C., 1880 — including Southern Ute leader Ignacio, with Ouray and Chipeta. Photo: Mathew Brady · Library of Congress, public domain."><figcaption>Ute delegation in Washington, D.C., 1880 — including Southern Ute leader Ignacio. Mathew Brady · Library of Congress (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-wahbegit-1899.jpg" alt="Wah-be-git, a Ute man, 1899" data-cap="Wah-be-git, a Ute man, 1899. Photo: Rose &amp; Hopkins, Denver · Library of Congress, public domain."><figcaption>Wah-be-git, a Ute man, 1899. Rose &amp; Hopkins, Denver · Library of Congress (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-capote-1875.jpg" alt="Ute men of the Kah-poh-teh (Capote) band, 1875" data-cap="Ute men of the Kah-poh-teh (Capote) band — one of the three Southern Ute bands — 1875. Photo: Timothy H. O'Sullivan, public domain."><figcaption>Men of the Kah-poh-teh (Capote) band — a Southern Ute band — 1875. Timothy H. O'Sullivan (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-sevara-1885.jpg" alt="Chief Sevara and his family, Ute, about 1885" data-cap="Chief Sevara and family, Ute people, about 1885. Detroit Photographic Co. via DPLA, public domain."><figcaption>Chief Sevara and family, Ute people, about 1885. Detroit Photographic Co. via DPLA (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-children-loc.jpg" alt="Ute children, Library of Congress" data-cap="Ute children (undated). Library of Congress Prints &amp; Photographs, public domain."><figcaption>Ute children (undated). Library of Congress Prints &amp; Photographs (public domain).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-delegation-1880.jpg" alt="Ute delegation in Washington, D.C., 1880, including Southern Ute leader Ignacio" data-cap="Ute delegation in Washington, D.C., 1880 — including Southern Ute leader Ignacio, with Chief Ouray and Chipeta. Mathew Brady · Library of Congress (public domain)."></div><figcaption><b>Ute delegation, 1880</b> — incl. Southern Ute leader Ignacio. Mathew Brady · Library of Congress (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-capote-1875.jpg" alt="Ute men of the Kah-poh-teh (Capote) band, 1875" data-cap="Men of the Kah-poh-teh (Capote) band — one of the three Southern Ute bands — 1875. Timothy H. O'Sullivan (public domain)."></div><figcaption><b>Capote band men, 1875</b> — a Southern Ute band. Timothy H. O'Sullivan (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-sevara-1885.jpg" alt="Chief Sevara and his family, Ute, about 1885" data-cap="Chief Sevara and family, Ute people, about 1885. Detroit Photographic Co. via DPLA (public domain)."></div><figcaption><b>Chief Sevara &amp; family, c.1885.</b> Detroit Photographic Co. via DPLA (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-wahbegit-1899.jpg" alt="Wah-be-git, a Ute man, 1899" data-cap="Wah-be-git, a Ute man, 1899. Rose &amp; Hopkins, Denver · Library of Congress (public domain)."></div><figcaption><b>Wah-be-git, 1899.</b> Rose &amp; Hopkins, Denver · Library of Congress (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/ute-children-loc.jpg" alt="Ute children" data-cap="Ute children (undated). Library of Congress Prints &amp; Photographs (public domain)."></div><figcaption><b>Ute children</b> (undated). Library of Congress (PD).</figcaption></figure>
     </div>
+    <p class="gallery-note">Learn the living side of this story on <a href="respect-vallecito.html">Respect Vallecito</a> — Ute water rights, the Good Neighbor ethic, and how to tread lightly on a place that's been home for millennia.</p>
   </div>
 </section>
 
 <!-- ===== 2. The dam & the New Deal ===== -->
-<section class="band alt">
+<section class="band alt" id="dam">
   <div class="wrap">
     <div class="eyebrow">Vallecito in Pictures</div>
     <h2 class="sec-title">The dam &amp; the New Deal</h2>
-    <p class="sec-lead">Vallecito Dam was built 1938–1941 — a New Deal-era Bureau of Reclamation project on the Pine (Los Pinos) River that created the reservoir. The original 1938–41 construction photographs are held by Fort Lewis College's Center of Southwest Studies; we're seeking permission to feature them. For now, the dam and reservoir today:</p>
+    <figure class="gfeature"><img class="zoomable" loading="lazy" src="/assets/img/hero-dam.jpg" alt="Vallecito Dam today, an earthfill dam completed in 1941" data-cap="Vallecito Dam — a 162-foot earthfill dam completed in 1941, holding back roughly 129,700 acre-feet. Jeffrey Beall (CC BY 4.0)."><figcaption><b>Vallecito Dam</b> — 162 feet of earthfill, finished 1941, holding back ~129,700 acre-feet of the Pine River. <span style="opacity:.85">Jeffrey Beall · CC BY 4.0</span></figcaption></figure>
+    <p class="sec-lead" style="margin-top:18px">The lake is younger than the highway to it. In 1937 the New Deal authorized a Bureau of Reclamation dam on the Pine River; ground broke on <b>May 14, 1938</b>, and crews — including Depression-era labor — moved <b>3.7 million cubic yards</b> of earth to raise a 162-foot dam, finishing in <b>March 1941</b>. An Army Corps engineer, Major C. A. Burns, photographed the whole build; those original prints survive at Fort Lewis College's Center of Southwest Studies.</p>
+    <p class="sec-lead">What the water covered is part of the story too: the new reservoir drowned the valley floor — homesteads, hayfields, and the old wagon road — to store irrigation water for some <b>45,000 acres</b> of farms plus <b>18,500 acres</b> of Southern Ute land downstream. Today the dam is operated for flood control and irrigation, and the "level falling through late summer" you see on our conditions page is simply that 1941 promise being kept, one release at a time.</p>
     <div class="gallery-grid">
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/hero-dam.jpg" alt="Vallecito Dam today" data-cap="Vallecito Dam, completed 1941 — present-day view. Photo: Jeffrey Beall, CC BY 4.0."><figcaption>Vallecito Dam, completed 1941 — today. Jeffrey Beall (CC BY 4.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/lake-aerial.jpg" alt="Vallecito Reservoir from the air" data-cap="Vallecito Reservoir from the air. Photo: Ken Lund, CC BY-SA 2.0."><figcaption>Vallecito Reservoir from the air. Ken Lund (CC BY-SA 2.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/lake-aerial.jpg" alt="Vallecito Reservoir from the air" data-cap="Vallecito Reservoir from the air — the lake the dam created, ringed by the San Juan National Forest. Ken Lund (CC BY-SA 2.0)."></div><figcaption><b>The reservoir from the air.</b> Ken Lund (CC BY-SA 2.0).</figcaption></figure>
     </div>
-    <p class="gallery-note">📷 Help us tell this story: if you have New Deal-era construction photos or can connect us with the Center of Southwest Studies, please <a href="contact.html">get in touch</a>.</p>
+    <p class="gallery-note">📷 <b>Help tell this chapter:</b> the 1938–41 construction photographs (Maj. Burns' album) are held by the <b>Center of Southwest Studies</b> at Fort Lewis College. If you can help us secure permission to feature a few, please <a href="contact.html">get in touch</a> — they'd make this section sing.</p>
   </div>
 </section>
 
 <!-- ===== 3. Old Vallecito & early families ===== -->
-<section class="band">
+<section class="band" id="old">
   <div class="wrap">
     <div class="eyebrow">Vallecito in Pictures</div>
     <h2 class="sec-title">Old Vallecito &amp; early families</h2>
-    <p class="sec-lead">Ranching and homesteading families have worked the Pine River valley for generations. We're partnering with the Pine River Library to feature historic family photographs with permission; until then, this 1911 Forest Service scene shows the valley a century ago.</p>
-    <div class="gallery-grid">
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/creek-1911.jpg" alt="Forest Service rangers fording Vallecito Creek, 1911" data-cap="Forest Service rangers fording Vallecito Creek, 1911. USDA Forest Service, public domain."><figcaption>Forest Service rangers fording Vallecito Creek, 1911. USDA Forest Service (public domain).</figcaption></figure>
-    </div>
-    <p class="gallery-note">📷 Have an old Vallecito family or ranch photo you'd share with credit? We'd love to hear from you — <a href="contact.html">contact us</a>.</p>
+    <figure class="gfeature"><img class="zoomable" loading="lazy" src="/assets/img/creek-1911.jpg" alt="Forest Service rangers fording Vallecito Creek in 1911" data-cap="Forest Service rangers ford Vallecito Creek, 1911 — the valley three decades before the dam. USDA Forest Service (public domain)."><figcaption><b>Fording Vallecito Creek, 1911</b> — the valley as it looked three decades before the lake existed. <span style="opacity:.85">USDA Forest Service · public domain</span></figcaption></figure>
+    <p class="sec-lead" style="margin-top:18px">After the Homestead Act, settlers drifted up the Pine River valley and built ranches where the creeks came together — the same bottomland that's now under the lake. Two of them are still on the map: <b>John T. Graham</b> and <b>Thomas Wilson</b> each have a creek named for the homestead they worked on the east side of today's reservoir. Cattle, hay, and hard winters; a one-room school; a chapel that began as gospel singing around a piano at Lost Creek Lodge in 1951.</p>
+    <p class="sec-lead">Those families' descendants still ranch and run businesses around the lake, which is exactly why the best old photographs aren't in a federal archive — they're in shoeboxes and at the <b>Pine River Library</b>. We're working to feature a few with permission and full credit.</p>
+    <p class="gallery-note">📷 <b>Got an old Vallecito photo?</b> A family ranch, the dam going up, the lake filling, a 1960s fish-fry — we'd love to feature it with your credit. <a href="contact.html">Send it our way</a>.</p>
   </div>
 </section>
 
-<!-- ===== 4. The lake today — recreation ===== -->
-<section class="band alt">
+<!-- ===== 4. The lake today ===== -->
+<section class="band alt" id="today">
   <div class="wrap">
     <div class="eyebrow">Vallecito in Pictures</div>
     <h2 class="sec-title">The lake today — out on the water &amp; the trail</h2>
-    <p class="sec-lead">A working community lake: boating and fishing, paddling, camping along the shore and creeks, and hiking up into the Weminuche. A few high-country scenes are from elsewhere in the surrounding San Juan National Forest — the captions say so.</p>
+    <figure class="gfeature"><img class="zoomable" loading="lazy" src="/assets/img/hero-shoreline.jpg" alt="The Vallecito Reservoir shoreline backed by forest and peaks" data-cap="The Vallecito Reservoir shoreline — about 12 miles of it, at roughly 7,665 feet. Jeffrey Beall (CC BY 4.0)."><figcaption><b>Twelve miles of shoreline at 7,665 feet</b> — the working community lake. <span style="opacity:.85">Jeffrey Beall · CC BY 4.0</span></figcaption></figure>
+    <p class="sec-lead" style="margin-top:18px">Vallecito is a lake people <i>use</i>: pontoons and fishing boats off the marina, kayaks and paddleboards in the early calm, five Forest Service campgrounds in the pines, and trailheads at the north end that walk you straight into the <b>Weminuche Wilderness</b> — Colorado's largest, nearly half a million acres. Seven gamefish swim here, kokanee salmon are the headliner, and a twenty-pound pike is the trophy.</p>
     <div class="gallery-grid">
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/hero-shoreline.jpg" alt="The Vallecito Reservoir shoreline" data-cap="The Vallecito Reservoir shoreline. Photo: Jeffrey Beall, CC BY 4.0."><figcaption>The Vallecito Reservoir shoreline. Jeffrey Beall (CC BY 4.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/rec-williams-creek-reservoir.jpg" alt="A still San Juan reservoir, representative of boating water near Vallecito" data-cap="A still San Juan reservoir (Williams Creek) — representative of the boating-and-fishing water near Vallecito. Photo: Jeffrey Beall, CC BY 4.0."><figcaption>A San Juan reservoir (Williams Creek) — representative boating &amp; fishing water near Vallecito. Jeffrey Beall (CC BY 4.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/campground-creek.jpg" alt="A creek-side campsite at Vallecito Campground" data-cap="A creek-side campsite at Vallecito Campground. USDA Forest Service, public domain."><figcaption>A creek-side campsite at Vallecito Campground. USDA Forest Service (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/rec-haviland-lake.jpg" alt="Haviland Lake, a Forest Service lake near Durango" data-cap="Haviland Lake, a small forest lake with a Forest Service campground in the San Juan NF near Durango — representative SJNF camping. Photo: Outdoor Craziness, CC BY-SA 3.0."><figcaption>Haviland Lake, San Juan NF near Durango — representative forest-lake camping. Outdoor Craziness (CC BY-SA 3.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/creek-bridge.jpg" alt="The first bridge on the Vallecito Creek Trail" data-cap="The first bridge on the Vallecito Creek Trail. Photo: SFC H, CC BY 3.0."><figcaption>The first bridge on the Vallecito Creek Trail. SFC H (CC BY 3.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/rec-ice-lakes-hike.jpg" alt="A hiker climbing toward Ice Lake Basin in the San Juan National Forest" data-cap="A hiker climbing toward Ice Lake Basin in the San Juan National Forest — high-country hiking in the same forest as Vallecito. Photo: Paxson Woelber, CC BY-SA 4.0."><figcaption>High-country hiking toward Ice Lake Basin, San Juan NF — the forest Vallecito sits in. Paxson Woelber (CC BY-SA 4.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/rec-cdt-weminuche.jpg" alt="The Continental Divide Trail through the Weminuche Wilderness" data-cap="The Continental Divide Trail through the Weminuche Wilderness, which rises above Vallecito. Photo: Charlie DeTar, CC BY-SA 3.0."><figcaption>The Continental Divide Trail in the Weminuche Wilderness, above Vallecito. Charlie DeTar (CC BY-SA 3.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/rec-emerald-lake.jpg" alt="Emerald Lake in the Weminuche Wilderness" data-cap="Emerald Lake in the Weminuche Wilderness — a backcountry destination above the Vallecito drainage. Photo: Penguin314, CC BY-SA 4.0."><figcaption>Emerald Lake, Weminuche Wilderness — a backcountry destination above the Vallecito drainage. Penguin314 (CC BY-SA 4.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/today-kayak.jpg" alt="A paddler kayaking on the calm open water of Vallecito Reservoir" data-cap="Kayaking the calm early water on Vallecito Reservoir (a dog rides along). Alan Levine / cogdog (CC BY 2.0)."></div><figcaption><b>Kayaking the reservoir</b> — calm early water (dog optional). Alan Levine / cogdog (CC BY 2.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/campground-creek.jpg" alt="A creek-side campsite at Vallecito Campground" data-cap="A creek-side campsite at Vallecito Campground — 80 sites in the ponderosa at the wilderness edge. USDA Forest Service (public domain)."></div><figcaption><b>Vallecito Campground</b> — 80 sites in the pines. USDA Forest Service (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/creek-bridge.jpg" alt="The first footbridge on the Vallecito Creek Trail above the lake" data-cap="The first footbridge on the Vallecito Creek Trail — the main route into the Weminuche from the lake's north end. SFC H (CC BY 3.0)."></div><figcaption><b>Vallecito Creek Trail</b> — the gateway into the Weminuche. SFC H (CC BY 3.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/rec-emerald-lake.jpg" alt="Emerald Lake in the Weminuche Wilderness above the Vallecito drainage" data-cap="Emerald Lake — a backcountry destination up the Pine River trail above Vallecito, the largest natural lake in the Weminuche. Penguin314 (CC BY-SA 4.0)."></div><figcaption><b>Emerald Lake</b> — up the Pine River trail from the lake. Penguin314 (CC BY-SA 4.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/rec-cdt-weminuche.jpg" alt="The Continental Divide Trail through the Weminuche Wilderness above Vallecito" data-cap="The Continental Divide Trail through the Weminuche Wilderness, the high country directly above Vallecito. Charlie DeTar (CC BY-SA 3.0)."></div><figcaption><b>The Continental Divide Trail</b> in the Weminuche above the lake. Charlie DeTar (CC BY-SA 3.0).</figcaption></figure>
     </div>
+    <p class="gallery-note">Plan it: <a href="things-to-do.html">things to do</a>, the <a href="fishing.html">fishing guide</a>, <a href="trails.html">trails</a>, and the <a href="map.html">lake map</a>. Heading up? Check <a href="conditions.html">live conditions</a> first.</p>
   </div>
 </section>
 
 <!-- ===== 5. Wild & scenic ===== -->
-<section class="band">
+<section class="band" id="wild">
   <div class="wrap">
     <div class="eyebrow">Vallecito in Pictures</div>
     <h2 class="sec-title">Wild &amp; scenic — the country around the lake</h2>
-    <p class="sec-lead">The Weminuche Wilderness, the wildlife that share it, the turn of the seasons, and dark skies. Wildlife photos show species found around Vallecito (not necessarily photographed here); scenery captions note where each was taken.</p>
+    <figure class="gfeature"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-weminuche-hills.jpg" alt="Grassy high country in the Weminuche Wilderness above Vallecito" data-cap="The Weminuche Wilderness — nearly 500,000 acres of high country rising straight out of the Vallecito drainage. Delaywaves (CC BY 3.0)."><figcaption><b>The Weminuche Wilderness</b> — Colorado's largest, rising right out of the Vallecito drainage. <span style="opacity:.85">Delaywaves · CC BY 3.0</span></figcaption></figure>
+    <p class="sec-lead" style="margin-top:18px">Step away from the water and the wild takes over fast. Elk and mule deer move through the aspen; black bears work the oak brush in fall (lock up the cooler); moose have returned to the willow bottoms; bald eagles winter over the lake and ospreys dive it all summer. The Weminuche even holds reintroduced lynx and Rocky Mountain bighorn. The wildlife photos below are of species that live here, honestly credited; the scenery is the country around the lake.</p>
     <div class="gallery-grid">
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-weminuche-hills.jpg" alt="Grassy high country in the Weminuche Wilderness" data-cap="Grassy high country in the Weminuche Wilderness. Photo: Delaywaves, CC BY 3.0."><figcaption>High country in the Weminuche Wilderness. Delaywaves (CC BY 3.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-ice-lake-basin.jpg" alt="Ice Lake Basin, San Juan Mountains" data-cap="Ice Lake Basin, San Juan Mountains, Colorado. Photo: John Fowler, CC BY 2.0."><figcaption>Ice Lake Basin, San Juan Mountains. John Fowler (CC BY 2.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-aspen-gold.jpg" alt="Autumn gold in the San Juans" data-cap="Autumn gold in the San Juans (Windy Point). Photo: Robert M. Russell, CC BY-SA 4.0."><figcaption>Autumn gold in the San Juans. Robert M. Russell (CC BY-SA 4.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/weminuche-aspen.jpg" alt="Autumn aspens in the Weminuche Wilderness" data-cap="Autumn aspens in the Weminuche Wilderness, 2010. Public domain."><figcaption>Autumn aspens in the Weminuche Wilderness. Public domain.</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-weminuche-creek-mouth.jpg" alt="Clear water where Weminuche Creek meets the river" data-cap="Clear water where Weminuche Creek meets the river. Photo: Jeffrey Beall, CC BY 4.0."><figcaption>Clear water at the mouth of Weminuche Creek. Jeffrey Beall (CC BY 4.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-bald-eagle.jpg" alt="Bald eagle" data-cap="Bald eagle — seen around the lake, especially in winter. Photo: USFWS, public domain."><figcaption>Bald eagle — seen around the lake, especially in winter. USFWS (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-osprey-fish.jpg" alt="Osprey with a fish" data-cap="An osprey with a catch — ospreys fish the reservoir in summer. Photo: USFWS, public domain."><figcaption>An osprey with a catch — ospreys fish the reservoir in summer. USFWS (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-elk.jpg" alt="Rocky Mountain bull elk" data-cap="Rocky Mountain bull elk — elk range the Vallecito high country. Public domain (photographed at a wildlife park)."><figcaption>Rocky Mountain bull elk — elk range the Vallecito high country. Public domain.</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-moose.jpg" alt="Moose" data-cap="Moose — increasingly seen in the Vallecito drainage. Photo: USDA Forest Service, public domain."><figcaption>Moose — increasingly seen in the Vallecito drainage. USDA Forest Service (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-black-bear.jpg" alt="American black bear" data-cap="American black bear — be bear-aware around the lake. Photo: USFWS, public domain."><figcaption>American black bear — be bear-aware around the lake. USFWS (public domain).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-bighorn.jpg" alt="Rocky Mountain bighorn sheep" data-cap="Rocky Mountain bighorn sheep — bighorns range the San Juans. Photo: dw_ross, CC BY 2.0."><figcaption>Rocky Mountain bighorn sheep — bighorns range the San Juans. dw_ross (CC BY 2.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/star-trails.jpg" alt="Star trails over Vallecito" data-cap="Star trails over Vallecito. Photo: Jared Lee, CC BY 3.0."><figcaption>Star trails over Vallecito. Jared Lee (CC BY 3.0).</figcaption></figure>
-      <figure><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-milkyway.jpg" alt="The Milky Way over the Colorado Rockies" data-cap="The Milky Way over the Colorado Rockies (Rocky Mountain NP) — representative of Vallecito's dark skies. Photo: NPS / Jeremy M. White, public domain."><figcaption>The Milky Way over the Colorado Rockies (RMNP) — representative of Vallecito's dark skies. NPS / Jeremy M. White (public domain).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/weminuche-aspen.jpg" alt="Autumn aspens in the Weminuche Wilderness" data-cap="Autumn aspens in the Weminuche Wilderness — peak gold comes in late September. Public domain."></div><figcaption><b>Aspen gold, Weminuche</b> — late September. Public domain.</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-weminuche-creek-mouth.jpg" alt="Clear water where Weminuche Creek meets the river above the lake" data-cap="Clear water where Weminuche Creek meets the river, in the wilderness above the lake. Jeffrey Beall (CC BY 4.0)."></div><figcaption><b>Weminuche Creek</b>, above the lake. Jeffrey Beall (CC BY 4.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-elk.jpg" alt="Rocky Mountain bull elk" data-cap="Rocky Mountain bull elk — elk range the Vallecito high country; you'll hear them bugle in the fall. Public domain."></div><figcaption><b>Bull elk</b> — they bugle these hills every fall. Public domain.</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-moose.jpg" alt="Moose" data-cap="Moose — once rare here, now regular in the willow bottoms of the Vallecito drainage. USDA Forest Service (public domain)."></div><figcaption><b>Moose</b> — now regular in the willow bottoms. USDA Forest Service (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-black-bear.jpg" alt="American black bear" data-cap="American black bear — be bear-smart with food and coolers around the lake. USFWS (public domain)."></div><figcaption><b>Black bear</b> — be bear-smart with your cooler. USFWS (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-bald-eagle.jpg" alt="Bald eagle" data-cap="Bald eagle — winters over the lake, hunting the open water and the shoreline. USFWS (public domain)."></div><figcaption><b>Bald eagle</b> — a winter regular over the lake. USFWS (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-osprey-fish.jpg" alt="Osprey carrying a fish" data-cap="An osprey with a catch — ospreys fish the reservoir all summer. USFWS (public domain)."></div><figcaption><b>Osprey</b> — fishes the reservoir all summer. USFWS (PD).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/wild-bighorn.jpg" alt="Rocky Mountain bighorn sheep" data-cap="Rocky Mountain bighorn sheep — the Weminuche holds native herds. dw_ross (CC BY 2.0)."></div><figcaption><b>Bighorn sheep</b> — native to the Weminuche. dw_ross (CC BY 2.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/star-trails.jpg" alt="Star trails wheeling over Vallecito Lake at night" data-cap="Star trails over Vallecito — at altitude with almost no light pollution, the night sky here is exceptional. Jared Lee (CC BY 3.0)."></div><figcaption><b>Star trails over Vallecito</b> — genuine dark-sky country. Jared Lee (CC BY 3.0).</figcaption></figure>
     </div>
-    <p class="gallery-note">Full credits and license links are on our <a href="sources.html#photo-credits">photo credits</a> page. Want the live lake instead? See <a href="conditions.html">conditions</a> or the <a href="map.html">lake map</a>.</p>
+    <p class="gallery-note">More on the animals and how to share the country with them: the <a href="wildlife.html">wildlife guide</a> (bear-smart, moose distance, rattlesnakes lower down) and <a href="respect-vallecito.html">Respect Vallecito</a>.</p>
+  </div>
+</section>
+
+<!-- ===== 6. Wildflowers ===== -->
+<section class="band alt" id="flowers">
+  <div class="wrap">
+    <div class="eyebrow">Vallecito in Pictures</div>
+    <h2 class="sec-title">Wildflowers — the high-country bloom</h2>
+    <p class="sec-lead">From snowmelt through August the meadows above Vallecito put on one of Colorado's great wildflower shows. Lower down, the <b>Colorado blue columbine</b> — the state flower — nods in shady aspen glades alongside scarlet <b>Indian paintbrush</b> and purple <b>lupine</b>. Climb into the Weminuche's wet basins and you'll find <b>mountain bluebells</b>, <b>elephant heads</b>, marsh marigold, and, on the highest tundra, the sunflower-faced <b>old-man-of-the-mountain</b>. Peak bloom is usually <b>mid-July</b>, a couple of weeks later the higher you go.</p>
+    <figure class="gfeature"><img class="zoomable" loading="lazy" src="/assets/img/gallery/flower-american-basin.jpg" alt="Alpine wildflowers carpeting American Basin in the San Juan Mountains" data-cap="Alpine wildflowers carpet American Basin in the San Juan Mountains of southwest Colorado — peak bloom comes in mid-summer. Bureau of Land Management (CC BY 2.0)."><figcaption><b>American Basin in full bloom</b> — the kind of high-country meadow the San Juans are famous for. <span style="opacity:.85">Bureau of Land Management · CC BY 2.0</span></figcaption></figure>
+    <div class="gallery-grid">
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/flower-columbine.jpg" alt="Colorado blue columbine, the state flower" data-cap="Colorado blue columbine (Aquilegia coerulea), the state flower — in a meadow in the San Juan National Forest, Dolores County. José Garrido (CC BY 4.0)."></div><figcaption><b>Colorado blue columbine</b> — the state flower, San Juan NF. José Garrido (CC BY 4.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/flower-paintbrush.jpg" alt="Rosy Indian paintbrush among alpine wildflowers" data-cap="Rosy paintbrush (Castilleja) among alpine blooms in the southeastern San Juan Mountains. Patrick Alexander (CC0, public domain)."></div><figcaption><b>Indian paintbrush</b> — scarlet in the alpine, SE San Juans. Patrick Alexander (CC0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/flower-elephantheads.jpg" alt="Elephant heads wildflowers in a wet alpine meadow" data-cap="Elephant heads (Pedicularis groenlandica) in a wet alpine meadow, San Juan Mountains. Zac Peterson (CC BY 4.0)."></div><figcaption><b>Elephant heads</b> — wet alpine meadows, San Juans. Zac Peterson (CC BY 4.0).</figcaption></figure>
+      <figure><div class="gimg"><img class="zoomable" loading="lazy" src="/assets/img/gallery/flower-bluebells.jpg" alt="Mountain bluebells in the San Juan high country" data-cap="Baker's bluebells (Mertensia bakeri), a San Juan high-country wildflower. Patrick Alexander (CC0, public domain)."></div><figcaption><b>Mountain bluebells</b> — San Juan high country. Patrick Alexander (CC0).</figcaption></figure>
+    </div>
+    <p class="gallery-note">🌼 Got a great Vallecito-area bloom — columbine in your own aspen glade, a paintbrush meadow up the trail? <a href="contact.html">Send it in</a> and we'll add it with credit.</p>
   </div>
 </section>
 
 <!-- Shared lightbox (same pattern + CSS as the directory) -->
-<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo viewer">
+<div class="lightbox" id="lightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo viewer">
   <button class="lb-close" id="lbClose" type="button" aria-label="Close photo viewer">&times;</button>
   <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous photo">&#8249;</button>
   <figure class="lb-figure"><img id="lbImg" src="" alt=""><figcaption id="lbCap" class="lb-cap"></figcaption></figure>
@@ -220,10 +261,9 @@
 <script src="/assets/js/nav.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
 <script>
-/* Gallery lightbox — reuses the shared .lightbox / .lb-* markup + CSS. Click or
-   keyboard (Enter/Space) any .zoomable thumb to enlarge; arrows / ← → cycle; Esc closes. */
+/* Gallery lightbox — feature + grid images. Click or Enter/Space any .zoomable to enlarge; ←/→ cycle; Esc closes. */
 (function(){
-  var imgs = [].slice.call(document.querySelectorAll('.gallery-grid img.zoomable'));
+  var imgs = [].slice.call(document.querySelectorAll('img.zoomable'));
   if(!imgs.length) return;
   var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'),
       lbCap=document.getElementById('lbCap'), lbPrev=document.getElementById('lbPrev'),
@@ -233,9 +273,9 @@
     lbImg.src=im.getAttribute('data-full')||im.src; lbImg.alt=im.alt||'';
     lbCap.textContent=im.getAttribute('data-cap')||im.alt||''; }
   function openLb(i){ lastFocus=document.activeElement; show(i);
-    lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
+    lb.hidden=false; lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden'; lbClose.focus(); }
-  function closeLb(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true');
+  function closeLb(){ lb.classList.remove('open'); lb.hidden=true; lb.setAttribute('aria-hidden','true');
     document.body.style.overflow=''; lbImg.src=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
   imgs.forEach(function(im,i){ im.setAttribute('tabindex','0'); im.setAttribute('role','button');
     im.addEventListener('click', function(){ openLb(i); });
