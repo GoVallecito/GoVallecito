@@ -168,17 +168,27 @@
     // Hide the tile entirely if the feed never produced a good reading (status
     // "error" and no cached value) — never show an empty/guessed power state.
     var pw = d.power, pTile = $('tile-power');
-    if (pw && pw.status !== 'error' && (pw.asOf || pw.nearbyCount != null)) {
+    if (pw && pw.status !== 'error' && (pw.checkedAt || pw.asOf || pw.nearbyCount != null)) {
       if (pTile) pTile.hidden = false;
-      if (pw.nearbyCount > 0) {
-        setText('powerBig', pw.nearbyCount + ' nearby');
+      if (pw.nearbyAffected > 0) {
+        // confirmed outage near the lake — the only "warn" case
+        setText('powerBig', (pw.nearbyCount || 1) + ' nearby');
         var pl = '~' + pw.nearbyAffected + ' home' + (pw.nearbyAffected === 1 ? '' : 's') +
                  ' affected near the lake · crews ' + (pw.crews === 'assigned' ? 'assigned' : '—');
+        if (pw.lpeaUpdateTime) pl += ' · LPEA reported ' + rel(pw.lpeaUpdateTime);
         setText('powerMsg', pl);
-      } else {
+      } else if (pw.nearbyCount == null) {
+        // reached LPEA's system summary but not the per-outage list this run
         setText('powerBig', 'On');
-        var pc = 'No outages reported near Vallecito';
+        setText('powerMsg', (pw.systemOutNow != null && pw.systemOutNow > 0)
+          ? 'LPEA system: ' + pw.systemOutNow.toLocaleString() + ' out · nearby check momentarily unavailable'
+          : 'No nearby outage reported');
+      } else {
+        // all clear near the lake
+        setText('powerBig', 'On');
+        var pc = 'No outages reported near the lake';
         if (pw.systemOutNow != null && pw.systemOutNow > 0) pc += ' · LPEA system: ' + pw.systemOutNow.toLocaleString() + ' out';
+        if (pw.stale && pw.checkedAt) pc += ' · last checked ' + rel(pw.checkedAt);
         setText('powerMsg', pc);
       }
       markStale('tile-power', pw.stale);

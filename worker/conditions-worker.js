@@ -159,7 +159,7 @@ async function refresh(env) {
     safe(() => getFires(env),   prev.fires),
     safe(() => getRoads(env),   prev.road),
     getRestrictions(env).catch(() => ({ stage: "none" })),
-    safe(() => getPower(),      prev.power),
+    safe(() => getPower(prev.power), prev.power),
   ]);
 
   // Barometric trend (for anglers): compare to the prior cached pressure reading.
@@ -633,38 +633,77 @@ async function getRoads(env) {
  * every affected meter); LPEA's own map is the authority, linked from the tile.
  * See docs/REVIEW-UPDATES-34.md + DATA-SOURCES.md. */
 const POWER_RADIUS_MI = 8;
-const POWER_STALE_MS = 2 * 3600 * 1000;   // flag stale if updateTime older than ~2h (feed updates ~hourly/by-event)
-
-async function getPower() {
-  const [summary, outages] = await Promise.all([
-    getJson("https://outage.lpea.coop/data/outageSummary.json"),
-    getJson("https://outage.lpea.coop/data/outages.json")
-  ]);
-  const arr = Array.isArray(outages) ? outages : (outages.outages || outages.data || []);
-  let nearbyCount = 0, nearbyAffected = 0, crews = false;
-  for (const o of arr) {
-    const pt = o.outagePoint || o.outagepoint || null;
-    if (!pt) continue;
-    const lat = pt.lat != null ? pt.lat : pt.latitude;
-    const lon = pt.lng != null ? pt.lng : (pt.lon != null ? pt.lon : pt.longitude);
-    if (lat == null || lon == null || isNaN(lat) || isNaN(lon)) continue;
-    if (haversineMiles(LAT, LON, +lat, +lon) > POWER_RADIUS_MI) continue;
-    nearbyCount++;
-    const n = parseInt(o.customersOutNow, 10);
-    if (!isNaN(n) && n > 0) nearbyAffected += n;
-    if (o.crewAssigned) crews = true;
+// Resilient LPEA fetch: realistic browser UA + Accept, up to 3 tries, and a non-200
+// or HTML/non-JSON body is a SOFT failure (returns null) — it never throws. This stops
+// a transient CDN/bot block from freezing the whole power tile.
+async function fetchLpeaJson(url) {
+  const BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const r = await fetch(url, { headers: { "User-Agent": BROWSER_UA, "Accept": "application/json" }, cf: { cacheTtl: 0 } });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const t = (await r.text()).trim();
+      if (!t || t[0] === "<") throw new Error("non-JSON body");   // HTML challenge page
+      return JSON.parse(t);
+    } catch (e) { if (attempt === 2) return null; }
   }
+  return null;
+}
+
+// Freshness is based on OUR successful poll (checkedAt), NOT LPEA's updateTime — which
+// only moves on outage activity, so it legitimately sits hours old during an all-clear.
+// We flag stale ONLY when WE fail to reach LPEA this run; a quiet feed is good news.
+async function getPower(prev) {
+  const summary = await fetchLpeaJson("https://outage.lpea.coop/data/outageSummary.json");
+  const outages = await fetchLpeaJson("https://outage.lpea.coop/data/outages.json");
+  const nowIso = new Date().toISOString();
+
+  // Couldn't reach LPEA this run → keep last-good numbers + flag stale, but do NOT
+  // escalate a quiet all-clear to a warning (this was the freeze-at-"warn" bug).
+  if (!summary) {
+    if (prev) return { ...prev, checkedAt: prev.checkedAt || prev.asOf || null, stale: true,
+                       status: (prev.nearbyAffected > 0) ? "warn" : "ok" };
+    return { status: "error", stale: true };   // never reached LPEA and no history → tile hides
+  }
+
   const systemOutNow = numOrNull(summary.customersOutNow);
   const systemServed = numOrNull(summary.customersServed);
-  const asOf = summary.updateTime || null;
-  const asOfMs = asOf ? Date.parse(asOf) : NaN;
-  const stale = isNaN(asOfMs) ? true : (Date.now() - asOfMs) > POWER_STALE_MS;
+  const lpeaUpdateTime = summary.updateTime || null;
+
+  // Nearby filter needs the per-outage array; if only the summary came back, report
+  // system-wide and mark nearby as unknown (null) rather than guessing 0.
+  let nearbyCount = null, nearbyAffected = null, crews = false;
+  if (outages) {
+    const arr = Array.isArray(outages) ? outages : (outages.outages || outages.data || []);
+    nearbyCount = 0; nearbyAffected = 0;
+    for (const o of arr) {
+      const pt = o.outagePoint || o.outagepoint || null;
+      if (!pt) continue;
+      const lat = pt.lat != null ? pt.lat : pt.latitude;
+      const lon = pt.lng != null ? pt.lng : (pt.lon != null ? pt.lon : pt.longitude);
+      if (lat == null || lon == null || isNaN(lat) || isNaN(lon)) continue;
+      if (haversineMiles(LAT, LON, +lat, +lon) > POWER_RADIUS_MI) continue;
+      nearbyCount++;
+      const n = parseInt(o.customersOutNow, 10);
+      if (!isNaN(n) && n > 0) nearbyAffected += n;
+      if (o.crewAssigned) crews = true;
+    }
+  }
+
+  // All-clear — or outages only elsewhere on the system — is OK. Warn ONLY on a
+  // confirmed outage near the lake.
+  const status = (nearbyAffected && nearbyAffected > 0) ? "warn" : "ok";
+
   return {
-    nearbyCount, nearbyAffected: Math.max(0, nearbyAffected),
+    nearbyCount,
+    nearbyAffected: nearbyAffected == null ? null : Math.max(0, nearbyAffected),
     systemOutNow, systemServed,
-    crews: nearbyCount > 0 ? (crews ? "assigned" : "—") : null,
-    asOf, source: "La Plata Electric Association",
-    status: "ok", stale
+    crews: (nearbyCount && nearbyCount > 0) ? (crews ? "assigned" : "—") : null,
+    checkedAt: nowIso,            // when WE last reached LPEA (the freshness signal)
+    lpeaUpdateTime,               // LPEA's last reported activity (secondary; shown only on active outage)
+    asOf: nowIso,                 // back-compat: the existing "updated" line reads asOf = our check time
+    source: "La Plata Electric Association",
+    status, stale: false
   };
 }
 
