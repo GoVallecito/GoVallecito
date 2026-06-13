@@ -11,7 +11,7 @@ async function* walk(dir, rel = '') {
   for (const e of await readdir(dir, { withFileTypes: true })) {
     const r = rel + e.name;
     if (e.isDirectory()) yield* walk(new URL(e.name + '/', dir), r + '/');
-    else if (e.name.endsWith('.html') && e.name !== '404.html' && e.name !== 'analytics.html') yield r;
+    else if (e.name.endsWith('.html') && e.name !== '404.html' && e.name !== 'analytics.html' && e.name !== 'offline.html') yield r;
   }
 }
 

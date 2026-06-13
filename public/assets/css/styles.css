@@ -596,3 +596,12 @@ figure.imgfig figcaption a:hover{color:var(--pine)}
 .cam-tile .cam-label{font-weight:800}
 .cam-tile .cam-sub{font-size:.82rem;color:var(--lake);font-weight:700}
 @media(max-width:560px){.cam-grid{grid-template-columns:1fr}}
+
+/* PWA: installed (standalone) mode. viewport-fit=cover lets content reach the
+   screen edges, so pad the sticky header for the notch/Dynamic Island/status bar
+   and respect side insets in landscape. No effect in a normal browser tab. */
+@media (display-mode: standalone){
+  header.site{padding-top:env(safe-area-inset-top)}
+  header.site>.wrap,
+  .condbar>.wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+}
