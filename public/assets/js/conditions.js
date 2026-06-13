@@ -464,6 +464,8 @@
           if (r.issuedBy) meta.push(escapeHtml(r.issuedBy));
           if (r.effective) meta.push('effective ' + escapeHtml(r.effective));
           if (r.scope) meta.push(escapeHtml(r.scope));
+          if (r.orderNumber) meta.push('Order ' + escapeHtml(r.orderNumber));
+          if (r.source) meta.push('<a href="' + escapeHtml(r.source) + '" target="_blank" rel="noopener">SJNF order ↗</a>');
           var cols = '';
           if (Array.isArray(r.prohibited) && r.prohibited.length) {
             cols += '<div><h4>🚫 Prohibited</h4><ul>' + r.prohibited.map(function (x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';

@@ -1,5 +1,6 @@
 {
-  "_comment": "EDITOR-CONTROLLED fire restrictions — the SINGLE SOURCE for both the Alert tile and the /conditions fire-restriction detail section. The worker reads it every 15 min and includes it in conditions.json. To change: set stage to none|1|2 and update the fields below. When stage is 'none' the prohibited/allowed/penalty/scope/effective are ignored. See docs/FIRE-RESTRICTIONS.md and worker/README.md.",
+  "_comment": "EDITOR fire restrictions — fallback + override for the auto-detected SJNF stage. The worker now auto-reads the current stage from the official San Juan NF alerts pages (precedence: override ▸ live SJNF parse ▸ last-good ▸ this file). Set \"override\": true to FORCE this file's values (e.g. if the parse is wrong or fs.usda.gov is down); leave it false to let auto-detection win and keep these fields as the fallback. Set stage to none|1|2. When stage is 'none' the prohibited/allowed/penalty/scope/effective are ignored. See docs/FIRE-RESTRICTIONS-AUTO.md, docs/FIRE-RESTRICTIONS.md, worker/README.md.",
+  "override": false,
   "stage": "1",
   "issuedBy": "San Juan National Forest",
   "effective": "June 12, 2026",

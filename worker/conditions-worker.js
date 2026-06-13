@@ -158,7 +158,7 @@ async function refresh(env) {
     safe(() => getAlerts(env),  prev.alert),
     safe(() => getFires(env),   prev.fires),
     safe(() => getRoads(env),   prev.road),
-    getRestrictions(env).catch(() => ({ stage: "none" })),
+    getRestrictions(env, prev).catch(() => ({ stage: "none" })),
     safe(() => getPower(prev.power), prev.power),
   ]);
 
@@ -707,15 +707,113 @@ async function getPower(prev) {
   };
 }
 
-/* ---------- FIRE RESTRICTIONS: editor-controlled restrictions.json ---------- */
-async function getRestrictions(env) {
-  if (!env.RESTRICTIONS_URL) return { stage: "none" };
-  const j = await getJson(env.RESTRICTIONS_URL);
+/* ---------- FIRE RESTRICTIONS: auto-detect from SJNF + editor override ----------
+ * Precedence: editor override (restrictions.json "override":true) ▸ live SJNF parse ▸
+ * last-good live parse ▸ editor file default. The live parse only counts if it confirms
+ * the order covers Vallecito (Described Area names "La Plata", or it's forest-wide).
+ * Everything is try/catch — a scrape failure silently falls back to the editor file, so
+ * the tile never breaks. See docs/FIRE-RESTRICTIONS-AUTO.md. */
+const SJNF_BASE = "https://www.fs.usda.gov";
+const FIRE_MONTHS = { jan:"January", feb:"February", mar:"March", apr:"April", may:"May", jun:"June",
+  jul:"July", aug:"August", sep:"September", oct:"October", nov:"November", dec:"December" };
+function normFireDate(mon, day, yr) {
+  const m = FIRE_MONTHS[String(mon || "").slice(0, 3).toLowerCase()];
+  if (!m) return null;
+  yr = String(yr); if (yr.length === 2) yr = "20" + yr;
+  return `${m} ${parseInt(day, 10)}, ${yr}`;
+}
+async function fetchHtml(url) {
+  const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+  try {
+    const r = await fetch(url, { headers: { "User-Agent": UA, "Accept": "text/html" }, cf: { cacheTtl: 300 } });
+    if (!r.ok) return null;
+    const t = await r.text();
+    return (t && t.length > 200) ? t : null;
+  } catch (e) { return null; }
+}
+// Parse the current SJNF fire-restriction stage from the official alerts pages.
+async function getForestRestrictions() {
+  const index = await fetchHtml(SJNF_BASE + "/r02/sanjuan/alerts");
+  if (!index) return null;
+  // Highest active stage that has both a "STAGE N FIRE" mention and a stage page link.
+  let stage = null, link = null;
+  for (const want of ["2", "1"]) {
+    const m = index.match(new RegExp('href="(/r02/sanjuan/alerts/stage-' + want + '-[^"]*)"', "i"));
+    if (m && new RegExp("stage\\s*" + want + "\\s*fire", "i").test(index)) { stage = want; link = m[1]; break; }
+  }
+  if (!stage || !link) return null;
+  const page = await fetchHtml(SJNF_BASE + link);
+  if (!page) return null;
+  // Only surface a restriction that provably covers Vallecito.
+  if (!/la\s*plata/i.test(page) && !/entire san juan national forest/i.test(page)) return null;
+  const sm = page.match(/<meta\s+(?:property="og:description"|name="abstract")\s+content="([^"]+)"/i);
+  const summary = sm ? sm[1].replace(/\s+/g, " ").trim() : null;
+  const om = page.match(/Order Number:?\s*([0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2})/i);
+  const orderNumber = om ? om[1] : null;
+  const mt = page.match(/article:modified_time"\s+content="([^"]+)"/i);
+  const asOf = mt ? mt[1] : null;
+  let effective = null;
+  const em = (summary || "").match(/as of\s+([A-Za-z]{3,9})\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})/i);
+  if (em) effective = normFireDate(em[1], em[2], em[3]);
+  let ends = null;
+  const dm = page.match(/unavailable_after:[^"]*?(\d{1,2})-([A-Za-z]{3})-(\d{2})/i);
+  if (dm) ends = normFireDate(dm[2], dm[1], dm[3]);
+  if (!orderNumber && !effective) return null;   // too little to trust
+  return { stage, effective, ends, orderNumber, summary, source: SJNF_BASE + link, asOf };
+}
+function mapEditorRestriction(j, source) {
   return {
     stage: j.stage || "none", issuedBy: j.issuedBy, scope: j.scope, effective: j.effective,
     summary: j.summary, prohibited: j.prohibited, allowed: j.allowed, penalty: j.penalty,
-    resources: j.resources, url: j.url, updated: j.updated, note: j.note || j.summary
+    resources: j.resources, url: j.url, updated: j.updated, note: j.note || j.summary,
+    orderNumber: j.orderNumber, restrictionSource: source
   };
+}
+async function getRestrictions(env, prev) {
+  let editor = null;
+  try { if (env.RESTRICTIONS_URL) editor = await getJson(env.RESTRICTIONS_URL); } catch (e) {}
+
+  // 1) Editor override — David can force or clear a stage instantly.
+  if (editor && editor.override === true) return mapEditorRestriction(editor, "editor-override");
+
+  // 2) Live SJNF parse.
+  let live = null;
+  try { live = await getForestRestrictions(); } catch (e) {}
+  if (live && live.stage && live.stage !== "none") {
+    // Reuse the editor's verified prohibited/allowed/penalty copy ONLY when the stage
+    // matches; on a stage change we omit those lists rather than show the wrong ones.
+    const base = (editor && editor.stage === live.stage) ? editor : {};
+    return {
+      stage: live.stage,
+      issuedBy: "San Juan National Forest",
+      scope: base.scope || "entire San Juan National Forest, including Vallecito Lake",
+      effective: live.effective || base.effective,
+      ends: live.ends,
+      orderNumber: live.orderNumber,
+      summary: live.summary || base.summary,
+      prohibited: base.prohibited,
+      allowed: base.allowed,
+      penalty: base.penalty,
+      resources: base.resources,
+      url: live.source,
+      source: live.source,
+      asOf: live.asOf,
+      updated: live.asOf ? live.asOf.slice(0, 10) : base.updated,
+      note: base.note || base.summary || live.summary,
+      restrictionSource: "live-sjnf"
+    };
+  }
+
+  // 3) Last-good live parse from the previous run.
+  if (prev && prev.restriction && prev.restriction.restrictionSource &&
+      /^live/.test(prev.restriction.restrictionSource) && prev.restriction.stage &&
+      prev.restriction.stage !== "none") {
+    return { ...prev.restriction, restrictionSource: "live-cached" };
+  }
+
+  // 4) Editor file default / fallback.
+  if (editor) return mapEditorRestriction(editor, "editor");
+  return { stage: "none" };
 }
 
 // Fold the editor restriction stage into the NWS-derived alert tile, applying
