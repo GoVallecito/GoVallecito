@@ -622,3 +622,8 @@ figure.imgfig figcaption a:hover{color:var(--pine)}
 .backtop:focus-visible{outline:3px solid var(--lake);outline-offset:2px}
 @media(max-width:560px){.backtop{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:42px;height:42px}}
 @media (prefers-reduced-motion:reduce){.backtop{transition:none}}
+
+/* ===== Round 40: map directions link + share button ===== */
+.popup-dir{font-weight:600}
+.btn-share{background:var(--card);border:1px solid var(--line);color:var(--pine)}
+.btn-share[data-shared]::after{content:" \2713 copied"}

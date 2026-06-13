@@ -204,6 +204,16 @@
 
     // ----- optional detailed fields (conditions.html) -----
     paintDetail(d);
+
+    // ----- share button text ("Share conditions" on conditions.html) -----
+    var shareBtn = $('shareConditions');
+    if (shareBtn) {
+      var bits = [];
+      if (d.lake && d.lake.pct != null) bits.push(d.lake.pct + '% full');
+      if (d.weather && d.weather.tempF != null) bits.push(d.weather.tempF + '°');
+      if (d.alert && (d.alert.level === 'danger' || d.alert.redFlag) && d.alert.title) bits.push(d.alert.title);
+      shareBtn.setAttribute('data-share-text', 'Vallecito Lake' + (bits.length ? ': ' + bits.join(', ') : '') + ' —');
+    }
   }
 
   // Short, honest source label per feed (derived from the feed when it varies).

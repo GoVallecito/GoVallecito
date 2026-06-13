@@ -45,7 +45,7 @@
           <a href="things-to-do.html" role="menuitem">Things To Do</a>
           <a href="fishing.html" role="menuitem">Fishing</a>
           <a href="trails.html" role="menuitem">Trails</a>
-          <a href="middle-mountain.html" role="menuitem">Middle Mountain</a>
+          <a href="middle-mountain.html" role="menuitem">Middle Mountain</a>
           <a href="map.html" role="menuitem" class="active" aria-current="page">Lake Map</a>
           <a href="gallery.html" role="menuitem">Gallery</a>
         </div>
@@ -251,6 +251,7 @@
       var html = nameLink(p);                       // name itself is the link (no trailing "info")
       if (p.blurb) html += '<br>' + esc(p.blurb);
       if (p.phone) html += '<br><a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>';
+      if (window.gvDirections && p.lat && p.lng) html += '<br><a class="popup-dir" href="' + window.gvDirections(p.lat, p.lng) + '" rel="noopener">▸ Directions ↗</a>';
       m.bindPopup(html);
       m.addTo(groups[p.category]);
       counts[p.category]++;
@@ -295,7 +296,7 @@
             var c = f.geometry.coordinates; pts.push([c[1], c[0]]);
             var ic = L.divIcon({ className: '', html: '<div class="map-emoji-icon">🥾</div>', iconSize: [26,26], iconAnchor: [13,13], popupAnchor: [0,-12] });
             L.marker([c[1], c[0]], { icon: ic, title: pr.name })
-              .bindPopup('<b>' + esc(pr.name) + '</b><br>Trailhead · <a href="middle-mountain.html#' + esc(pr.anchor || 'routes') + '">guide →</a>')
+              .bindPopup('<b>' + esc(pr.name) + '</b><br>Trailhead · <a href="middle-mountain.html#' + esc(pr.anchor || 'routes') + '">guide →</a>' + (window.gvDirections ? '<br><a class="popup-dir" href="' + window.gvDirections(c[1], c[0]) + '" rel="noopener">▸ Directions ↗</a>' : ''))
               .addTo(grp);
             return;
           }
@@ -332,7 +333,7 @@
         var pins = geo.features.filter(function (f) { return f.geometry.type === 'Point'; });
         var h = '<h3>🏔️ Middle Mountain (FR 724)</h3><p class="muted" style="font-size:.85rem">Authoritative trail/road geometry from the USFS EDW service — toggle the layer on the map above. Full guide: <a href="middle-mountain.html">Middle Mountain</a>.</p><ul>';
         lines.forEach(function (f) { var pr = f.properties, u = MM_USE[pr.use] || {}; h += '<li><a href="middle-mountain.html#' + esc(anchorFor(f)) + '"><b>' + esc(pr.name) + '</b></a> — ' + esc(u.label || '') + lenLabel(pr) + '</li>'; });
-        pins.forEach(function (f) { var pr = f.properties; h += '<li>🥾 <a href="middle-mountain.html#' + esc(pr.anchor || 'routes') + '"><b>' + esc(pr.name) + '</b></a> — trailhead</li>'; });
+        pins.forEach(function (f) { var pr = f.properties, c = f.geometry.coordinates; h += '<li>🥾 <a href="middle-mountain.html#' + esc(pr.anchor || 'routes') + '"><b>' + esc(pr.name) + '</b></a> — trailhead' + (window.gvDirections && c ? ' · <a class="popup-dir" href="' + window.gvDirections(c[1], c[0]) + '" rel="noopener">Directions ↗</a>' : '') + '</li>'; });
         h += '</ul>';
         body.insertAdjacentHTML('beforeend', h);
       }).catch(function(){});
@@ -355,7 +356,8 @@
       html += '<h3>' + cat.emoji + ' ' + esc(cat.label) + '</h3><ul>';
       list.forEach(function (p) {
         html += '<li>' + nameLink(p) + (p.blurb ? ' — ' + esc(p.blurb) : '') +
-          (p.phone ? ' · <a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>' : '') + '</li>';
+          (p.phone ? ' · <a href="' + telHref(p.phone) + '">' + esc(p.phone) + '</a>' : '') +
+          (window.gvDirections && p.lat && p.lng ? ' · <a class="popup-dir" href="' + window.gvDirections(p.lat, p.lng) + '" rel="noopener">Directions ↗</a>' : '') + '</li>';
       });
       html += '</ul>';
     });
