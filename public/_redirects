@@ -3,3 +3,7 @@
 /events       /   301
 /events/      /   301
 /events.html  /   301
+
+# Old blog (dated May 2026, indexed) had no new home — recover its link equity.
+/blog/things-to-do-vallecito-summer/   /things-to-do   301
+/blog/*                                /things-to-do   301

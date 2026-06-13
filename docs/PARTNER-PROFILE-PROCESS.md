@@ -46,6 +46,7 @@ exception — she already has the bespoke `real-estate-partner.html`; don't rege
 - Contact/booking block — phone (tel:), email (mailto:), website, booking link, social, address +
   map link; two-hop back to the directory entry.
 - Footer credit: image courtesy of the business; link to How We Verify.
+- **SEO:** `<title>` ≤62 chars, `meta description` ≤160 chars — verify before shipping.
 
 ## Notes
 - Keep it template-driven so the Nth partner page is fast and consistent.
