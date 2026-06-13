@@ -246,7 +246,7 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
 .pagehero .eyebrow{color:#9fe6d6}
 
 /* ---------- Long-form content ---------- */
-.prose{max-width:72ch}
+.prose{max-width:74ch;margin-left:auto;margin-right:auto}
 .prose h3{font-size:1.25rem;margin:26px 0 6px}
 .prose h4{font-size:1rem;margin:18px 0 4px}
 .prose p{margin:8px 0}
@@ -605,3 +605,20 @@ figure.imgfig figcaption a:hover{color:var(--pine)}
   header.site>.wrap,
   .condbar>.wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 }
+
+/* ===== Round 38: readability + scroll polish ===== */
+/* Opt-in two-column list — halves the length of long, scannable lists; 1 col on narrow screens. */
+.cols2{column-count:2;column-gap:40px}
+.cols2>li,.cols2>p{break-inside:avoid}
+@media(max-width:1100px){.cols2{column-count:1}}
+
+/* Back-to-top button (injected site-wide by nav.js). */
+.backtop{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;
+  width:46px;height:46px;border:0;border-radius:50%;background:var(--pine);color:#fff;font-size:1.3rem;
+  line-height:1;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .2s ease,transform .2s ease,visibility .2s ease;box-shadow:0 6px 18px rgba(20,40,30,.28)}
+.backtop.show{opacity:1;visibility:visible;transform:none}
+.backtop:hover{filter:brightness(1.12)}
+.backtop:focus-visible{outline:3px solid var(--lake);outline-offset:2px}
+@media(max-width:560px){.backtop{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:42px;height:42px}}
+@media (prefers-reduced-motion:reduce){.backtop{transition:none}}
