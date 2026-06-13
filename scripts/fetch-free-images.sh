@@ -25,6 +25,38 @@ get "https://www.fs.usda.gov/sites/nfs/files/r02/sanjuan/image/20240602_FS_mdefr
 get "https://upload.wikimedia.org/wikipedia/commons/b/be/19111xxxx-fs-sanjuan-sr-98286_40263560381_o_39962127004_o_%2848902886976%29.jpg" "vallecito-creek-1911-usfs-pd.jpg"
 get "https://upload.wikimedia.org/wikipedia/commons/5/5f/Weminuche_Wilderness_Aspen_2010.jpg"              "weminuche-aspen-pd.jpg"
 
+# ===== Imagery expansion (gallery.html) — all URLs + licenses verified via the
+# Wikimedia Commons API (scripts/verify-commons.mjs); see docs/IMAGES-PLAN.md and the
+# #photo-credits table on sources.html. PD = public domain; CC BY / CC BY-SA require credit.
+# --- Category 1: Ute / Southern Ute heritage (public domain) ---
+get "https://upload.wikimedia.org/wikipedia/commons/6/6c/Ute_delegation.jpg"                                            "ute-delegation-1880.jpg"      # Mathew Brady, 1880, PD
+get "https://upload.wikimedia.org/wikipedia/commons/5/5c/Wah-be-git_-_Ute_man%2C_half-length_portrait%2C_facing_right%2C_wearing_earring_in_right_ear%2C_with_two_braids_LCCN94509881.jpg" "ute-wahbegit-1899.jpg" # Rose & Hopkins, 1899, LoC PD
+get "https://upload.wikimedia.org/wikipedia/commons/6/6f/Chief_Sevara_and_family%2C_ca._1885_-_DPLA_-_c2cf2de92e89e01f976288b59de4aac0.jpg" "ute-sevara-1885.jpg"  # ca.1885, DPLA PD
+get "https://upload.wikimedia.org/wikipedia/commons/b/ba/Ute_braves%2C_of_the_Kah-poh-teh_band_-_DPLA_-_2e5f06d0a53f6bb71eab8550af4b9266_%28page_1%29.jpg" "ute-capote-1875.jpg" # T.H. O'Sullivan, 1875, PD
+get "https://upload.wikimedia.org/wikipedia/commons/1/1b/Utes._Group_of_children_LOC_ds.10831.jpg"                      "ute-children-loc.jpg"         # Library of Congress, PD
+# --- Category 4: the lake today / recreation (CC BY / CC BY-SA) ---
+get "https://upload.wikimedia.org/wikipedia/commons/a/a9/Hiking_to_the_Ice_Lakes._San_Juan_National_Forest%2C_Colorado.jpg" "rec-ice-lakes-hike.jpg"    # Paxson Woelber, CC BY-SA 4.0
+get "https://upload.wikimedia.org/wikipedia/commons/3/37/Emerald_Lake_%28San_Juan_National_Forest%29%2C_CO.jpg"         "rec-emerald-lake.jpg"         # Penguin314, CC BY-SA 4.0
+get "https://upload.wikimedia.org/wikipedia/commons/a/a9/Continental_divide_trail_in_Weminuche_Wilderness.jpg"          "rec-cdt-weminuche.jpg"        # Charlie DeTar, CC BY-SA 3.0
+get "https://upload.wikimedia.org/wikipedia/commons/d/d8/Looking_across_Williams_Creek_Reservoir.JPG"                   "rec-williams-creek-reservoir.jpg" # Jeffrey Beall, CC BY 4.0
+get "https://upload.wikimedia.org/wikipedia/commons/d/d9/Haviland_Lake_-_panoramio_%281%29.jpg"                         "rec-haviland-lake.jpg"        # Outdoor Craziness, CC BY-SA 3.0
+# --- Category 5: wild & scenic, wildlife, night sky (PD federal + CC) ---
+get "https://upload.wikimedia.org/wikipedia/commons/b/b2/Weminuche_Wilderness_hills.JPG"                                "wild-weminuche-hills.jpg"     # Delaywaves, CC BY 3.0
+get "https://upload.wikimedia.org/wikipedia/commons/e/e4/Ice_Lake_basin%2C_San_Juan_Mountains%2C_Colorado.jpg"          "wild-ice-lake-basin.jpg"      # John Fowler, CC BY 2.0
+get "https://upload.wikimedia.org/wikipedia/commons/e/e6/Aspen_Gold.jpg"                                                "wild-aspen-gold.jpg"          # Robert M. Russell, CC BY-SA 4.0
+get "https://upload.wikimedia.org/wikipedia/commons/b/b5/The_mouth_of_Weminuche_Creek.JPG"                             "wild-weminuche-creek-mouth.jpg" # Jeffrey Beall, CC BY 4.0
+get "https://upload.wikimedia.org/wikipedia/commons/8/8c/USFWS_bald_eagle_%2823770875811%29.jpg"                        "wild-bald-eagle.jpg"          # USFWS, PD
+get "https://upload.wikimedia.org/wikipedia/commons/5/55/Rocky_Mountain_Bull_Elk.jpg"                                   "wild-elk.jpg"                 # MONGO, PD (self-release)
+get "https://upload.wikimedia.org/wikipedia/commons/8/8b/Moose_superior.jpg"                                            "wild-moose.jpg"               # USDA Forest Service, PD
+get "https://upload.wikimedia.org/wikipedia/commons/e/e8/American_black_bear_%2826905320846%29.jpg"                     "wild-black-bear.jpg"          # USFWS/Southeast, PD
+get "https://upload.wikimedia.org/wikipedia/commons/0/0f/Rocky_Mountain_Bighorn_Sheep_%28Ovis_canadensis_canadensis%29%2C_Rocky_Mountain_National_Park.jpg" "wild-bighorn.jpg" # dw_ross, CC BY 2.0
+get "https://upload.wikimedia.org/wikipedia/commons/0/00/Osprey_with_fish_%2849694356538%29.jpg"                        "wild-osprey-fish.jpg"         # USFWS Northeast, PD
+get "https://upload.wikimedia.org/wikipedia/commons/d/d8/Milky_Way_over_Rocky_Mountain_National_Park_%2826367276674%29.jpg" "wild-milkyway.jpg"        # NPS / Jeremy M. White, PD
+# NOTE (verify-or-exclude): NO open-licensed 1938–41 Vallecito Dam CONSTRUCTION photo exists online
+# (the Maj. C.A. Burns album is held by Fort Lewis College's Center of Southwest Studies — needs a
+# direct rights request). NO verifiable angler/kayak action shot (only on Flickr, license unconfirmable).
+# Old-Vallecito family photos = Pine River Library (permission pending — David ask). All excluded for now.
+
 # NOT scripted (grab manually): Flickr originals — Lake Fireworks (flickr.com/photos/126818958@N05/28132942275,
 # CC BY 2.0, David Kobuszewski) and Three Relics (flickr.com/photos/cogdog/29304303165, CC BY 2.0, Alan Levine) —
 # use Flickr's download button for full size. USBR dam aerial: save from usbr.gov/projects/index.php?id=258 (PD).
