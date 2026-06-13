@@ -56,8 +56,19 @@ export default {
       return new Response(JSON.stringify(out, null, 2), { headers: { "content-type": "application/json" } });
     }
     if (url.pathname === "/__analytics") {          // manual trigger to refresh the analytics rollup
+      // PRIVACY: this is a PUBLIC *.workers.dev path, OUTSIDE the Cloudflare Access
+      // wall that protects /analytics. It must NEVER return the rollup itself (that
+      // would leak per-partner numbers off-Access) — it only triggers the refresh +
+      // writes KV, then reports a tiny status. The daily 0 9 * * * cron refreshes
+      // automatically, so this manual trigger is just an occasional convenience.
+      // Hardening: gate on ?key= matching the ANALYTICS_TRIGGER_KEY secret; if that
+      // secret isn't set we skip the check so it can't lock anyone out pre-config.
+      if (env.ANALYTICS_TRIGGER_KEY && url.searchParams.get("key") !== env.ANALYTICS_TRIGGER_KEY) {
+        return new Response("Not found", { status: 404 });
+      }
       const out = await refreshAnalytics(env);
-      return new Response(JSON.stringify(out, null, 2), { headers: { "content-type": "application/json" } });
+      const status = { ok: true, live: !!(out && out.meta && out.meta.live), updated: new Date().toISOString() };
+      return new Response(JSON.stringify(status), { headers: { "content-type": "application/json" } });
     }
     return new Response("Not found", { status: 404 });
   }
