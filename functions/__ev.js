@@ -15,7 +15,8 @@ const SLUG_RE = /^[a-z0-9-]{2,40}$/;
 
 export const onRequestPost = async (context) => {
   const { env, request } = context;
-  if (!env.CONDITIONS) return new Response(null, { status: 204 }); // KV not bound — accept + drop
+  const KV = env.CONDITIONS || env.KV_BINDING; // dashboard default name is KV_BINDING
+  if (!KV) return new Response(null, { status: 204 }); // KV not bound — accept + drop
   let body;
   try { body = await request.json(); } catch { return new Response(null, { status: 204 }); }
   const slug = String((body && body.slug) || "").toLowerCase();
@@ -24,8 +25,8 @@ export const onRequestPost = async (context) => {
   if (!ALLOWED.has(action)) action = "other";
   const key = "ev:" + slug + ":" + action;
   try {
-    const cur = parseInt(await env.CONDITIONS.get(key), 10) || 0;
-    await env.CONDITIONS.put(key, String(cur + 1));
+    const cur = parseInt(await KV.get(key), 10) || 0;
+    await KV.put(key, String(cur + 1));
   } catch (e) { /* swallow — best-effort */ }
   return new Response(null, { status: 204 });
 };

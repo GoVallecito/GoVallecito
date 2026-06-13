@@ -16,8 +16,10 @@ export const onRequestGet = async (context) => {
   const { env, request } = context;
   const headers = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
   try {
-    if (env.CONDITIONS) {
-      const live = await env.CONDITIONS.get("analytics");
+    // Accept the KV binding under either name (dashboard default is KV_BINDING; spec uses CONDITIONS).
+    const KV = env.CONDITIONS || env.KV_BINDING;
+    if (KV) {
+      const live = await KV.get("analytics");
       if (live) return new Response(live, { headers });
     }
   } catch (e) { /* fall through to the bundled sample */ }
