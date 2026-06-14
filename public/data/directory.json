@@ -64,7 +64,7 @@
     {
       "slug": "rubber-duck-cleaning", "name": "Rubber Duck Cleaning", "category": "Cleaning Services", "tier": "featured",
       "blurb": "Local, licensed & insured cleaning — kitchens, baths, deep cleans, move-in/move-out, offices, RVs, vacation rentals, and new-construction cleanups. Serving Vallecito, Bayfield, Durango & Ignacio. Free estimates.",
-      "phone": "(623) 398-5279", "email": "rubberduckcleaning22@gmail.com",
+      "phone": "(623) 398-5279", "email": "rubberduckcleaning22@gmail.com", "facebook": "https://www.facebook.com/profile.php?id=61551826349242",
       "image": "/assets/img/featured/rubber-duck-logo.jpg", "imageAlt": "Rubber Duck Cleaning logo",
       "photos": ["/assets/img/featured/rubber-duck-ba-apartment.jpg", "/assets/img/featured/rubber-duck-ba-stove.jpg", "/assets/img/featured/rubber-duck-ba-toilet.jpg"],
       "badge": "GoVallecito Partner", "profile": "partner-rubber-duck-cleaning.html",

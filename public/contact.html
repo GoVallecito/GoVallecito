@@ -24,6 +24,16 @@
 <meta property="og:url" content="https://govallecito.com/contact">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/assets/css/styles.css">
+<style>
+/* Contact form (Web3Forms) */
+.gv-form{max-width:560px;margin-top:8px}
+.gv-field{margin-bottom:14px;display:flex;flex-direction:column;gap:5px}
+.gv-field label{font-weight:700;color:var(--ink);font-size:.92rem}
+.gv-form input,.gv-form select,.gv-form textarea{padding:11px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink);width:100%}
+.gv-form input:focus,.gv-form select:focus,.gv-form textarea:focus{outline:2px solid var(--lake);outline-offset:1px;border-color:var(--lake)}
+.gv-form textarea{resize:vertical;min-height:120px}
+.gv-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+</style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://govallecito.com/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://govallecito.com/contact"}]}
 </script>
@@ -45,7 +55,7 @@
           <a href="things-to-do.html" role="menuitem">Things To Do</a>
           <a href="fishing.html" role="menuitem">Fishing</a>
           <a href="trails.html" role="menuitem">Trails</a>
-          <a href="middle-mountain.html" role="menuitem">Middle Mountain</a>
+          <a href="middle-mountain.html" role="menuitem">Middle Mountain</a>
           <a href="map.html" role="menuitem">Lake Map</a>
           <a href="gallery.html" role="menuitem">Gallery</a>
         </div>
@@ -97,9 +107,49 @@
   <div class="wrap">
     <p class="sec-lead">Email us directly — corrections, business listings, events, or just a question about the lake. We read everything and reply when we can.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" style="background:var(--pine);color:#fff" href="mailto:contact@govallecito.com">✉️ Email contact@govallecito.com</a>
+      <a class="btn btn-primary" style="background:var(--pine);color:#fff" href="mailto:contact@govallecito.com?subject=Message%20for%20GoVallecito.com">✉️ Email contact@govallecito.com</a>
     </div>
     <p class="muted" style="margin-top:16px">Spot an error in our conditions or listings? See <a href="sources.html#corrections">corrections</a>. In an emergency, don't email — call <a href="tel:911">911</a>; lake &amp; emergency numbers are on the <a href="conditions.html#contacts">conditions page</a>.</p>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Or send a message right here</div>
+    <h2 class="sec-title">Contact form</h2>
+    <p class="sec-lead">Fill this out and it comes straight to our inbox — no email app needed.</p>
+    <form id="contactForm" class="gv-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+      <input type="hidden" name="subject" value="New message from the GoVallecito.com contact form">
+      <input type="hidden" name="from_name" value="GoVallecito.com contact form">
+      <label class="gv-hp" aria-hidden="true">Leave this empty <input type="text" name="botcheck" tabindex="-1" autocomplete="off"></label>
+      <div class="gv-field">
+        <label for="cf-name">Your name</label>
+        <input id="cf-name" type="text" name="name" required autocomplete="name">
+      </div>
+      <div class="gv-field">
+        <label for="cf-email">Your email</label>
+        <input id="cf-email" type="email" name="email" required autocomplete="email">
+      </div>
+      <div class="gv-field">
+        <label for="cf-topic">What's it about?</label>
+        <select id="cf-topic" name="topic">
+          <option>General question</option>
+          <option>Correction / out-of-date info</option>
+          <option>Business listing</option>
+          <option>Event</option>
+          <option>Featured partner</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="gv-field">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="background:var(--pine);color:#fff">Send message</button>
+      <p id="cf-status" class="muted" role="status" aria-live="polite" style="margin-top:12px"></p>
+    </form>
+    <p class="muted" style="margin-top:10px;font-size:.85rem">Prefer your own email app? Use the <a href="mailto:contact@govallecito.com?subject=Message%20for%20GoVallecito.com">email link above</a>. We never share your details.</p>
   </div>
 </section>
 
@@ -136,6 +186,30 @@
 
 <script src="/assets/js/nav.js" defer></script>
 <script src="/assets/js/conditions.js" defer></script>
+<script>
+(function(){
+  var form = document.getElementById('contactForm');
+  if(!form) return;
+  var status = document.getElementById('cf-status');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var keyEl = form.querySelector('[name=access_key]');
+    var key = keyEl ? keyEl.value : '';
+    if(!key || key.indexOf('YOUR_') === 0){
+      status.textContent = 'The form isn’t finished setting up yet — please use the email link above for now.';
+      return;
+    }
+    status.textContent = 'Sending…';
+    fetch('https://api.web3forms.com/submit', { method:'POST', body: new FormData(form) })
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(j && j.success){ form.reset(); status.textContent = '✅ Thanks — your message is on its way. We read everything and reply when we can.'; }
+        else { status.textContent = '⚠️ Sorry, that didn’t go through. Please use the email link above.'; }
+      })
+      .catch(function(){ status.textContent = '⚠️ Network hiccup. Please use the email link above.'; });
+  });
+})();
+</script>
   <script defer src="/assets/js/pwa.js"></script>
 </body>
 </html>

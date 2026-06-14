@@ -250,9 +250,7 @@ a.recard:hover{text-decoration:none;transform:translateY(-1px)}
    the focal point upward so the peaks show. Scoped to >=768px so phones/small tablets render
    exactly as before. */
 @media(min-width:768px){
-  .hero{min-height:480px}
-  .pagehero{min-height:340px}
-  .hero,.pagehero{background-position:center 28%}
+  .hero,.pagehero{min-height:480px;background-position:center 28%}
 }
 
 /* ---------- Long-form content ---------- */
