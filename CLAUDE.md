@@ -250,6 +250,52 @@ Each change is specced in `docs/REVIEW-UPDATES-NN.md`, then built by Claude Code
   foot/horse only; Tuckerville is in HINSDALE County; theisite world type locality; NO "First/Second
   Notch" anywhere; Middle Mountain CG correction (reservable rec.gov $28–32, no horses). Nav under
   Explore. Build with/after Round 29.
+- **Round 31 (queued, approved June 2026):** Middle Mountain ON the lake map — spec
+  `docs/REVIEW-UPDATES-31.md`. USFS EDW ArcGIS REST VERIFIED working (trail 808 polyline returned,
+  gis_miles 1.724 ≈ published 1.7): fetch authoritative geometry for trails 808/812/814/530 (+Runlett,
+  +FR 724 road) via `scripts/fetch-mm-trails.mjs` → committed `middle-mountain-trails.geojson` →
+  toggleable color-coded map layer + trailhead pins DERIVED from the geometry (satisfies
+  verify-or-exclude). Length-check each polyline vs published miles before accepting.
+- **WU_API_KEY (June 2026):** David supplied read key `fb5b21d22f11452d9b21` for KCOBAYFI100 — set the
+  secret, deploy, verify sourceType flips to "pws" + pressure populates; if 401, ask marina to re-copy
+  the 32-char key (this one is 20 chars).
+- **Round 32 (queued, approved June 2026):** spec `docs/REVIEW-UPDATES-32.md` — REMOVE Charter Vallecito
+  (closed) + Rocky Mountain General Store (declined) from directory.json + all cross-links + re-run
+  gen-schema; PROMOTE **Fisher Guide Service (Phil Fisher, (970) 769-0669)** to featured fishing partner:
+  new `partner-fisher-guide.html`, lead the fishing page ("Your guide" band + enlarged featured guide
+  card), map partner logo chip. Marina's recommended guide (David-sourced editorial, no invented
+  ratings). Removals are silent. Paid-package pieces roll back to a plain verified listing if Phil
+  declines the $500/yr sponsorship. Outreach email drafted (`docs/FISHER-OUTREACH-EMAIL.md`).
+  **SPLIT BUILD (David, June 2026):** Phase A (the two REMOVALS) ships to main + deploys NOW; Phase B
+  (the Fisher paid package) is built on branch **`fisher-partner`**, committed + pushed as a branch, but
+  NOT merged/deployed — held ready so David can publish the instant Phil accepts (`git merge
+  fisher-partner` → deploy → push).
+- **Round 34 (queued, approved June 2026):** LPEA power-outage tile — spec `docs/REVIEW-UPDATES-34.md`.
+  VERIFIED source: LPEA runs Milsoft "Web Outage Viewer" serving public JSON
+  (outage.lpea.coop/data/outageSummary.json + outages.json, per-outage lat/lng, `updateTime` freshness,
+  CORS-closed so Worker-only). Worker `getPower()` polls both, filters outages ≤8 mi of the lake →
+  `power` block → "⚡ Power" tile (home + conditions) with source/stale line, link to the LPEA map.
+  No invented data; honesty caveat (point = rollup anchor). FLAG: send LPEA a courtesy note (no explicit
+  reuse license; data is public, attributed + linked).
+- **Round 35 (queued, approved June 2026):** **Junk Genies** — NEW paid featured partner — spec
+  `docs/REVIEW-UPDATES-35.md`. Family-run junk removal / demolition / property + land cleanup, Bayfield/
+  SW-Colorado, (505) 870-7792, FB profile 61585702680288 (no website yet); adding dumpster rentals
+  (coming soon). Build directory featured entry (Local Services) + enhanced card + `partner-junk-genies.html`
+  from their FB post text + photos in the connected `Junk Genies` desktop folder (trailer = hero;
+  courtesy-basis images). Extra-mile tie-ins to firewise (fuel-load cleanup) + wildlife (bear-smart
+  dumpsters). No invented ratings; dumpster rentals = "coming soon." Per PARTNER-PROFILE-PROCESS.
+- **DONE — Jeree Mead / Strength in Relations Therapy — featured partner (Health & Wellness), LIVE on main;
+  images self-hosted June 13 2026.** `partner-jeree-mead.html` + the `jeree-mead` directory entry are live
+  and deployed. Images are now **self-hosted** (`/assets/img/featured/jeree-mead-headshot.jpg`) — **zero
+  meadstrength.com image hotlinks** on the page (her email/website links kept). Credential line = **MFTC /
+  pre-licensed candidate** (kept, accurate, page says so); service area = **telehealth-only** (no Vallecito
+  office claimed); **no address** so gen-schema doesn't stamp a false 81122. 988/911 crisis note + free-15-min
+  CTA present. Research/rights record in `docs/PARTNER-PROFILES-RESEARCH.md`. The **`jeree-health-wellness`
+  branch is superseded** — its only real change (the self-hosted headshot) is applied, and its added
+  Unsplash/stock figures were dropped per David; the branch **can be deleted**. **FLAG — logo:** her logo
+  (`cropped-New-logo.jpg`) could NOT be fetched (meadstrength.com's host resets the connection from this
+  egress, and it isn't in git), so the directory `image` currently uses her self-hosted **headshot**; drop a
+  `jeree-mead-logo.jpg` into `public/assets/img/featured/` and repoint the directory `image` to swap the logo in.
 - **Phase 2 remaining:** seasonal guides (blocked on David's insider Q&A),
   weekly fishing report feed (needs marina/guide source), species deep-pages, photo gallery,
   AI-search Q&A pages. Positioning: "the most complete independent guide to Vallecito Lake."

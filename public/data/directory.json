@@ -84,8 +84,8 @@
       "slug": "jeree-mead", "name": "Jeree Mead — Strength in Relations Therapy", "shortName": "Jeree Mead, MFTC", "category": "Health & Wellness", "tier": "featured",
       "blurb": "Marriage & family therapist candidate offering secure virtual therapy to Colorado clients — trauma, depression, grief, anxiety, and relationships. Evenings & weekends; insurance & Medicaid accepted. Free 15-minute consult.",
       "phone": "(720) 918-3345", "email": "jeree@meadstrength.com", "website": "https://meadstrength.com",
-      "image": "https://meadstrength.com/wp-content/uploads/2025/09/cropped-New-logo.jpg", "imageAlt": "Strength in Relations Therapy — Jeree Mead",
-      "photos": ["https://meadstrength.com/wp-content/uploads/2025/09/thumbnail.jpeg"],
+      "image": "/assets/img/featured/jeree-mead-headshot.jpg", "imageAlt": "Jeree Mead, marriage & family therapist candidate", "imageFit": "cover",
+      "photos": ["/assets/img/featured/jeree-mead-headshot.jpg"],
       "hours": "Telehealth across Colorado · flexible scheduling incl. some evenings & weekends",
       "badge": "GoVallecito Partner", "profile": "partner-jeree-mead.html",
       "cta": { "label": "Free 15-min consult → call", "href": "tel:+17209183345" }
