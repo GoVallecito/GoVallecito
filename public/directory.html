@@ -50,7 +50,7 @@
           <a href="things-to-do.html" role="menuitem">Things To Do</a>
           <a href="fishing.html" role="menuitem">Fishing</a>
           <a href="trails.html" role="menuitem">Trails</a>
-          <a href="middle-mountain.html" role="menuitem">Middle Mountain</a>
+          <a href="middle-mountain.html" role="menuitem">Middle Mountain</a>
           <a href="map.html" role="menuitem">Lake Map</a>
           <a href="gallery.html" role="menuitem">Gallery</a>
         </div>
@@ -179,6 +179,7 @@
 
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function telHref(p){return 'tel:'+p.replace(/[^0-9+]/g,'');}
+  function mapHref(a){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a);}
   function host(u){return String(u).replace(/^https?:\/\//,'').replace(/\/$/,'');}
 
   // Small monochrome brand glyphs (inherit the row's link color via currentColor).
@@ -198,7 +199,7 @@
     if(b.facebook) x.push('<a class="soc" href="'+esc(b.facebook)+'" rel="noopener" aria-label="Facebook" title="Facebook">'+SVG.facebook+'</a>');
     if(b.instagram)x.push('<a class="soc" href="'+esc(b.instagram)+'" rel="noopener" aria-label="Instagram" title="Instagram">'+SVG.instagram+'</a>');
     if(b.youtube)  x.push('<a class="soc" href="'+esc(b.youtube)+'" rel="noopener" aria-label="YouTube" title="YouTube">'+SVG.youtube+'</a>');
-    if(b.address)  x.push('<span><span class="ico">📍</span>'+esc(b.address)+'</span>');
+    if(b.address)  x.push('<a href="'+mapHref(b.address)+'" rel="noopener" title="Open in Maps"><span class="ico">📍</span>'+esc(b.address)+'</a>');
     return x.length ? '<div class="contacts">'+x.join('')+'</div>' : '';
   }
 

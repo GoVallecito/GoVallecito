@@ -153,7 +153,7 @@ async function refresh(env) {
 
   const [weather, lake, stream, alertsRaw, fires, road, restrictions, power] = await Promise.all([
     safe(() => getWeather(env), prev.weather),
-    safe(() => getLake(env),    prev.lake),
+    safe(() => getLake(prev.lake), prev.lake),
     safe(() => getStreams(env), prev.stream),
     safe(() => getAlerts(env),  prev.alert),
     safe(() => getFires(env),   prev.fires),
@@ -172,7 +172,7 @@ async function refresh(env) {
   // Dam outflow (CWMS daily series, cms→cfs) — its own last-good so a daily-series
   // gap never blanks the streamflow tile. Attaches under stream.outflow.
   if (stream && stream.status !== "error") {
-    const outflow = await safe(() => getOutflow(), prev.stream && prev.stream.outflow);
+    const outflow = await safe(() => getOutflow(prev.stream && prev.stream.outflow), prev.stream && prev.stream.outflow);
     if (outflow && outflow.cfs != null) stream.outflow = outflow;
   }
 
@@ -208,12 +208,33 @@ const LAKE_MAX_AGE_MS = 45 * 864e5;   // reject any reading older than ~45 days 
 const LAKE_STALE_MS   = 3 * 864e5;    // flag stale if older than 72h (USBR daily revision lags 2–3 days; 48h would false-flag)
 const ELEV_MIN = 7500, ELEV_MAX = 7700; // sane Vallecito pool-elevation band (full pool 7665 ft)
 
-async function getLake() {
-  let r = null, source = null;
-  try { const h = await lakeFromHydrodata(); if (lakeOk(h)) { r = h; source = "USBR Hydrodata"; } } catch (e) { console.error("Hydrodata lake:", e.message); }
-  if (!r) { try { const c = await lakeFromCwms(); if (lakeOk(c)) { r = c; source = "USACE CWMS (USBR SPK)"; } } catch (e) { console.error("CWMS lake:", e.message); } }
-  if (!r) { try { const u = await lakeFromRise(); if (lakeOk(u)) { r = u; source = "USBR RISE"; } } catch (e) { console.error("RISE lake:", e.message); } }
-  if (!r) throw new Error("no current lake source (USGS 09353000 is stale 2012; Hydrodata+CWMS+RISE unavailable)");
+async function getLake(prev) {
+  // FRESHEST-WINS, never-regress (mirrors the power fix): gather every valid reading
+  // this run and pick the most recent — don't stop at the first. Hydrodata is the
+  // flaky primary, so retry it before falling through to CWMS/RISE (the trap: CWMS's
+  // latest is often ~13 days old but still inside the 45-day window, so first-wins
+  // would regress June 12 → June 1 whenever Hydrodata blipped).
+  const cands = [];
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try { const h = await lakeFromHydrodata(); if (lakeOk(h)) { cands.push({ r: h, source: "USBR Hydrodata" }); break; } }
+    catch (e) { if (attempt === 1) console.error("Hydrodata lake:", e.message); }
+  }
+  try { const c = await lakeFromCwms(); if (lakeOk(c)) cands.push({ r: c, source: "USACE CWMS (USBR SPK)" }); } catch (e) { console.error("CWMS lake:", e.message); }
+  try { const u = await lakeFromRise(); if (lakeOk(u)) cands.push({ r: u, source: "USBR RISE" }); } catch (e) { console.error("RISE lake:", e.message); }
+
+  let best = null;
+  for (const c of cands) if (!best || c.r.t > best.r.t) best = c;
+
+  // Never publish older data than we've already shown: if the cached reading is newer
+  // than anything we got live this run, keep it (it ages into "stale" honestly).
+  if (prev && prev.asOf) {
+    const prevT = Date.parse(prev.asOf);
+    if (!isNaN(prevT) && (!best || prevT > best.r.t)) {
+      return { ...prev, status: "ok", stale: (Date.now() - prevT) > LAKE_STALE_MS };
+    }
+  }
+  if (!best) throw new Error("no current lake source (USGS 09353000 is stale 2012; Hydrodata+CWMS+RISE unavailable)");
+  const r = best.r, source = best.source;
 
   const storageAf  = r.storageAf  != null ? Math.round(r.storageAf)  : null;
   const elevationFt = r.elevationFt != null ? Math.round(r.elevationFt) : null;
@@ -343,33 +364,52 @@ async function getStreams() {
  * FALLBACK = CWMS Flow-Res Out (Vallecito.Flow-Res Out...Raw-USBRSLC) — the API
  * returns it in cfs for office SPK; convert cms→cfs ONLY if the response unit is SI.
  * Sanity band 0–5,000 cfs; flag stale past 72h (LAKE_STALE_MS). */
-async function getOutflow() {
-  // PRIMARY: USBR Hydrodata total release (dt 42).
-  try {
-    const r = await hydrodataLatest(42);
-    if (r) {
-      const cfs = Math.round(r.value);
-      if (cfs >= 0 && cfs <= 5000 && (Date.now() - r.t) <= LAKE_MAX_AGE_MS) {
-        return { cfs, asOf: new Date(r.t).toISOString(), source: "USBR Hydrodata", stale: (Date.now() - r.t) > LAKE_STALE_MS };
+async function getOutflow(prev) {
+  // Same freshest-wins, never-regress fix as getLake (Hydrodata blip was dropping
+  // outflow June 12 → CWMS June 1). Gather valid candidates, pick the newest.
+  const cands = [];
+  // PRIMARY: USBR Hydrodata total release (dt 42) — flaky, so retry.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const r = await hydrodataLatest(42);
+      if (r) {
+        const cfs = Math.round(r.value);
+        if (cfs >= 0 && cfs <= 5000 && (Date.now() - r.t) <= LAKE_MAX_AGE_MS) {
+          cands.push({ cfs, t: r.t, source: "USBR Hydrodata" }); break;
+        }
       }
-    }
-  } catch (e) { console.error("Hydrodata outflow:", e.message); }
-
+      break;  // got a response but it was out-of-band/old — don't spin
+    } catch (e) { if (attempt === 1) console.error("Hydrodata outflow:", e.message); }
+  }
   // FALLBACK: USACE CWMS Flow-Res Out.
-  const begin = new Date(Date.now() - 40 * 864e5).toISOString();
-  const end   = new Date(Date.now() + 864e5).toISOString();
-  const name  = "Vallecito.Flow-Res Out.Ave.~1Day.1Day.Raw-USBRSLC";
-  const u = `https://cwms-data.usace.army.mil/cwms-data/timeseries?name=${encodeURIComponent(name)}&office=SPK&begin=${begin}&end=${end}`;
-  const j = await getJson(u, { "Accept": "application/json;version=2" });
-  const vals = (j.values || []).filter(v => v[1] != null);
-  if (!vals.length) throw new Error("no CWMS outflow (Flow-Res Out) data");
-  const last = vals[vals.length - 1];
-  const units = String(j.units || "").toLowerCase();
-  const isSI = units === "cms" || units === "m3/s" || units === "cumecs";
-  const cfs = Math.round(isSI ? last[1] * 35.3147 : last[1]);
-  if (!(cfs >= 0 && cfs <= 5000)) throw new Error("outflow out of sane band: " + cfs + " (units=" + units + ")");
-  const stale = (Date.now() - last[0]) > LAKE_STALE_MS;
-  return { cfs, asOf: new Date(last[0]).toISOString(), source: "USACE CWMS (USBR SLC)", stale };
+  try {
+    const begin = new Date(Date.now() - 40 * 864e5).toISOString();
+    const end   = new Date(Date.now() + 864e5).toISOString();
+    const name  = "Vallecito.Flow-Res Out.Ave.~1Day.1Day.Raw-USBRSLC";
+    const u = `https://cwms-data.usace.army.mil/cwms-data/timeseries?name=${encodeURIComponent(name)}&office=SPK&begin=${begin}&end=${end}`;
+    const j = await getJson(u, { "Accept": "application/json;version=2" });
+    const vals = (j.values || []).filter(v => v[1] != null);
+    if (vals.length) {
+      const last = vals[vals.length - 1];
+      const units = String(j.units || "").toLowerCase();
+      const isSI = units === "cms" || units === "m3/s" || units === "cumecs";
+      const cfs = Math.round(isSI ? last[1] * 35.3147 : last[1]);
+      if (cfs >= 0 && cfs <= 5000) cands.push({ cfs, t: last[0], source: "USACE CWMS (USBR SLC)" });
+    }
+  } catch (e) { console.error("CWMS outflow:", e.message); }
+
+  let best = null;
+  for (const c of cands) if (!best || c.t > best.t) best = c;
+
+  // Never regress below last-good.
+  if (prev && prev.asOf) {
+    const prevT = Date.parse(prev.asOf);
+    if (!isNaN(prevT) && (!best || prevT > best.t)) {
+      return { ...prev, stale: (Date.now() - prevT) > LAKE_STALE_MS };
+    }
+  }
+  if (!best) throw new Error("no outflow source (Hydrodata + CWMS Flow-Res Out unavailable)");
+  return { cfs: best.cfs, asOf: new Date(best.t).toISOString(), source: best.source, stale: (Date.now() - best.t) > LAKE_STALE_MS };
 }
 
 /* ---------- ALERTS + RED FLAG: NWS (keyless) ---------- */

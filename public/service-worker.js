@@ -14,7 +14,7 @@
  * Bump CACHE to invalidate everything on the next deploy. To disable the PWA
  * entirely, replace this file with a stub that calls self.registration.unregister().
  */
-const CACHE = 'gv-v4';
+const CACHE = 'gv-v5';
 // Clean URL (no .html) — /offline.html 308-redirects on Pages, and a redirected
 // response can't be returned to a navigation ("had redirections" error).
 const OFFLINE_URL = '/offline';
