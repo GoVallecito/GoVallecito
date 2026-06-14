@@ -396,14 +396,24 @@
       .catch(unavailable);
   }
 
-  fetch('/data/fishing-report.json', { cache: 'no-store' })
+  // The auto-published report lives in the Worker's KV (set weekly via POST /__fishing);
+  // read that first, then the static Pages file, then the live-data auto block. The
+  // honest 14-day staleness rule is preserved in handleReport().
+  var REPORT_KV_URL = 'https://govallecito-conditions.dkontje.workers.dev/data/fishing-report.json';
+  function handleReport(d){
+    var ageDays = (Date.now() - Date.parse(d.updated)) / 86400000;
+    if (!isNaN(ageDays) && ageDays <= 14) renderEditor(d);   // human report still fresh
+    else renderAuto();                                        // >14 days → live-data auto block
+  }
+  fetch(REPORT_KV_URL, { cache: 'no-store' })
     .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-    .then(function(d){
-      var ageDays = (Date.now() - Date.parse(d.updated)) / 86400000;
-      if (!isNaN(ageDays) && ageDays <= 14) renderEditor(d);   // human report still fresh
-      else renderAuto();                                        // fall back to the Sunday auto summary
-    })
-    .catch(renderAuto);
+    .then(handleReport)
+    .catch(function(){
+      fetch('/data/fishing-report.json', { cache: 'no-store' })
+        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+        .then(handleReport)
+        .catch(renderAuto);
+    });
 })();
 </script>
   <script defer src="/assets/js/pwa.js"></script>

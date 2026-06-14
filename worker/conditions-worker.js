@@ -70,6 +70,31 @@ export default {
       const status = { ok: true, live: !!(out && out.meta && out.meta.live), updated: new Date().toISOString() };
       return new Response(JSON.stringify(status), { headers: { "content-type": "application/json" } });
     }
+    // Weekly fishing report — KV `fishing-report` (set by the scheduled task via POST /__fishing).
+    // When KV is empty, 404 (no-store) so the front-end falls back to the static Pages file / auto-block.
+    if (url.pathname === "/data/fishing-report.json") {
+      const cached = await env.CONDITIONS.get("fishing-report");
+      if (cached) return new Response(cached, { headers: JSON_CORS });
+      return new Response(JSON.stringify({ present: false }), {
+        status: 404, headers: { "content-type": "application/json", "cache-control": "no-store", "access-control-allow-origin": "*" } });
+    }
+    // Authenticated server-to-server write for the auto-published fishing report.
+    // NOT exposed to browser CORS — bearer key only. Low-stakes (write-only; can only set the report).
+    if (url.pathname === "/__fishing") {
+      if (request.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
+      const token = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+      if (!env.FISHING_KEY || token !== env.FISHING_KEY) return new Response("Unauthorized", { status: 401 });
+      const raw = await request.text();
+      if (raw.length > 32 * 1024) return new Response(JSON.stringify({ ok: false, error: "body too large" }), { status: 413, headers: { "content-type": "application/json" } });
+      let body;
+      try { body = JSON.parse(raw); } catch (e) { return new Response(JSON.stringify({ ok: false, error: "invalid JSON" }), { status: 400, headers: { "content-type": "application/json" } }); }
+      if (!body || typeof body.updated !== "string" || typeof body.summary !== "string" || !Array.isArray(body.species) || body.species.length === 0) {
+        return new Response(JSON.stringify({ ok: false, error: "schema: need updated, summary, and a non-empty species[]" }), { status: 400, headers: { "content-type": "application/json" } });
+      }
+      body.receivedAt = new Date().toISOString();
+      await env.CONDITIONS.put("fishing-report", JSON.stringify(body));
+      return new Response(JSON.stringify({ ok: true, updated: body.updated, receivedAt: body.receivedAt }), { headers: { "content-type": "application/json" } });
+    }
     return new Response("Not found", { status: 404 });
   }
 };
