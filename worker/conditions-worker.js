@@ -34,6 +34,7 @@ export default {
     // Two crons (see wrangler.toml): the 15-min one refreshes conditions; the
     // Sunday one regenerates the weekly "This week on the water" summary.
     if (event.cron === "0 13 * * SUN") ctx.waitUntil(generateWeeklyWater(env));
+    else if (event.cron === "0 13 * * 5") ctx.waitUntil(maybeWriteAutoFishing(env));
     else if (event.cron === "0 9 * * *") ctx.waitUntil(refreshAnalytics(env));
     else ctx.waitUntil(refresh(env));
   },
@@ -91,9 +92,21 @@ export default {
       if (!body || typeof body.updated !== "string" || typeof body.summary !== "string" || !Array.isArray(body.species) || body.species.length === 0) {
         return new Response(JSON.stringify({ ok: false, error: "schema: need updated, summary, and a non-empty species[]" }), { status: 400, headers: { "content-type": "application/json" } });
       }
+      // Posted reports default to "featured" so an agent/editor report takes
+      // precedence over the Worker's weekly auto baseline (see maybeWriteAutoFishing).
+      if (!body.source) body.source = "featured";
       body.receivedAt = new Date().toISOString();
       await env.CONDITIONS.put("fishing-report", JSON.stringify(body));
-      return new Response(JSON.stringify({ ok: true, updated: body.updated, receivedAt: body.receivedAt }), { headers: { "content-type": "application/json" } });
+      return new Response(JSON.stringify({ ok: true, updated: body.updated, source: body.source, receivedAt: body.receivedAt }), { headers: { "content-type": "application/json" } });
+    }
+    if (url.pathname === "/__genfishing") {          // manual trigger to test the weekly auto report
+      if (url.searchParams.get("dry") === "1") {     // dry-run: generate + return WITHOUT writing KV
+        let cond = {};
+        try { cond = JSON.parse(await env.CONDITIONS.get(KV_KEY)) || {}; } catch {}
+        return new Response(JSON.stringify(generateFishingReport(env, cond), null, 2), { headers: { "content-type": "application/json" } });
+      }
+      const out = await maybeWriteAutoFishing(env);
+      return new Response(JSON.stringify(out, null, 2), { headers: { "content-type": "application/json" } });
     }
     return new Response("Not found", { status: 404 });
   }
@@ -123,6 +136,131 @@ function regsReminder(m) {            // m = 0-based month
   if (m === 8 || m === 9) return "Reminder: the Grimes Creek inlet is closed to fishing Sep 1–Nov 14.";
   if (m === 10 || m === 11) return "Reminder: kokanee snagging is open in the Grimes Creek inlet stretch (Nov 15–Dec 31).";
   return "Always confirm current limits with Colorado Parks & Wildlife before you fish.";
+}
+
+/* ---------- WEEKLY FISHING REPORT (Friday cron) — zero-touch baseline ----------
+ * The Worker auto-generates a weekly report from the data it already gathers (lake,
+ * inflow/outflow, weather forecast, Red Flag) + a month→species seasonal table that
+ * MIRRORS fishing.html (the Round-16 calendar + per-species sections) + a JS moon
+ * phase. NO invented catch numbers — status ∈ {hot,good,fair,slow}; the summary is
+ * honest, seasonal, and ends with the standing "ask the marina/a guide" line.
+ * Precedence (maybeWriteAutoFishing): a posted "featured" report wins for ~10 days,
+ * then the auto baseline resumes. Same KV key + schema the front-end already reads:
+ *   { updated, author, source, summary, species:[{name,status,note}] }
+ * See docs/CLAUDE-CODE-FISHING-WORKER-AUTO.md. */
+const FISH_AUTO_MAX_AGE_MS = 10 * 864e5;   // a featured report holds for ~10 days
+
+// Per-species seasonal status by month (0=Jan … 11=Dec), grounded in fishing.html's
+// at-a-glance "Best months" + per-species notes. Patterns only — never catch counts.
+const FISH_SPECIES = [
+  { name: "Kokanee Salmon",
+    months: ["slow", "slow", "slow", "fair", "fair", "good", "hot", "hot", "good", "fair", "good", "good"],
+    note: m => (m >= 5 && m <= 7) ? "Troll dodgers/squids down to the temperature band; fish first light before the wind."
+      : (m === 10 || m === 11) ? "Snagging is open in the Grimes Creek inlet stretch (Nov 15–Dec 31)."
+      : "Quiet between the summer troll and the late-fall snag window." },
+  { name: "Northern Pike",
+    months: ["slow", "slow", "fair", "good", "hot", "good", "fair", "fair", "hot", "good", "fair", "slow"],
+    note: () => "Work the weedy north end with big baits; no bag limit — CPW encourages harvest." },
+  { name: "Rainbow Trout",
+    months: ["fair", "fair", "fair", "good", "good", "fair", "fair", "fair", "good", "good", "fair", "fair"],
+    note: m => (m <= 2 || m === 11) ? "Most reliable through the ice and around ice-out." : "The dependable all-rounder — troll, cast spinners, or bait from shore." },
+  { name: "Brown Trout",
+    months: ["slow", "slow", "slow", "fair", "fair", "fair", "fair", "fair", "hot", "hot", "good", "slow"],
+    note: () => "Best late September–November as browns turn aggressive before the spawn." },
+  { name: "Walleye",
+    months: ["slow", "slow", "fair", "fair", "good", "good", "fair", "fair", "good", "good", "fair", "slow"],
+    note: () => "A low-light, structure fish — work 10–40 ft at dawn, dusk, or under clouds." },
+  { name: "Smallmouth Bass",
+    months: ["slow", "slow", "slow", "fair", "fair", "hot", "hot", "good", "fair", "fair", "slow", "slow"],
+    note: () => "On rocky structure and around docks once the shallows warm (June–July)." },
+  { name: "Yellow Perch",
+    months: ["good", "good", "good", "fair", "fair", "fair", "fair", "fair", "fair", "fair", "fair", "good"],
+    note: m => (m <= 2 || m === 11) ? "A prime ice-season target — small jigs over the flats; no bag limit." : "Easy panfish off the docks on a worm and bobber." }
+];
+
+function seasonHeadline(m) {
+  if (m === 11) return "Early ice is forming where it's safe, and kokanee snagging is open in the Grimes Creek inlet stretch through Dec 31.";
+  if (m === 0 || m === 1) return "Mid-winter ice fishing for perch and trout where the ice is safe — the lake's ice-fishing tournament is in late February.";
+  if (m === 2) return "Late ice into the spring transition — be cautious on softening ice as ice-out approaches.";
+  if (m === 3 || m === 4) return "Spring: ice-out moves pike and rainbows into the shallows, with early walleye starting.";
+  if (m === 5) return "Early summer: kokanee trolling is starting and smallmouth are sliding onto the rocks — fish early before the wind.";
+  if (m === 6 || m === 7) return "Mid-summer: kokanee, smallmouth, and trout lead the way; start at dawn and watch the afternoon storms.";
+  if (m === 8) return "Late summer: kokanee and smallmouth hold on, and low-light walleye fishing turns on.";
+  return "Fall — the best all-around fishing of the year: browns, trout, and pike, with great color.";
+}
+
+// Moon phase from a known new-moon epoch (synodic month). Reservoir → no tides.
+function moonPhase(date) {
+  const SYNODIC = 29.530588853;
+  const REF = Date.UTC(2000, 0, 6, 18, 14, 0);     // 2000-01-06 18:14 UTC new moon
+  let age = ((date.getTime() - REF) / 864e5) % SYNODIC;
+  if (age < 0) age += SYNODIC;
+  const names = ["new moon", "waxing crescent", "first quarter", "waxing gibbous",
+                 "full moon", "waning gibbous", "last quarter", "waning crescent"];
+  const name = names[Math.floor((age / SYNODIC) * 8 + 0.5) % 8];
+  const nearNewOrFull = age < 2 || age > SYNODIC - 2 || Math.abs(age - SYNODIC / 2) < 2;
+  return { name, nearNewOrFull };
+}
+
+function generateFishingReport(env, cond) {
+  const now = new Date();
+  const m = parseInt(now.toLocaleString("en-US", { timeZone: "America/Denver", month: "numeric" }), 10) - 1;
+  const lake = cond.lake || {}, stream = cond.stream || {}, weather = cond.weather || {}, alert = cond.alert || {};
+  const moon = moonPhase(now);
+
+  const species = FISH_SPECIES.map(s => ({ name: s.name, status: s.months[m], note: s.note(m) }));
+
+  const parts = [seasonHeadline(m)];
+  if (lake.pct != null || lake.elevationFt != null) {
+    let s = "The lake is " + (lake.pct != null ? lake.pct + "% full"
+      : "near " + (lake.elevationFt != null ? lake.elevationFt.toLocaleString() + " ft" : "pool"));
+    if (stream.combinedCfs != null) s += ", with about " + stream.combinedCfs + " cfs flowing in";
+    if (stream.outflow && stream.outflow.cfs != null) s += " and ~" + stream.outflow.cfs + " cfs released at the dam";
+    s += (lake.stale ? " (reading may be a few days old)." : ".");
+    parts.push(s);
+  }
+  const f = Array.isArray(weather.forecast5) ? weather.forecast5[0] : null;
+  if (f && (f.hi != null || f.lo != null)) {
+    parts.push("Near-term outlook: " + (f.day || "today") +
+      (f.hi != null ? " high ~" + f.hi + "°" : "") + (f.lo != null ? ", low ~" + f.lo + "°" : "") + ".");
+  }
+  parts.push("Moon: " + moon.name + (moon.nearNewOrFull
+    ? " — feeding usually picks up around the new and full moon; fish dawn and dusk."
+    : " — fish the low-light windows at dawn and dusk."));
+  if (alert && alert.redFlag) parts.push("⚠️ A Red Flag Warning is in effect — no open fires; check restrictions before any shore fire.");
+  parts.push(regsReminder(m));
+  parts.push("Auto-generated from live conditions and seasonal patterns, updated weekly — for the day-of bite, ask at the Vallecito Marina or a local guide.");
+
+  return {
+    updated: now.toISOString().slice(0, 10),
+    author: "GoVallecito (auto)",
+    source: "auto",
+    summary: parts.join(" "),
+    species,
+    moon: moon.name,
+    generatedAt: now.toISOString()
+  };
+}
+
+// Write the auto report ONLY if there's no fresher featured report (precedence):
+// missing, OR source==="auto", OR older than ~10 days. Never clobbers a fresh featured one.
+async function maybeWriteAutoFishing(env) {
+  let current = null;
+  try { current = JSON.parse(await env.CONDITIONS.get("fishing-report")); } catch {}
+  let stale = true;
+  if (current && current.updated) {
+    const t = Date.parse(current.updated);
+    stale = isNaN(t) ? true : (Date.now() - t) > FISH_AUTO_MAX_AGE_MS;
+  }
+  const allow = !current || current.source === "auto" || stale;
+  if (!allow) {
+    return { wrote: false, reason: "fresh featured report present", current: { updated: current.updated, source: current.source } };
+  }
+  let cond = {};
+  try { cond = JSON.parse(await env.CONDITIONS.get(KV_KEY)) || {}; } catch {}
+  const report = generateFishingReport(env, cond);
+  await env.CONDITIONS.put("fishing-report", JSON.stringify(report));
+  return { wrote: true, replaced: current ? current.source : "none", report };
 }
 
 async function generateWeeklyWater(env) {

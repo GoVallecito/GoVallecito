@@ -9,7 +9,8 @@ compatibility_date = "2026-01-01"
 # 0 13 * * SUN = 13:00 UTC = 6:00 AM MST (note: lands 7:00 AM during daylight time —
 # Cloudflare crons are UTC-fixed; use 12:00 UTC if David prefers 6 AM summer clock).
 [triggers]
-crons = ["*/15 * * * *", "0 13 * * SUN", "0 9 * * *"]
+# */15 conditions · Sun 13:00 weekly-water · daily 09:00 analytics · Fri 13:00 auto fishing report
+crons = ["*/15 * * * *", "0 13 * * SUN", "0 9 * * *", "0 13 * * 5"]
 
 # Production data route: the Worker owns GET /data/conditions.json on the live
 # domain and serves it from KV (its fetch handler already does this). A Worker
